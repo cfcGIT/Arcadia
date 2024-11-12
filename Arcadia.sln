@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sandbox", "Sandbox\Sandbox.vcxproj", "{8DA739B9-A4C9-4E2F-8526-7ADA1B7E7BA7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Arcadia", "Arcadia\Arcadia.vcxproj", "{8F1A0E19-C934-4F76-88EA-B906D24E8594}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F1A0E19-C934-4F76-88EA-B906D24E8594}.Debug|x64.ActiveCfg = Debug|x64
+		{8F1A0E19-C934-4F76-88EA-B906D24E8594}.Debug|x64.Build.0 = Debug|x64
+		{8F1A0E19-C934-4F76-88EA-B906D24E8594}.Release|x64.ActiveCfg = Release|x64
+		{8F1A0E19-C934-4F76-88EA-B906D24E8594}.Release|x64.Build.0 = Release|x64
+		{8DA739B9-A4C9-4E2F-8526-7ADA1B7E7BA7}.Debug|x64.ActiveCfg = Debug|x64
+		{8DA739B9-A4C9-4E2F-8526-7ADA1B7E7BA7}.Debug|x64.Build.0 = Debug|x64
+		{8DA739B9-A4C9-4E2F-8526-7ADA1B7E7BA7}.Release|x64.ActiveCfg = Release|x64
+		{8DA739B9-A4C9-4E2F-8526-7ADA1B7E7BA7}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5ED53277-2A83-4421-A76B-E645C799DE5D}
+	EndGlobalSection
+EndGlobal
