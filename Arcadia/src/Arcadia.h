@@ -1,10 +1,9 @@
 #pragma once
 
 // For use by Arcadia applications
-
 #include "Arcadia/Application.h"
-#include <stdio.h>
+#include "Arcadia/Log.h"
 
-//-- Entry Point --------------
+// ---Entry Point-----------------
 #include "Arcadia/EntryPoint.h"
-//-----------------------------
+// -------------------------------
