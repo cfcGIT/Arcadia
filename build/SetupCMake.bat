@@ -13,12 +13,12 @@ if not "%1" == "" goto GETOPTS
 REM Always generate..
 echo:
 echo Generating %BUILD_TYPE%..
-cmake ../ -DCMAKE_BUILD_TYPE=%BUILD_TYPE%
+cmake %~dp0../ -B %~dp0../ -DCMAKE_BUILD_TYPE=%BUILD_TYPE%
 if "%BUILD%" NEQ "" (
     REM Build..
     echo:
     echo Building %BUILD_TYPE%..
-    cmake %BUILD% ../ --config %BUILD_TYPE%
+    cmake %BUILD% %~dp0../ --config %BUILD_TYPE%
 )
 
 exit /b %ERRORLEVEL%
