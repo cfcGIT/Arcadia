@@ -8,13 +8,13 @@ set(SAND Sandbox)
 # Headers added to show in filters
 # SHARED because it's a dynamic library (.dll)
 add_library(${NAME} SHARED 
-        src/Arcadia.h
-        src/Arcadia/Application.cpp
-        src/Arcadia/Application.h
-        src/Arcadia/Core.h
-        src/Arcadia/EntryPoint.h
-        src/Arcadia/Log.cpp
-        src/Arcadia/Log.h)
+        src/${NAME}.h
+        src/${NAME}/Application.cpp
+        src/${NAME}/Application.h
+        src/${NAME}/Core.h
+        src/${NAME}/EntryPoint.h
+        src/${NAME}/Log.cpp
+        src/${NAME}/Log.h)
 
 add_compile_definitions(ARC_BUILD_DLL)
 
@@ -48,7 +48,7 @@ if(MSVC)
     set_target_properties(${NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_${BUILD_TYPE_UPPER} "${OUTPUT_DIRECTORY}")
     set_target_properties(${NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY_${BUILD_TYPE_UPPER} "${OUTPUT_DIRECTORY}")
 
-    add_custom_command(TARGET ${NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different "${OUTPUT_DIRECTORY}/Arcadia.dll" "${OUTPUT_DIRECTORY}/../${SAND}/Arcadia.dll" COMMENT "Copy Arcadia.dll to ${SAND} project")
+    add_custom_command(TARGET ${NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different "${OUTPUT_DIRECTORY}/${NAME}.dll" "${OUTPUT_DIRECTORY}/../${SAND}/${NAME}.dll" COMMENT "Copy ${NAME}.dll to ${SAND} project")
 endif()
 
 
