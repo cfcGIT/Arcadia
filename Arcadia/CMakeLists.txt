@@ -14,7 +14,11 @@ add_library(${NAME} SHARED
         src/${NAME}/Core.h
         src/${NAME}/EntryPoint.h
         src/${NAME}/Log.cpp
-        src/${NAME}/Log.h)
+        src/${NAME}/Log.h
+        src/${NAME}/Events/Event.h
+        src/${NAME}/Events/KeyEvent.h
+        src/${NAME}/Events/MouseEvent.h
+        src/${NAME}/Events/ApplicationEvent.h)
 
 add_compile_definitions(ARC_BUILD_DLL)
 
@@ -52,6 +56,7 @@ if(MSVC)
 endif()
 
 
+include_directories(src)
 include_directories(third_party/spdlog/include)
 
 message(STATUS "BUILD_TYPE '${CMAKE_BUILD_TYPE}' generated for '${NAME}'")
