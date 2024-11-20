@@ -12,7 +12,7 @@ namespace Arcadia
         None = 0,
         WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
         AppTick, AppUpdate, AppRender,
-        KeyPreseed, KeyReleased,
+        KeyPreseed, KeyReleased, KeyTyped,
         MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
     };
 
@@ -32,8 +32,7 @@ namespace Arcadia
     */
 
     // #_type  -> string
-    // ##_type -> token-pasting
-#define EVENT_CLASS_TYPE(_type) static EventType GetStaticType() { return EventType::##_type; }\
+#define EVENT_CLASS_TYPE(_type) static EventType GetStaticType() { return EventType::_type; }\
                                 virtual EventType GetEventType() const override { return GetStaticType(); }\
                                 virtual const char* GetName() const override { return #_type; }
 
@@ -44,6 +43,8 @@ namespace Arcadia
     private:
         friend class EventDispatcher; // We can access to private and protected members of class Event from class EventDispatcher
     public:
+        virtual ~Event() = default;
+
         virtual EventType GetEventType() const = 0;
         virtual const char* GetName() const = 0;
         virtual int GetCategoryFlags() const = 0;
@@ -68,16 +69,17 @@ namespace Arcadia
     */
     class ARCADIA_API EventDispatcher
     {
-    private:
-        template<typename T> using EventFn = std::function<bool(T&)>;
     public:
         EventDispatcher(Event& _event)
             : m_Event(_event) { }
-        template<typename T> bool Dispatch(EventFn<T> _func)
+
+        // F will be deduced by the compiler
+        template<typename T, typename F>
+        bool Dispatch(const F& _func)
         {
             if (m_Event.GetEventType() == T::GetStaticType())
             {
-                m_Event.m_bHandled = func(*(T*)&m_Event);
+                m_Event.m_bHandled |= _func(static_cast<T&>(m_Event));
                 return true;
             }
             return false;

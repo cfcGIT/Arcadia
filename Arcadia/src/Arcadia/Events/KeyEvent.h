@@ -23,22 +23,22 @@ namespace Arcadia
     class ARCADIA_API KeyPressedEvent : public KeyEvent
     {
     public:
-        KeyPressedEvent(int _iKeyCode, int _iRepeatCount)
-            : KeyEvent(_iKeyCode), m_iRepeatCount(_iRepeatCount) {}
+        KeyPressedEvent(int _iKeyCode, bool _bIsRepeat)
+            : KeyEvent(_iKeyCode), m_bIsRepeat(_bIsRepeat) {}
 
-        inline int GetRepeatCount() const { return m_iRepeatCount; }
+        inline bool IsRepeat() const { return m_bIsRepeat; }
 
         std::string ToString() const override
         {
             std::stringstream ss;
-            ss << "KeyPressedEvent: " << m_iKeyCode << " (" << m_iRepeatCount << " repeats)";
+            ss << "KeyPressedEvent: " << m_iKeyCode << " (repeat = " << m_bIsRepeat << ")";
             return ss.str();
         }
 
         EVENT_CLASS_TYPE(KeyPressed)
 
     private:
-        int m_iRepeatCount;
+        bool m_bIsRepeat;
     };
 
     class ARCADIA_API KeyReleasedEvent : public KeyEvent
@@ -55,5 +55,21 @@ namespace Arcadia
         }
 
         EVENT_CLASS_TYPE(KeyReleased)
+    };
+
+    class ARCADIA_API KeyTypedEvent : public KeyEvent
+    {
+    public:
+        KeyTypedEvent(int _iKeyCode)
+            : KeyEvent(_iKeyCode) {}
+
+        std::string ToString() const override
+        {
+            std::stringstream ss;
+            ss << "KeyTypedEvent: " << m_iKeyCode;
+            return ss.str();
+        }
+
+        EVENT_CLASS_TYPE(KeyTyped)
     };
 }
