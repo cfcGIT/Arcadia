@@ -58,15 +58,6 @@ namespace Arcadia
         bool m_bHandled = false;
     };
 
-    // TODOCFC: Entender esto
-    /*
-    * For anyone struggling like me, *(T*)&m_Event casts the m_Event reference from an Event to T. 
-    The order of operations is & then (T*) then *. 
-    First, &m_Event gets the memory address of of m_Event (now it's type Event*).
-    Second, this Event* gets casted to a T* using (T*)  (now it's type T*).
-    Last, this T* gets dereferenced into a T with *(object from second step).
-
-    */
     class ARCADIA_API EventDispatcher
     {
     public:
