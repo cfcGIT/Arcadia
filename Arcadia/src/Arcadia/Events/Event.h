@@ -26,11 +26,6 @@ namespace Arcadia
         EventCategoryMouseButton = BIT(4)  // 10000 : 0x10 : 16
     };
 
-    /*
-    * If you're following along in linux or using a different compiler than the one in Visual Studio, remove the concatenation of the first line of the EVENT_CLASS_TYPE. 
-      Instead of  return EventType::##type;   it's return  EventType::type;
-    */
-
     // #_type  -> string
 #define EVENT_CLASS_TYPE(_type) static EventType GetStaticType() { return EventType::_type; }\
                                 virtual EventType GetEventType() const override { return GetStaticType(); }\
