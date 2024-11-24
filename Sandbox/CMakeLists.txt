@@ -45,6 +45,11 @@ endif()
 
 target_compile_options(${NAME} PRIVATE /utf-8) # To avoid "...\third_party\spdlog\include\spdlog\fmt\bundled\base.h(458,28): error C2338: static_assert failed: 'Unicode support requires compiling with /utf-8'"
 
+# third party includes
 include_directories(${ARC_PATH}/third_party/spdlog/include)
+#include_directories(${ARC_PATH}/third_party/glfw/include)
+
+# TODO: precompiled headers here too?
+#target_precompile_headers(${NAME} PUBLIC src/arcpch.h)
 
 message(STATUS "BUILD_TYPE '${CMAKE_BUILD_TYPE}' generated for '${NAME}'")

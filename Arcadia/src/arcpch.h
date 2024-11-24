@@ -17,3 +17,5 @@
 #ifdef ARC_PLATFORM_WINDOWS
 #include <Windows.h>
 #endif
+
+#include "Arcadia/Log.h"

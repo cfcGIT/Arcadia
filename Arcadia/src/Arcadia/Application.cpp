@@ -4,12 +4,14 @@
 
 #include "Arcadia/Events/ApplicationEvent.h"
 #include "Arcadia/Events/MouseEvent.h"
-#include "Arcadia/Log.h"
+
+#include "GLFW/glfw3.h"
 
 namespace Arcadia
 {
     Application::Application()
     {
+        m_Window = std::unique_ptr<Window>(Window::Create());
     }
 
     Application::~Application()
@@ -18,10 +20,11 @@ namespace Arcadia
 
     void Application::Run()
     {
-        WindowResizeEvent ev(1280, 720);
-        MouseButtonPressedEvent mev(5);
-        ARC_TRACE(ev);
-        ARC_TRACE(mev);
-        while (true);
+        while (m_bRunning)
+        {
+            glClearColor(1, 0, 1, 1);
+            glClear(GL_COLOR_BUFFER_BIT);
+            m_Window->OnUpdate();
+        }
     }
 }

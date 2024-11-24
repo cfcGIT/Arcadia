@@ -7,19 +7,38 @@ set(SAND Sandbox)
 
 file(GLOB ROOT_HEADER src/*.h)
 file(GLOB ROOT_SOURCE src/*.cpp)
+file(GLOB PLATFORM_HEADER src/Platform/*.h)
+file(GLOB PLATFORM_SOURCE src/Platform/*.cpp)
+file(GLOB PLATFORM_WINDOWS_HEADER src/Platform/Windows/*.h)
+file(GLOB PLATFORM_WINDOWS_SOURCE src/Platform/Windows/*.cpp)
 file(GLOB ARC_ROOT_HEADER src/${NAME}/*.h)
 file(GLOB ARC_ROOT_SOURCE src/${NAME}/*.cpp)
 file(GLOB ARC_EVENTS_HEADER src/${NAME}/Events/*.h)
 file(GLOB ARC_EVENTS_SOURCE src/${NAME}/Events/*.cpp)
 
+
 # Headers added to show in filters
 # SHARED because it's a dynamic library (.dll)
 add_library(${NAME} SHARED
         ${ROOT_HEADER} ${ROOT_SOURCE}
+        ${PLATFORM_HEADER} ${PLATFORM_SOURCE}
+        ${PLATFORM_WINDOWS_HEADER} ${PLATFORM_WINDOWS_SOURCE}
         ${ARC_ROOT_HEADER} ${ARC_ROOT_SOURCE}
         ${ARC_EVENTS_HEADER} ${ARC_EVENTS_SOURCE})
 
+# GLFW
+add_subdirectory(third_party/glfw) # With source code
+target_link_libraries(${NAME} glfw)
+# OpenGL
+find_package(OpenGL REQUIRED) # Without source code (found in Windows Kits)
+target_link_libraries(${NAME} OpenGL::GL)
+
+
 add_compile_definitions(ARC_BUILD_DLL)
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_definitions(ARC_ENABLE_ASSERT)
+endif()
 
 if (WIN32)
     add_compile_definitions(ARC_PLATFORM_WINDOWS)
@@ -56,8 +75,12 @@ endif()
 
 
 include_directories(src)
-include_directories(third_party/spdlog/include)
 
+# third party includes
+include_directories(third_party/spdlog/include)
+include_directories(third_party/glfw/include)
+
+# precompiled headers
 target_precompile_headers(${NAME} PUBLIC src/arcpch.h)
 
 message(STATUS "BUILD_TYPE '${CMAKE_BUILD_TYPE}' generated for '${NAME}'")
