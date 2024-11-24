@@ -2,9 +2,6 @@
 
 #include "Arcadia/Core.h"
 
-#include <string>
-#include <functional>
-
 namespace Arcadia
 {
     enum class EventType

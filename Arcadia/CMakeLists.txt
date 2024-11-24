@@ -5,20 +5,19 @@ cmake_minimum_required(VERSION 3.29) # 3.29 because it's the version that I have
 set(NAME Arcadia)
 set(SAND Sandbox)
 
+file(GLOB ROOT_HEADER src/*.h)
+file(GLOB ROOT_SOURCE src/*.cpp)
+file(GLOB ARC_ROOT_HEADER src/${NAME}/*.h)
+file(GLOB ARC_ROOT_SOURCE src/${NAME}/*.cpp)
+file(GLOB ARC_EVENTS_HEADER src/${NAME}/Events/*.h)
+file(GLOB ARC_EVENTS_SOURCE src/${NAME}/Events/*.cpp)
+
 # Headers added to show in filters
 # SHARED because it's a dynamic library (.dll)
-add_library(${NAME} SHARED 
-        src/${NAME}.h
-        src/${NAME}/Application.cpp
-        src/${NAME}/Application.h
-        src/${NAME}/Core.h
-        src/${NAME}/EntryPoint.h
-        src/${NAME}/Log.cpp
-        src/${NAME}/Log.h
-        src/${NAME}/Events/Event.h
-        src/${NAME}/Events/KeyEvent.h
-        src/${NAME}/Events/MouseEvent.h
-        src/${NAME}/Events/ApplicationEvent.h)
+add_library(${NAME} SHARED
+        ${ROOT_HEADER} ${ROOT_SOURCE}
+        ${ARC_ROOT_HEADER} ${ARC_ROOT_SOURCE}
+        ${ARC_EVENTS_HEADER} ${ARC_EVENTS_SOURCE})
 
 add_compile_definitions(ARC_BUILD_DLL)
 
@@ -58,5 +57,7 @@ endif()
 
 include_directories(src)
 include_directories(third_party/spdlog/include)
+
+target_precompile_headers(${NAME} PUBLIC src/arcpch.h)
 
 message(STATUS "BUILD_TYPE '${CMAKE_BUILD_TYPE}' generated for '${NAME}'")

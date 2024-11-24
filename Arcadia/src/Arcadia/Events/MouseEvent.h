@@ -2,8 +2,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Arcadia
 {
     class ARCADIA_API MouseMovedEvent : public Event

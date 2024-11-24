@@ -1,3 +1,5 @@
+//#include "arcpch.h"
+
 #include "Application.h"
 
 #include "Arcadia/Events/ApplicationEvent.h"
