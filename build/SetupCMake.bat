@@ -1,47 +1,46 @@
 @echo off
 
-set BUILD=
-set BUILD_TYPE=Debug
+REM %0:                           Generate project files for all configs
+REM %0 --build_all:               Generate project files for all configs + build all configs
+REM %0 --build_type [BUILD_TYPE]: Generate project files for all configs + build [BUILD_TYPE] config
+
+set BUILD_TYPE=
+set BUILD_ALL=0
+set ALL_BUILD_TYPES=Debug Release MinSizeRel RelWithDebInfo
 
 :GETOPTS
  if /I "%1" == "--help" goto help
  if /I "%1" == "--build_type" set BUILD_TYPE=%2 & shift
- if /I "%1" == "--build" set BUILD=--build & shift
+ if /I "%1" == "--build_all" set BUILD_ALL=1
  shift
 if not "%1" == "" goto GETOPTS
 
-REM Always generate..
 echo:
-echo Generating %BUILD_TYPE%..
-cmake %~dp0../ -B %~dp0../ -DCMAKE_BUILD_TYPE=%BUILD_TYPE%
-if "%BUILD%" NEQ "" (
-    REM Build..
+echo ** Generate **
+echo Generating for all configs..
+cmake %~dp0../ -B %~dp0../
+
+if %BUILD_ALL%==1 (
+    REM Build all configs
     echo:
-    echo Building %BUILD_TYPE%..
-    cmake %BUILD% %~dp0../ --config %BUILD_TYPE%
+    echo - Building ALL configurations
+    for %%b in (%ALL_BUILD_TYPES%) do  (
+        echo:
+        echo Building %%b..
+        cmake --build %~dp0../ --config %%b
+    )
+) else (
+    if "%BUILD_TYPE%" NEQ "" (
+        REM Build BUILD_TYPE config
+        echo:
+        echo Building %BUILD_TYPE%..
+        cmake --build %~dp0../ --config %BUILD_TYPE%
+    )
 )
 
 exit /b %ERRORLEVEL%
 
 :help
-echo %0 [--build_type BUILD_TYPE] [--build]
+echo %0 [--build_type BUILD_TYPE] [--build_all]
 echo *BUILD_TYPE: Release, Debug, MinSizeRel, RelWithDebInfo
 exit /b 0
-
-REM TODO: Use cmake to build different build types (release, debug, ...)
-:build_all
-exit /b 1
-@REM echo:
-@REM echo Generating Debug..
-@REM cmake -DCMAKE_BUILD_TYPE=Debug ../
-@REM echo:
-@REM echo Generating Release..
-@REM cmake -DCMAKE_BUILD_TYPE=Release ../
-@REM echo:
-@REM echo Generating MinSizeRel..
-@REM cmake -DCMAKE_BUILD_TYPE=MinSizeRel ../
-@REM echo:
-@REM echo Generating RelWithDebInfo..
-@REM cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ../
-
-@REM exit /b %ERRORLEVEL%

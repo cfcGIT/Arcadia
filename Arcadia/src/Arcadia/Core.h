@@ -13,7 +13,7 @@
 #ifdef ARC_ENABLE_ASSERT
 #define ARC_CORE_ASSERT(x, ...) { if (!(x)) { ARC_CORE_ERROR("Assertion failed: {0}", __VA_ARGS__); __debugbreak(); } }
 #define ARC_ASSERT(x, ...) { if (!(x)) { ARC_ERROR("Assertion failed: {0}", __VA_ARGS__); __debugbreak(); } }
-#else
+#else // Assert disabled
 #define ARC_CORE_ASSERT(x, ...) { }
 #define ARC_ASSERT(x, ...) { }
 #endif
