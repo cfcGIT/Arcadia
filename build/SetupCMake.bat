@@ -23,6 +23,7 @@ cmake %~dp0../ -B %~dp0../
 if %BUILD_ALL%==1 (
     REM Build all configs
     echo:
+    echo ** Build **
     echo - Building ALL configurations
     for %%b in (%ALL_BUILD_TYPES%) do  (
         echo:
@@ -33,6 +34,7 @@ if %BUILD_ALL%==1 (
     if "%BUILD_TYPE%" NEQ "" (
         REM Build BUILD_TYPE config
         echo:
+        echo ** Build **
         echo Building %BUILD_TYPE%..
         cmake --build %~dp0../ --config %BUILD_TYPE%
     )

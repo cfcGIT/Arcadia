@@ -11,8 +11,8 @@ set(ARC_PATH ../Arcadia)
 ## executable
 add_executable(${NAME} src/SandboxApp.cpp)
 
-## TODO: Filters with folders in vs
-# ...
+## filters
+source_group("" FILES src/SandboxApp.cpp)
 
 ## compile definitios
 if(WIN32)

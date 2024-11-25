@@ -28,8 +28,13 @@ add_library(${NAME} SHARED
         ${ARC_ROOT_HEADER} ${ARC_ROOT_SOURCE}
         ${ARC_EVENTS_HEADER} ${ARC_EVENTS_SOURCE})
 
-## TODO: Filters with folders in vs
-# ...
+## filters
+source_group("" FILES ${ROOT_HEADER} ${ROOT_SOURCE})
+source_group("${NAME}" FILES ${ARC_ROOT_HEADER} ${ARC_ROOT_SOURCE})
+source_group("${NAME}/Events" FILES ${ARC_EVENTS_HEADER} ${ARC_EVENTS_SOURCE})
+source_group("${NAME}" FILES ${ARC_ROOT_HEADER} ${ARC_ROOT_SOURCE})
+source_group("Platform" FILES ${PLATFORM_HEADER} ${PLATFORM_SOURCE})
+source_group("Platform/Windows" FILES ${PLATFORM_WINDOWS_HEADER} ${PLATFORM_WINDOWS_SOURCE})
 
 ## compile definitios
 add_compile_definitions(ARC_BUILD_DLL)
