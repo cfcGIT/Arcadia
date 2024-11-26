@@ -48,7 +48,7 @@ namespace Arcadia
         std::string ToString() const override
         {
             std::stringstream ss;
-            ss << "KeyPressedEvent: " << m_iKeyCode;
+            ss << "KeyReleasedEvent: " << m_iKeyCode;
             return ss.str();
         }
 

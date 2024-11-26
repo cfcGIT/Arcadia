@@ -2,6 +2,8 @@
 
 #include "Core.h"
 #include "Events/Event.h"
+#include "Events/ApplicationEvent.h"
+
 #include "Window.h"
 
 namespace Arcadia
@@ -12,7 +14,12 @@ namespace Arcadia
         Application();
         virtual ~Application();
 
+        void OnEvent(Event& _e);
+
         void Run();
+
+    private:
+        bool OnWindowClose(WindowCloseEvent& _e);
 
     private:
         std::unique_ptr<Window> m_Window;

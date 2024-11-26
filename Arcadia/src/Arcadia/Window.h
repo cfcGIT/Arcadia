@@ -21,7 +21,7 @@ namespace Arcadia
     class ARCADIA_API Window
 	{
 	public:
-		using EventCallbackFn = std::function<void(Event&)>;
+		typedef std::function<void(Event&)> EventCallbackFn;
 
 		virtual ~Window() = default;
 

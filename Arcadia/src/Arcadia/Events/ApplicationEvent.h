@@ -28,10 +28,10 @@ namespace Arcadia
         float m_fHeight;
     };
 
-    class ARCADIA_API WindowClose : public Event
+    class ARCADIA_API WindowCloseEvent : public Event
     {
     public:
-        WindowClose() = default;
+        WindowCloseEvent() = default;
 
         EVENT_CLASS_TYPE(WindowClose)
         EVENT_CLASS_CATEGORY(EventCategoryApplication)
@@ -62,5 +62,31 @@ namespace Arcadia
 
         EVENT_CLASS_TYPE(AppRender)
         EVENT_CLASS_CATEGORY(EventCategoryApplication)
+    };
+
+    class ARCADIA_API DropFilesEvent : public Event
+    {
+    public:
+        DropFilesEvent(int _iPathCount, const char* _sPaths[])
+            : m_iPathCount(_iPathCount), m_sPaths(_sPaths) {}
+
+        std::string ToString() const override
+        {
+            std::stringstream ss;
+            std::stringstream ss2;
+            for (int i = 0; i < m_iPathCount; ++i)
+            {
+                ss2 << m_sPaths[i] << ",";
+            }
+            ss << "DropFilesEvent: " << m_iPathCount << ": " << ss2.str();
+            return ss.str();
+        }
+
+        EVENT_CLASS_TYPE(DropFiles)
+        EVENT_CLASS_CATEGORY(EventCategoryApplication)
+
+    private:
+        int m_iPathCount;
+        const char** m_sPaths;
     };
 }

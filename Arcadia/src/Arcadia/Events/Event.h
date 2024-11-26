@@ -9,7 +9,8 @@ namespace Arcadia
         None = 0,
         WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
         AppTick, AppUpdate, AppRender,
-        KeyPreseed, KeyReleased, KeyTyped,
+        DropFiles,
+        KeyPressed, KeyReleased, KeyTyped,
         MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
     };
 
@@ -67,6 +68,7 @@ namespace Arcadia
             }
             return false;
         }
+
     private:
         Event& m_Event;
     };
