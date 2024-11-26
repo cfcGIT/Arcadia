@@ -1,7 +1,5 @@
 #pragma once
 
-#include "arcpch.h"
-
 #include "Arcadia/Core.h"
 #include "Arcadia/Events/Event.h"
 

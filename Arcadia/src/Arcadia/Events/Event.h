@@ -34,7 +34,7 @@ namespace Arcadia
     class ARCADIA_API Event
     {
     private:
-        friend class EventDispatcher; // We can access to private and protected members of class Event from class EventDispatcher
+        friend class EventDispatcher; // We can access to private and protected members of class Event (e.g. m_bHandled) from class EventDispatcher
     public:
         virtual ~Event() = default;
 
@@ -47,6 +47,9 @@ namespace Arcadia
         {
             return GetCategoryFlags() & _category;
         }
+
+        inline bool IsHandled() { return m_bHandled; }
+
     protected:
         bool m_bHandled = false;
     };

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Event.h"
+#include "Arcadia/Events/Event.h"
 
 namespace Arcadia
 {

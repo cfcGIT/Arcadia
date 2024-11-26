@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Arcadia/Window.h"
+
 #include "GLFW/glfw3.h"
 
 namespace Arcadia

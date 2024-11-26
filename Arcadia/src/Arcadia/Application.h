@@ -1,10 +1,11 @@
 #pragma once
 
-#include "Core.h"
-#include "Events/Event.h"
-#include "Events/ApplicationEvent.h"
+#include "Arcadia/Core.h"
+#include "Arcadia/LayerStack.h"
+#include "Arcadia/Events/Event.h"
+#include "Arcadia/Events/ApplicationEvent.h"
 
-#include "Window.h"
+#include "Arcadia/Window.h"
 
 namespace Arcadia
 {
@@ -18,12 +19,17 @@ namespace Arcadia
 
         void Run();
 
+        void PushLayer(Layer* _layer);
+        void PushOverlay(Layer* _overlay);
+
     private:
         bool OnWindowClose(WindowCloseEvent& _e);
 
     private:
         std::unique_ptr<Window> m_Window;
         bool m_bRunning = true;
+
+        LayerStack m_LayerStack;
     };
 
     // To be defined in the client

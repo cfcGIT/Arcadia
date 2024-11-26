@@ -1,9 +1,9 @@
 
-#include "WindowsWindow.h"
+#include "Platform/Windows/WindowsWindow.h"
 
 #include "Arcadia/Events/ApplicationEvent.h"
-#include "Arcadia/Events/MouseEvent.h"
 #include "Arcadia/Events/KeyEvent.h"
+#include "Arcadia/Events/MouseEvent.h"
 
 namespace Arcadia
 {
@@ -34,7 +34,6 @@ namespace Arcadia
         glfwPollEvents();
         glfwSwapBuffers(m_Window);
     }
-
 
     void WindowsWindow::Init(const WindowProps& _windowProps)
     {

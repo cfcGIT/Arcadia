@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Core.h"
+#include "Arcadia/Core.h"
+
 #include "spdlog/spdlog.h"
 // Git reference: https://github.com/gabime/spdlog
 //  - Format: https://github.com/gabime/spdlog/wiki/3.-Custom-formatting
