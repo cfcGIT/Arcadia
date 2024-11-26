@@ -65,7 +65,7 @@ namespace Arcadia
                 windowData.m_WindowProps.m_uHeight = _iHeight;
 
                 WindowResizeEvent event(_iWidth, _iHeight);
-                windowData.m_EventCallback(event);
+                windowData.m_EventCallback(event); // Calls event callback function setted in SetEventCallback. E.g.: OnEvent setted in Application ctor
             }
         );
         glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* _window)

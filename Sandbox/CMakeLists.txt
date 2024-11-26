@@ -21,8 +21,6 @@ endif()
 
 ## compile options
 if(MSVC)
-    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${NAME})
-    
     target_compile_options(${NAME} PRIVATE /std:c++20 /MP) # /MP: Build with multiple processes
     target_link_options(${NAME} PUBLIC /ignore:4099)
 endif(MSVC)
