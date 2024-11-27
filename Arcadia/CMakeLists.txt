@@ -57,6 +57,9 @@ target_compile_options(${NAME} PRIVATE /utf-8) # To avoid "...\third_party\spdlo
 # GLFW
 add_subdirectory(third_party/glfw) # With source code
 target_link_libraries(${NAME} glfw)
+# imgui
+add_subdirectory(third_party/imgui) # With source code
+target_link_libraries(${NAME} imgui)
 # OpenGL
 find_package(OpenGL REQUIRED) # Without source code (found in Windows Kits)
 target_link_libraries(${NAME} OpenGL::GL)
@@ -75,6 +78,7 @@ endif()
 include_directories(src)
 include_directories(third_party/spdlog/include)
 include_directories(third_party/glfw/include)
+include_directories(third_party/imgui/include)
 
 ## precompiled headers
 target_precompile_headers(${NAME} PUBLIC src/arcpch.h)
