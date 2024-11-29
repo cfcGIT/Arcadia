@@ -9,36 +9,45 @@ set(SAND Sandbox)
 
 file(GLOB ROOT_HEADER src/*.h)
 file(GLOB ROOT_SOURCE src/*.cpp)
-file(GLOB PLATFORM_HEADER src/Platform/*.h)
-file(GLOB PLATFORM_SOURCE src/Platform/*.cpp)
 file(GLOB PLATFORM_WINDOWS_HEADER src/Platform/Windows/*.h)
 file(GLOB PLATFORM_WINDOWS_SOURCE src/Platform/Windows/*.cpp)
 file(GLOB ARC_ROOT_HEADER src/${NAME}/*.h)
 file(GLOB ARC_ROOT_SOURCE src/${NAME}/*.cpp)
 file(GLOB ARC_EVENTS_HEADER src/${NAME}/Events/*.h)
 file(GLOB ARC_EVENTS_SOURCE src/${NAME}/Events/*.cpp)
+file(GLOB ARC_IMGUI_HEADER src/${NAME}/ImGui/*.h)
+file(GLOB ARC_IMGUI_SOURCE src/${NAME}/ImGui/*.cpp)
+file(GLOB ARC_RENDERER_HEADER src/${NAME}/Renderer/*.h)
+file(GLOB ARC_RENDERER_SOURCE src/${NAME}/Renderer/*.cpp)
+file(GLOB ARC_RENDERER_VULKAN_HEADER src/${NAME}/Renderer/Vulkan/*.h)
+file(GLOB ARC_RENDERER_VULKAN_SOURCE src/${NAME}/Renderer/Vulkan/*.cpp)
 
 ## library
 # Headers added to show in filters
 # SHARED because it's a dynamic library (.dll)
 add_library(${NAME} SHARED
         ${ROOT_HEADER} ${ROOT_SOURCE}
-        ${PLATFORM_HEADER} ${PLATFORM_SOURCE}
         ${PLATFORM_WINDOWS_HEADER} ${PLATFORM_WINDOWS_SOURCE}
         ${ARC_ROOT_HEADER} ${ARC_ROOT_SOURCE}
-        ${ARC_EVENTS_HEADER} ${ARC_EVENTS_SOURCE})
+        ${ARC_EVENTS_HEADER} ${ARC_EVENTS_SOURCE}
+        ${ARC_IMGUI_HEADER} ${ARC_IMGUI_SOURCE}
+        ${ARC_RENDERER_HEADER} ${ARC_RENDERER_SOURCE}
+        ${ARC_RENDERER_VULKAN_HEADER} ${ARC_RENDERER_VULKAN_SOURCE})
 
 ## filters
 source_group("" FILES ${ROOT_HEADER} ${ROOT_SOURCE})
 source_group("${NAME}" FILES ${ARC_ROOT_HEADER} ${ARC_ROOT_SOURCE})
 source_group("${NAME}/Events" FILES ${ARC_EVENTS_HEADER} ${ARC_EVENTS_SOURCE})
+source_group("${NAME}/ImGui" FILES ${ARC_IMGUI_HEADER} ${ARC_IMGUI_SOURCE})
+source_group("${NAME}/Renderer" FILES ${ARC_RENDERER_HEADER} ${ARC_RENDERER_SOURCE})
+source_group("${NAME}/Renderer/Vulkan" FILES ${ARC_RENDERER_VULKAN_HEADER} ${ARC_RENDERER_VULKAN_SOURCE})
 source_group("${NAME}" FILES ${ARC_ROOT_HEADER} ${ARC_ROOT_SOURCE})
-source_group("Platform" FILES ${PLATFORM_HEADER} ${PLATFORM_SOURCE})
 source_group("Platform/Windows" FILES ${PLATFORM_WINDOWS_HEADER} ${PLATFORM_WINDOWS_SOURCE})
 
 ## compile definitios
 add_compile_definitions(ARC_BUILD_DLL)
 add_compile_definitions("$<$<CONFIG:Debug>:ARC_ENABLE_ASSERT>")
+add_compile_definitions("$<$<CONFIG:Debug>:ARC_VK_DEBUG>")
 if (WIN32)
     add_compile_definitions(ARC_PLATFORM_WINDOWS)
 endif(WIN32)
@@ -49,6 +58,7 @@ if(MSVC)
     # /MD here and in another projects to avoid having different heaps and pottential crashes (e.g. spdlog was trying to free memory allocated by different heap)
     # To link the right runtime version of the right runtime library version
     target_compile_options(${NAME} PRIVATE $<IF:$<CONFIG:Debug>,/MDd,/MD>)
+    target_compile_options(${NAME} PRIVATE /W4) # Warnings level 4
     target_link_options(${NAME} PUBLIC /ignore:4099)
 endif(MSVC)
 target_compile_options(${NAME} PRIVATE /utf-8) # To avoid "...\third_party\spdlog\include\spdlog\fmt\bundled\base.h(458,28): error C2338: static_assert failed: 'Unicode support requires compiling with /utf-8'"
@@ -60,9 +70,12 @@ target_link_libraries(${NAME} glfw)
 # imgui
 add_subdirectory(third_party/imgui) # With source code
 target_link_libraries(${NAME} imgui)
-# OpenGL
+# OpenGL #TODO: Delete
 find_package(OpenGL REQUIRED) # Without source code (found in Windows Kits)
 target_link_libraries(${NAME} OpenGL::GL)
+# Vulkan
+find_package(Vulkan REQUIRED) # Without source code
+target_link_libraries(${NAME} Vulkan::Vulkan)
 
 ## output-dir and post build event
 set(OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/$<CONFIG>-${CMAKE_SYSTEM_NAME}-${CMAKE_VS_PLATFORM_NAME}/${NAME}")

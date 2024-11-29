@@ -4,7 +4,7 @@
 
 namespace Arcadia
 {
-    class ARCADIA_API KeyEvent : public Event
+    class KeyEvent : public Event
     {
     public:
         inline int GetKeyCode() const { return m_iKeyCode; }
@@ -18,7 +18,7 @@ namespace Arcadia
         int m_iKeyCode;
     };
 
-    class ARCADIA_API KeyPressedEvent : public KeyEvent
+    class KeyPressedEvent : public KeyEvent
     {
     public:
         KeyPressedEvent(int _iKeyCode, bool _bIsRepeat)
@@ -39,7 +39,7 @@ namespace Arcadia
         bool m_bIsRepeat;
     };
 
-    class ARCADIA_API KeyReleasedEvent : public KeyEvent
+    class KeyReleasedEvent : public KeyEvent
     {
     public:
         KeyReleasedEvent(int _iKeyCode)
@@ -55,7 +55,7 @@ namespace Arcadia
         EVENT_CLASS_TYPE(KeyReleased)
     };
 
-    class ARCADIA_API KeyTypedEvent : public KeyEvent
+    class KeyTypedEvent : public KeyEvent
     {
     public:
         KeyTypedEvent(int _iKeyCode)

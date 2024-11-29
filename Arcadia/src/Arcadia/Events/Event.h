@@ -31,7 +31,7 @@ namespace Arcadia
 
 #define EVENT_CLASS_CATEGORY(_category) virtual int GetCategoryFlags() const override { return _category; }
 
-    class ARCADIA_API Event
+    class Event
     {
     private:
         friend class EventDispatcher; // We can access to private and protected members of class Event (e.g. m_bHandled) from class EventDispatcher
@@ -54,7 +54,7 @@ namespace Arcadia
         bool m_bHandled = false;
     };
 
-    class ARCADIA_API EventDispatcher
+    class EventDispatcher
     {
     public:
         EventDispatcher(Event& _event)

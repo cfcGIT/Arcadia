@@ -4,7 +4,7 @@
 
 namespace Arcadia
 {
-    class ARCADIA_API MouseMovedEvent : public Event
+    class MouseMovedEvent : public Event
     {
     public:
         MouseMovedEvent(float _fX, float _fY)
@@ -28,7 +28,7 @@ namespace Arcadia
         float m_fMouseY;
     };
 
-    class ARCADIA_API MouseScrolledEvent : public Event
+    class MouseScrolledEvent : public Event
     {
     public:
         MouseScrolledEvent(float _fOffsetX, float _fOffsetY)
@@ -52,7 +52,7 @@ namespace Arcadia
         float m_fOffsetY;
     };
 
-    class ARCADIA_API MouseButtonEvent : public Event
+    class MouseButtonEvent : public Event
     {
     public:
         inline int GetMouseButton() { return m_iButton; }
@@ -65,7 +65,7 @@ namespace Arcadia
         int m_iButton;
     };
 
-    class ARCADIA_API MouseButtonPressedEvent : public MouseButtonEvent
+    class MouseButtonPressedEvent : public MouseButtonEvent
     {
     public:
         MouseButtonPressedEvent(int _iButton)
@@ -81,7 +81,7 @@ namespace Arcadia
         EVENT_CLASS_TYPE(MouseButtonPressed)
     };
 
-    class ARCADIA_API MouseButtonReleasedEvent : public MouseButtonEvent
+    class MouseButtonReleasedEvent : public MouseButtonEvent
     {
     public:
         MouseButtonReleasedEvent(int _iButton)

@@ -1,4 +1,3 @@
-
 #include "Arcadia/LayerStack.h"
 
 namespace Arcadia

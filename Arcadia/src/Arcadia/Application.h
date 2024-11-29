@@ -15,7 +15,7 @@ namespace Arcadia
         Application();
         virtual ~Application();
 
-        void OnEvent(Event& _e);
+        void OnEvent(Event& _event);
 
         void Run();
 
@@ -23,10 +23,10 @@ namespace Arcadia
         void PushOverlay(Layer* _overlay);
 
     private:
-        bool OnWindowClose(WindowCloseEvent& _e);
+        bool OnWindowClose(WindowCloseEvent& _event);
 
     private:
-        std::unique_ptr<Window> m_Window;
+        std::unique_ptr<Window> m_puWindow;
         bool m_bRunning = true;
 
         LayerStack m_LayerStack;

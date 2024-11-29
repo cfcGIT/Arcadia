@@ -1,4 +1,3 @@
-
 #include "Arcadia/Layer.h"
 
 namespace Arcadia

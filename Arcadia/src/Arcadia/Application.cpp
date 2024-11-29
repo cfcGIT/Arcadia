@@ -1,4 +1,3 @@
-
 #include "Arcadia/Application.h"
 #include "Arcadia/Events/MouseEvent.h"
 
@@ -8,30 +7,30 @@ namespace Arcadia
 {
     Application::Application()
     {
-        m_Window = std::unique_ptr<Window>(Window::Create());
-        m_Window->SetEventCallback([this](Event& _e) { OnEvent(_e); });
+        m_puWindow = std::unique_ptr<Window>(Window::Create());
+        m_puWindow->SetEventCallback([this](Event& _event) { OnEvent(_event); });
     }
 
     Application::~Application()
     {
     }
 
-    void Application::OnEvent(Event& _e)
+    void Application::OnEvent(Event& _event)
     {
         // Dispatch: if WindowCloseEvent -> OnWindowClose
-        EventDispatcher dispatcher(_e);
-        dispatcher.Dispatch<WindowCloseEvent>([this](WindowCloseEvent& _e) -> bool { return OnWindowClose(_e); });
+        EventDispatcher dispatcher(_event);
+        dispatcher.Dispatch<WindowCloseEvent>([this](WindowCloseEvent& _event) -> bool { return OnWindowClose(_event); });
 
         // Iterate m_LayerStack backwards: from the end (overlays) to the beginning (layers)
         // E.g.: ImGui will be Overlay, app and editor will be Layers. We want to capture ImGui events over other layer events.
         for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
         {
             // If overlay handled the event -> break, layers will not get it
-            if (_e.IsHandled())
+            if (_event.IsHandled())
             {
                 break;
             }
-            (*it)->OnEvent(_e);
+            (*it)->OnEvent(_event);
         }
     }
 
@@ -47,7 +46,7 @@ namespace Arcadia
                 layer->OnUpdate();
             }
 
-            m_Window->OnUpdate();
+            m_puWindow->OnUpdate();
         }
     }
 
@@ -61,7 +60,7 @@ namespace Arcadia
         m_LayerStack.PushOverlay(_overlay);
     }
 
-    bool Application::OnWindowClose(WindowCloseEvent& _e)
+    bool Application::OnWindowClose(WindowCloseEvent& _event)
     {
         m_bRunning = false;
         return true;

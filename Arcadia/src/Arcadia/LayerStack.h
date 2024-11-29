@@ -5,7 +5,7 @@
 
 namespace Arcadia
 {
-    class ARCADIA_API LayerStack
+    class LayerStack
     {
     public:
         LayerStack() = default;

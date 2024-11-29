@@ -13,9 +13,9 @@ public:
         ARC_INFO("ExampleLayer update");
     }
 
-    void OnEvent(Arcadia::Event& _e) override
+    void OnEvent(Arcadia::Event& _event) override
     {
-        ARC_TRACE("{0}", _e);
+        ARC_TRACE("{0}", _event);
     }
 
     inline const std::string& GetName() const { return m_sLayerName; }

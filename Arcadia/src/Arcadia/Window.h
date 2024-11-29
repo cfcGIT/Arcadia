@@ -16,7 +16,7 @@ namespace Arcadia
     };
     
 	// Interface (pure virtual)
-    class ARCADIA_API Window
+    class Window
 	{
 	public:
 		typedef std::function<void(Event&)> EventCallbackFn;

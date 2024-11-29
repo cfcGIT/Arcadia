@@ -1,12 +1,15 @@
 #pragma once
 
 #include "Arcadia/Window.h"
+#include "Arcadia/Renderer/RenderContext.h"
 
 #include "GLFW/glfw3.h"
 
+//class RenderContext; // TODO: Check
+
 namespace Arcadia
 {
-    class ARCADIA_API WindowsWindow : public Window
+    class WindowsWindow : public Window
     {
 	public:
 		WindowsWindow(const WindowProps& _windowProps);
@@ -26,8 +29,18 @@ namespace Arcadia
 		virtual void Init(const WindowProps& _windowProps);
 		virtual void Shutdown();
 
+		// GLFW Callbacks
+		static void OnWindowResizeEvent(GLFWwindow* _window, int _iWidth, int _iHeight);
+		static void OnWindowCloseEvent(GLFWwindow* _window);
+		static void OnDropFilesEvent(GLFWwindow* _window, int _iPathCount, const char* _sPaths[]);
+		static void OnMouseMovedEvent(GLFWwindow* _window, double _dXPos, double _dYPos);
+		static void OnMouseButtonEvent(GLFWwindow* _window, int _iButton, int _iAction, int _iMods);
+		static void OnMouseScrolledEvent(GLFWwindow* _window, double _dXOffset, double _dYOffset);
+		static void OnKeyEvent(GLFWwindow* _window, int _iKey, int _iScancode, int _iAction, int _iMods);
+
 	private:
-		GLFWwindow* m_Window;
+		GLFWwindow* m_GLFWWindow;
+		std::unique_ptr<RenderContext> m_puRenderContext;
 
 		struct WindowData
 		{
