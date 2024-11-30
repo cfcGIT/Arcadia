@@ -1,13 +1,13 @@
-#include "Arcadia/Renderer/Vulkan/RenderContext_VK.h"
-#include "Arcadia/Renderer/Vulkan/VK_Base.h"
+#include "Arcadia/Renderer/Vulkan/VK_Context.h"
+#include "Arcadia/Renderer/Vulkan/VK_Engine.h"
 
 namespace Arcadia
 {
-    RenderContext_VK::RenderContext_VK()
+    VK_Context::VK_Context()
     {
     }
 
-    void RenderContext_VK::Init()
+    void VK_Context::Init()
     {       
         // Create instance
         VkResult res = Arcadia::VK::CreateInstance(m_vkInstance);

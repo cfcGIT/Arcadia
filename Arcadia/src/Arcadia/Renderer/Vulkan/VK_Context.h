@@ -5,10 +5,10 @@
 
 namespace Arcadia
 {
-    class RenderContext_VK : public RenderContext
+    class VK_Context : public RenderContext
     {
     public:
-        RenderContext_VK();
+        VK_Context();
 
         virtual void Init() override;
 
