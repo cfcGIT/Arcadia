@@ -10,6 +10,9 @@ namespace Arcadia
         }
     }
 
+    /**
+    * Layer1,Layer2,Layer3,*_layer*,Overlay1,Overlay2
+    */
     void LayerStack::PushLayer(Layer* _layer)
     {
         m_Layers.emplace(m_Layers.begin() + m_uLayerInsertIndex, _layer);
@@ -26,6 +29,9 @@ namespace Arcadia
         }
     }
 
+    /**
+    * Layer1,Layer2,Layer3,Overlay1,Overlay2,*_overlay*
+    */
     void LayerStack::PushOverlay(Layer* _overlay)
     {
         m_Layers.emplace_back(_overlay);

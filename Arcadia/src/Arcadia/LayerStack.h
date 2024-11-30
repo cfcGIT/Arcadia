@@ -5,14 +5,16 @@
 
 namespace Arcadia
 {
+    /**
+    * LayerStack will have layers first and overlays after: Layer1,Layer2,...,LayerN,Overlay1,Overlay2,...,OverlayN
+    * E.g.: ImGui will be Overlay, app and editor will be Layers. We want to capture ImGui events over other layer events.
+    */
     class LayerStack
     {
     public:
         LayerStack() = default;
         ~LayerStack();
 
-        // Layers first - Overlays after: Layer1,Layer2,...,LayerN,Overlay1,Overlay2,...,OverlayN
-        // E.g.: ImGui will be Overlay, app and editor will be Layers. We want to capture ImGui events over other layer events.
         void PushLayer(Layer* _layer);
         void PopLayer(Layer* _layer);
         void PushOverlay(Layer* _overlay);
