@@ -2,15 +2,17 @@
 
 #include "vulkan/vulkan.h"
 
-namespace Arcadia::VK
+namespace Arcadia
 {
+    namespace VK
+    {
+        VKAPI_ATTR VkBool32 VKAPI_CALL DebugCallback(
+            VkDebugUtilsMessageSeverityFlagBitsEXT _messageSeverity,
+            VkDebugUtilsMessageTypeFlagsEXT _messageTypes,
+            const VkDebugUtilsMessengerCallbackDataEXT* _pCallbackData,
+            void* pUserData_);
 
-    VKAPI_ATTR VkBool32 VKAPI_CALL DebugCallback(
-        VkDebugUtilsMessageSeverityFlagBitsEXT _messageSeverity,
-        VkDebugUtilsMessageTypeFlagsEXT _messageTypes,
-        const VkDebugUtilsMessengerCallbackDataEXT* _pCallbackData,
-        void* pUserData_);
-
-    const char* GetResultString(VkResult _result);
-    void CheckResult(VkResult _result, const char* _sErrorMessage, const char* _sFile, int _iLine);
+        const char* GetVKResultString(VkResult _oVKResult);
+        void _CheckVKResult(const char* _sFile, int _iLine, VkResult _oVKResult, const char* _sErrorMessage);
+    }
 }

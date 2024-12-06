@@ -21,3 +21,5 @@
 #endif
 
 #define BIT(x) (1 << x)
+
+#define ARC_VK_CHECK(...) Arcadia::VK::_CheckVKResult(__FILE__, __LINE__, __VA_ARGS__)

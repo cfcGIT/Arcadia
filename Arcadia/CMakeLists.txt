@@ -58,7 +58,7 @@ if(MSVC)
     # /MD here and in another projects to avoid having different heaps and pottential crashes (e.g. spdlog was trying to free memory allocated by different heap)
     # To link the right runtime version of the right runtime library version
     target_compile_options(${NAME} PRIVATE $<IF:$<CONFIG:Debug>,/MDd,/MD>)
-    target_compile_options(${NAME} PRIVATE /W4) # Warnings level 4
+    target_compile_options(${NAME} PRIVATE /Wall) # All warnings
     target_link_options(${NAME} PUBLIC /ignore:4099)
 endif(MSVC)
 target_compile_options(${NAME} PRIVATE /utf-8) # To avoid "...\third_party\spdlog\include\spdlog\fmt\bundled\base.h(458,28): error C2338: static_assert failed: 'Unicode support requires compiling with /utf-8'"

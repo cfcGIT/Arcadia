@@ -9,18 +9,22 @@
 * TODO: Class?
 */
 
-namespace Arcadia::VK
+namespace Arcadia
 {
-    const bool bVKDebug =
-#ifdef ARC_VK_DEBUG
-        true;
-#else
-        false;
-#endif
-    const std::vector<const char*> vValidationLayers = {
-        "VK_LAYER_KHRONOS_validation"
-    };
+    namespace VK
+    {
+        // TODO: CVar
+        const bool bVKDebug =
+    #ifdef ARC_VK_DEBUG
+            true;
+    #else
+            false;
+    #endif
+        const std::vector<const char*> tValidationLayers = {
+            "VK_LAYER_KHRONOS_validation"
+        };
 
-    // Create vulkan instance
-    VkResult CreateInstance(VkInstance& instance_);
+        // Create vulkan instance
+        VkResult CreateInstance(VkInstance& oVKInstance_);
+    }
 }

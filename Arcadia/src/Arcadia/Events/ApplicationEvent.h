@@ -4,10 +4,10 @@
 
 namespace Arcadia
 {
-    class WindowResizeEvent : public Event
+    class CWindowResizeEvent : public CEvent
     {
     public:
-        WindowResizeEvent(float _fWidth, float _fHeight)
+        CWindowResizeEvent(float _fWidth, float _fHeight)
             : m_fWidth(_fWidth), m_fHeight(_fHeight) {}
 
         inline float GetWidth() const { return m_fWidth; }
@@ -28,46 +28,46 @@ namespace Arcadia
         float m_fHeight;
     };
 
-    class WindowCloseEvent : public Event
+    class CWindowCloseEvent : public CEvent
     {
     public:
-        WindowCloseEvent() = default;
+        CWindowCloseEvent() = default;
 
         EVENT_CLASS_TYPE(WindowClose)
         EVENT_CLASS_CATEGORY(EventCategoryApplication)
     };
 
-    class AppTickEvent : public Event
+    class CAppTickEvent : public CEvent
     {
     public:
-        AppTickEvent() = default;
+        CAppTickEvent() = default;
 
         EVENT_CLASS_TYPE(AppTick)
         EVENT_CLASS_CATEGORY(EventCategoryApplication)
     };
 
-    class AppUpdateEvent : public Event
+    class CAppUpdateEvent : public CEvent
     {
     public:
-        AppUpdateEvent() = default;
+        CAppUpdateEvent() = default;
 
         EVENT_CLASS_TYPE(AppUpdate)
         EVENT_CLASS_CATEGORY(EventCategoryApplication)
     };
 
-    class AppRenderEvent : public Event
+    class CAppRenderEvent : public CEvent
     {
     public:
-        AppRenderEvent() = default;
+        CAppRenderEvent() = default;
 
         EVENT_CLASS_TYPE(AppRender)
         EVENT_CLASS_CATEGORY(EventCategoryApplication)
     };
 
-    class DropFilesEvent : public Event
+    class CDropFilesEvent : public CEvent
     {
     public:
-        DropFilesEvent(int _iPathCount, const char* _sPaths[])
+        CDropFilesEvent(int _iPathCount, const char* _sPaths[])
             : m_iPathCount(_iPathCount), m_sPaths(_sPaths) {}
 
         std::string ToString() const override

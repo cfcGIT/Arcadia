@@ -5,23 +5,23 @@
 
 namespace Arcadia
 {
-    struct WindowProps
+    struct SWindowProps
     {
         std::string m_sTitle;
         unsigned int m_uWidth;
         unsigned int m_uHeight;
-
-        WindowProps(const std::string& _sTitle = "Arcadia Engine", unsigned int _uWidth = 1280, unsigned int _uHeight = 720)
+		
+		SWindowProps(const std::string& _sTitle = "Arcadia Engine", unsigned int _uWidth = 1280, unsigned int _uHeight = 720)
             : m_sTitle(_sTitle), m_uWidth(_uWidth), m_uHeight(_uHeight) {}
     };
     
 	// Interface (pure virtual)
-    class Window
+    class CWindow
 	{
 	public:
-		typedef std::function<void(Event&)> EventCallbackFn;
+		typedef std::function<void(CEvent&)> EventCallbackFn;
 
-		virtual ~Window() = default;
+		virtual ~CWindow() = default;
 
 		virtual void OnUpdate() = 0;
 
@@ -33,6 +33,6 @@ namespace Arcadia
 		virtual void SetVSync(bool _bEnabled) = 0;
 		virtual bool IsVSync() const = 0;
 
-		static Window* Create(const WindowProps& props = WindowProps());
+		static CWindow* Create(const SWindowProps& props = SWindowProps());
 	};
 }

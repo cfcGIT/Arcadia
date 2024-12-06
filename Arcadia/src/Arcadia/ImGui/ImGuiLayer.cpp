@@ -3,29 +3,29 @@
 
 namespace Arcadia
 {
-    ImGuiLayer::ImGuiLayer() :
-        Layer("ImGuiLayer")
+    CImGuiLayer::CImGuiLayer() :
+        CLayer("ImGuiLayer")
     {
     }
 
-    ImGuiLayer::~ImGuiLayer()
+    CImGuiLayer::~CImGuiLayer()
     {
     }
 
-    void ImGuiLayer::OnAttach()
+    void CImGuiLayer::OnAttach()
     {
         ImGui::CreateContext();
     }
 
-    void ImGuiLayer::OnDetach()
+    void CImGuiLayer::OnDetach()
     {
     }
 
-    void ImGuiLayer::OnUpdate()
+    void CImGuiLayer::OnUpdate()
     {
     }
 
-    void ImGuiLayer::OnEvent(Event& _event)
+    void CImGuiLayer::OnEvent(CEvent& _event)
     {
     }
 }

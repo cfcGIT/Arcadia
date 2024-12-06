@@ -4,7 +4,7 @@
 
 namespace Arcadia
 {
-    class KeyEvent : public Event
+    class CKeyEvent : public CEvent
     {
     public:
         inline int GetKeyCode() const { return m_iKeyCode; }
@@ -12,17 +12,17 @@ namespace Arcadia
         EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 
     protected:
-        KeyEvent(int _iKeyCode)
+        CKeyEvent(int _iKeyCode)
             : m_iKeyCode(_iKeyCode) {}
 
         int m_iKeyCode;
     };
 
-    class KeyPressedEvent : public KeyEvent
+    class CKeyPressedEvent : public CKeyEvent
     {
     public:
-        KeyPressedEvent(int _iKeyCode, bool _bIsRepeat)
-            : KeyEvent(_iKeyCode), m_bIsRepeat(_bIsRepeat) {}
+        CKeyPressedEvent(int _iKeyCode, bool _bIsRepeat)
+            : CKeyEvent(_iKeyCode), m_bIsRepeat(_bIsRepeat) {}
 
         inline bool IsRepeat() const { return m_bIsRepeat; }
 
@@ -39,11 +39,11 @@ namespace Arcadia
         bool m_bIsRepeat;
     };
 
-    class KeyReleasedEvent : public KeyEvent
+    class CKeyReleasedEvent : public CKeyEvent
     {
     public:
-        KeyReleasedEvent(int _iKeyCode)
-            : KeyEvent(_iKeyCode) {}
+        CKeyReleasedEvent(int _iKeyCode)
+            : CKeyEvent(_iKeyCode) {}
 
         std::string ToString() const override
         {
@@ -55,11 +55,11 @@ namespace Arcadia
         EVENT_CLASS_TYPE(KeyReleased)
     };
 
-    class KeyTypedEvent : public KeyEvent
+    class CKeyTypedEvent : public CKeyEvent
     {
     public:
-        KeyTypedEvent(int _iKeyCode)
-            : KeyEvent(_iKeyCode) {}
+        CKeyTypedEvent(int _iKeyCode)
+            : CKeyEvent(_iKeyCode) {}
 
         std::string ToString() const override
         {

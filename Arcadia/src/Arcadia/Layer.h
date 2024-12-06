@@ -5,16 +5,16 @@
 
 namespace Arcadia
 {
-    class ARCADIA_API Layer
+    class ARCADIA_API CLayer
     {
     public:
-        Layer(const std::string& _sLayerName = "Layer");
-        virtual ~Layer();
+        CLayer(const std::string& _sLayerName = "Layer");
+        virtual ~CLayer();
 
         virtual void OnAttach() {};
         virtual void OnDetach() {};
         virtual void OnUpdate() {};
-        virtual void OnEvent(Event& _event) {};
+        virtual void OnEvent(CEvent& _oEvent) {};
 
         inline const std::string& GetName() const { return m_sLayerName; }
 

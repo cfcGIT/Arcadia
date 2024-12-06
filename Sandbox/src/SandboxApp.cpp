@@ -2,41 +2,41 @@
 #include "Arcadia.h"
 #include "Arcadia/Events/Event.h"
 
-class ExampleLayer : public Arcadia::Layer
+class CExampleLayer : public Arcadia::CLayer
 {
 public:
-    ExampleLayer()
-        : Layer("ExampleLayer") { }
+    CExampleLayer()
+        : CLayer("ExampleLayer") { }
 
     void OnUpdate() override
     {
         ARC_INFO("ExampleLayer update");
     }
 
-    void OnEvent(Arcadia::Event& _event) override
+    void OnEvent(Arcadia::CEvent& _oEvent) override
     {
-        ARC_TRACE("{0}", _event);
+        ARC_TRACE("{0}", _oEvent);
     }
 
     inline const std::string& GetName() const { return m_sLayerName; }
 };
 
 
-class Sandbox : public Arcadia::Application
+class CSandbox : public Arcadia::CApplication
 {
 public:
-    Sandbox()
+    CSandbox()
     {
-        PushLayer(new ExampleLayer());
+        PushLayer(new CExampleLayer());
     }
 
-    ~Sandbox()
+    ~CSandbox()
     {
 
     }
 };
 
-Arcadia::Application* Arcadia::CreateApplication()
+Arcadia::CApplication* Arcadia::CreateApplication()
 {
-    return new Sandbox();
+    return new CSandbox();
 }

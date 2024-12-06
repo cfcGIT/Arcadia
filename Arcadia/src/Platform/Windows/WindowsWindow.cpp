@@ -16,27 +16,27 @@ namespace Arcadia
         ARC_CORE_ERROR("GLFW Error ({0}): {1}", _iErrorCode, _sDescription);
     }
 
-    WindowsWindow::WindowsWindow(const WindowProps& _windowProps)
+    CWindowsWindow::CWindowsWindow(const SWindowProps& _oWindowProps)
     {
-        Init(_windowProps);
+        Init(_oWindowProps);
     }
 
-    WindowsWindow::~WindowsWindow()
+    CWindowsWindow::~CWindowsWindow()
     {
         Shutdown();
     }
 
-    void WindowsWindow::OnUpdate()
+    void CWindowsWindow::OnUpdate()
     {
         glfwPollEvents();
-        glfwSwapBuffers(m_GLFWWindow);
+        glfwSwapBuffers(m_pGLFWWindow);
     }
 
-    void WindowsWindow::Init(const WindowProps& _windowProps)
+    void CWindowsWindow::Init(const SWindowProps& _oWindowProps)
     {
-        m_WindowData.m_WindowProps = _windowProps;
+        m_oWindowData.m_oWindowProps = _oWindowProps;
 
-        ARC_CORE_INFO("WindowsWindow create: {0} ({1}, {2})", _windowProps.m_sTitle, _windowProps.m_uWidth, _windowProps.m_uHeight);
+        ARC_CORE_INFO("CWindowsWindow create: {0} ({1}, {2})", _oWindowProps.m_sTitle, _oWindowProps.m_uWidth, _oWindowProps.m_uHeight);
 
         if (!s_bGLFWInitialized)
         {
@@ -46,136 +46,136 @@ namespace Arcadia
             s_bGLFWInitialized = true;
         }
 
-        m_GLFWWindow = glfwCreateWindow((int)_windowProps.m_uWidth, (int)_windowProps.m_uHeight, _windowProps.m_sTitle.c_str(), nullptr, nullptr);
-        glfwMakeContextCurrent(m_GLFWWindow);
-        glfwSetWindowUserPointer(m_GLFWWindow, &m_WindowData);
+        m_pGLFWWindow = glfwCreateWindow((int)_oWindowProps.m_uWidth, (int)_oWindowProps.m_uHeight, _oWindowProps.m_sTitle.c_str(), nullptr, nullptr);
+        glfwMakeContextCurrent(m_pGLFWWindow);
+        glfwSetWindowUserPointer(m_pGLFWWindow, &m_oWindowData);
         // TODO: glfwSetFramebufferSizeCallback(m_Window, framebufferResizeCallback);
         SetVSync(true);
 
         // * Set GLFW callbacks
         // App events
-        glfwSetWindowSizeCallback(m_GLFWWindow, OnWindowResizeEvent);
-        glfwSetWindowCloseCallback(m_GLFWWindow, OnWindowCloseEvent);
-        glfwSetDropCallback(m_GLFWWindow, OnDropFilesEvent);
+        glfwSetWindowSizeCallback(m_pGLFWWindow, OnWindowResizeEvent);
+        glfwSetWindowCloseCallback(m_pGLFWWindow, OnWindowCloseEvent);
+        glfwSetDropCallback(m_pGLFWWindow, OnDropFilesEvent);
         //TODO: glfwSetWindowRefreshCallback(m_Window, [](GLFWwindow* _window) ...
 
         // Mouse events
-        glfwSetCursorPosCallback(m_GLFWWindow, OnMouseMovedEvent);
-        glfwSetMouseButtonCallback(m_GLFWWindow, OnMouseButtonEvent);
-        glfwSetScrollCallback(m_GLFWWindow, OnMouseScrolledEvent);
+        glfwSetCursorPosCallback(m_pGLFWWindow, OnMouseMovedEvent);
+        glfwSetMouseButtonCallback(m_pGLFWWindow, OnMouseButtonEvent);
+        glfwSetScrollCallback(m_pGLFWWindow, OnMouseScrolledEvent);
 
         // Key events
-        glfwSetKeyCallback(m_GLFWWindow, OnKeyEvent);
+        glfwSetKeyCallback(m_pGLFWWindow, OnKeyEvent);
 
         // * Render context // TODO: Check
-        m_puRenderContext = RenderContext::Create();
-        m_puRenderContext->Init();
+        m_pRenderContext = CRenderContext::Create();
+        m_pRenderContext->Init();
     }
 
-    void WindowsWindow::Shutdown()
+    void CWindowsWindow::Shutdown()
     {
-        glfwDestroyWindow(m_GLFWWindow);
+        glfwDestroyWindow(m_pGLFWWindow);
     }
 
-    void WindowsWindow::OnWindowResizeEvent(GLFWwindow* _window, int _iWidth, int _iHeight)
+    void CWindowsWindow::OnWindowResizeEvent(GLFWwindow* _pGLFWWindow, int _iWidth, int _iHeight)
     {
-        WindowData& windowData = *(WindowData*)glfwGetWindowUserPointer(_window);
-        windowData.m_WindowProps.m_uWidth = _iWidth;
-        windowData.m_WindowProps.m_uHeight = _iHeight;
+        SWindowData& oWindowData = *(SWindowData*)glfwGetWindowUserPointer(_pGLFWWindow);
+        oWindowData.m_oWindowProps.m_uWidth = _iWidth;
+        oWindowData.m_oWindowProps.m_uHeight = _iHeight;
 
-        WindowResizeEvent event(_iWidth, _iHeight);
-        windowData.m_EventCallback(event); // Calls event callback function setted in SetEventCallback. E.g.: OnEvent setted in Application ctor
+        CWindowResizeEvent oEvent(_iWidth, _iHeight);
+        oWindowData.m_oEventCallback(oEvent); // Calls event callback function setted in SetEventCallback. E.g.: OnEvent setted in Application ctor
 
     }
 
-    void WindowsWindow::OnWindowCloseEvent(GLFWwindow* _window)
+    void CWindowsWindow::OnWindowCloseEvent(GLFWwindow* _pGLFWWindow)
     {
-        WindowData& windowData = *(WindowData*)glfwGetWindowUserPointer(_window);
+        SWindowData& oWindowData = *(SWindowData*)glfwGetWindowUserPointer(_pGLFWWindow);
 
-        WindowCloseEvent event;
-        windowData.m_EventCallback(event);
+        CWindowCloseEvent oEvent;
+        oWindowData.m_oEventCallback(oEvent);
     }
 
-    void WindowsWindow::OnDropFilesEvent(GLFWwindow* _window, int _iPathCount, const char* _sPaths[])
+    void CWindowsWindow::OnDropFilesEvent(GLFWwindow* _pGLFWWindow, int _iPathCount, const char* _sPaths[])
     {
-        WindowData& windowData = *(WindowData*)glfwGetWindowUserPointer(_window);
+        SWindowData& oWindowData = *(SWindowData*)glfwGetWindowUserPointer(_pGLFWWindow);
 
-        DropFilesEvent event(_iPathCount, _sPaths);
-        windowData.m_EventCallback(event);
+        CDropFilesEvent oEvent(_iPathCount, _sPaths);
+        oWindowData.m_oEventCallback(oEvent);
     }
 
-    void WindowsWindow::OnMouseMovedEvent(GLFWwindow* _window, double _dXPos, double _dYPos)
+    void CWindowsWindow::OnMouseMovedEvent(GLFWwindow* _pGLFWWindow, double _dXPos, double _dYPos)
     {
-        WindowData& windowData = *(WindowData*)glfwGetWindowUserPointer(_window);
+        SWindowData& oWindowData = *(SWindowData*)glfwGetWindowUserPointer(_pGLFWWindow);
 
-        MouseMovedEvent event((float)_dXPos, (float)_dYPos);
-        windowData.m_EventCallback(event);
+        CMouseMovedEvent oEvent((float)_dXPos, (float)_dYPos);
+        oWindowData.m_oEventCallback(oEvent);
     }
 
-    void WindowsWindow::OnMouseButtonEvent(GLFWwindow* _window, int _iButton, int _iAction, int _iMods)
+    void CWindowsWindow::OnMouseButtonEvent(GLFWwindow* _pGLFWWindow, int _iButton, int _iAction, int _iMods)
     {
-        WindowData& windowData = *(WindowData*)glfwGetWindowUserPointer(_window);
+        SWindowData& oWindowData = *(SWindowData*)glfwGetWindowUserPointer(_pGLFWWindow);
 
         switch (_iAction)
         {
             case GLFW_PRESS:
             {
-                MouseButtonPressedEvent event(_iButton);
-                windowData.m_EventCallback(event);
+                CMouseButtonPressedEvent oEvent(_iButton);
+                oWindowData.m_oEventCallback(oEvent);
                 break;
             }
             case GLFW_RELEASE:
             {
-                MouseButtonReleasedEvent event(_iButton);
-                windowData.m_EventCallback(event);
+                CMouseButtonReleasedEvent oEvent(_iButton);
+                oWindowData.m_oEventCallback(oEvent);
                 break;
             }
         }
     }
 
-    void WindowsWindow::OnMouseScrolledEvent(GLFWwindow* _window, double _dXOffset, double _dYOffset)
+    void CWindowsWindow::OnMouseScrolledEvent(GLFWwindow* _pGLFWWindow, double _dXOffset, double _dYOffset)
     {
-        WindowData& windowData = *(WindowData*)glfwGetWindowUserPointer(_window);
+        SWindowData& oWindowData = *(SWindowData*)glfwGetWindowUserPointer(_pGLFWWindow);
 
-        MouseScrolledEvent event((float)_dXOffset, (float)_dYOffset);
-        windowData.m_EventCallback(event);
+        CMouseScrolledEvent event((float)_dXOffset, (float)_dYOffset);
+        oWindowData.m_oEventCallback(event);
     }
 
-    void WindowsWindow::OnKeyEvent(GLFWwindow* _window, int _iKey, int _iScancode, int _iAction, int _iMods)
+    void CWindowsWindow::OnKeyEvent(GLFWwindow* _pGLFWWindow, int _iKey, int _iScancode, int _iAction, int _iMods)
     {
-        WindowData& windowData = *(WindowData*)glfwGetWindowUserPointer(_window);
+        SWindowData& oWindowData = *(SWindowData*)glfwGetWindowUserPointer(_pGLFWWindow);
 
         switch (_iAction)
         {
             case GLFW_PRESS:
             {
-                KeyPressedEvent event(_iKey, 0);
-                windowData.m_EventCallback(event);
+                CKeyPressedEvent oEvent(_iKey, 0);
+                oWindowData.m_oEventCallback(oEvent);
                 break;
             }
             case GLFW_RELEASE:
             {
-                KeyReleasedEvent event(_iKey);
-                windowData.m_EventCallback(event);
+                CKeyReleasedEvent oEvent(_iKey);
+                oWindowData.m_oEventCallback(oEvent);
                 break;
             }
             case GLFW_REPEAT:
             {
-                KeyPressedEvent event(_iKey, 1);
-                windowData.m_EventCallback(event);
+                CKeyPressedEvent oEvent(_iKey, 1);
+                oWindowData.m_oEventCallback(oEvent);
                 break;
             }
         }
     }
 
-    void WindowsWindow::SetVSync(bool _bEnabled)
+    void CWindowsWindow::SetVSync(bool _bEnabled)
     {
         glfwSwapInterval((_bEnabled) ? 1 : 0);
-        m_WindowData.m_bVsync = _bEnabled;
+        m_oWindowData.m_bVsync = _bEnabled;
     }
 
-    bool WindowsWindow::IsVSync() const
+    bool CWindowsWindow::IsVSync() const
     {
-        return m_WindowData.m_bVsync;
+        return m_oWindowData.m_bVsync;
     }
 }

@@ -3,10 +3,10 @@
 
 namespace Arcadia
 {
-    Window* Window::Create(const WindowProps& _windowProps)
+    CWindow* CWindow::Create(const SWindowProps& _oWindowProps)
     {
 #ifdef ARC_PLATFORM_WINDOWS
-        return new WindowsWindow(_windowProps);
+        return new CWindowsWindow(_oWindowProps);
 #else
         ARC_CORE_ASSERT(false, "Unknown platform!");
         return nullptr;

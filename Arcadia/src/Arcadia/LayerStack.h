@@ -10,29 +10,29 @@ namespace Arcadia
     * 
     * E.g.: ImGui will be Overlay, app and editor will be Layers. We want to capture ImGui events over other layer events.
     */
-    class LayerStack
+    class CLayerStack
     {
     public:
-        LayerStack() = default;
-        ~LayerStack();
+        CLayerStack() = default;
+        ~CLayerStack();
 
-        void PushLayer(Layer* _layer);
-        void PopLayer(Layer* _layer);
-        void PushOverlay(Layer* _overlay);
-        void PopOverlay(Layer* _overlay);
+        void PushLayer(CLayer* _layer);
+        void PopLayer(CLayer* _layer);
+        void PushOverlay(CLayer* _overlay);
+        void PopOverlay(CLayer* _overlay);
 
-        std::vector<Layer*>::iterator begin() { return m_Layers.begin(); }
-        std::vector<Layer*>::iterator end() { return m_Layers.end(); }
-        std::vector<Layer*>::reverse_iterator rbegin() { return m_Layers.rbegin(); }
-        std::vector<Layer*>::reverse_iterator rend() { return m_Layers.rend(); }
+        std::vector<CLayer*>::iterator begin() { return m_tLayers.begin(); }
+        std::vector<CLayer*>::iterator end() { return m_tLayers.end(); }
+        std::vector<CLayer*>::reverse_iterator rbegin() { return m_tLayers.rbegin(); }
+        std::vector<CLayer*>::reverse_iterator rend() { return m_tLayers.rend(); }
 
-        std::vector<Layer*>::const_iterator begin() const { return m_Layers.begin(); }
-        std::vector<Layer*>::const_iterator end() const { return m_Layers.end(); }
-        std::vector<Layer*>::const_reverse_iterator rbegin() const { return m_Layers.rbegin(); }
-        std::vector<Layer*>::const_reverse_iterator rend() const { return m_Layers.rend(); }
+        std::vector<CLayer*>::const_iterator begin() const { return m_tLayers.begin(); }
+        std::vector<CLayer*>::const_iterator end() const { return m_tLayers.end(); }
+        std::vector<CLayer*>::const_reverse_iterator rbegin() const { return m_tLayers.rbegin(); }
+        std::vector<CLayer*>::const_reverse_iterator rend() const { return m_tLayers.rend(); }
 
     private:
-        std::vector<Layer*> m_Layers;
+        std::vector<CLayer*> m_tLayers;
         unsigned int m_uLayerInsertIndex = 0;
     };
 }

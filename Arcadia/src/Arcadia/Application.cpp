@@ -5,62 +5,62 @@
 
 namespace Arcadia
 {
-    Application::Application()
+    CApplication::CApplication()
     {
-        m_puWindow = std::unique_ptr<Window>(Window::Create());
-        m_puWindow->SetEventCallback([this](Event& _event) { OnEvent(_event); });
+        m_pWindow = std::unique_ptr<CWindow>(CWindow::Create());
+        m_pWindow->SetEventCallback([this](CEvent& _oEvent) { OnEvent(_oEvent); });
     }
 
-    Application::~Application()
+    CApplication::~CApplication()
     {
     }
 
-    void Application::OnEvent(Event& _event)
+    void CApplication::OnEvent(CEvent& _oEvent)
     {
         // Dispatch: if WindowCloseEvent -> OnWindowClose
-        EventDispatcher dispatcher(_event);
-        dispatcher.Dispatch<WindowCloseEvent>([this](WindowCloseEvent& _event) -> bool { return OnWindowClose(_event); });
+        CEventDispatcher oDispatcher(_oEvent);
+        oDispatcher.Dispatch<CWindowCloseEvent>([this](CWindowCloseEvent& _oEvent) -> bool { return OnWindowClose(_oEvent); });
 
         // Iterate m_LayerStack backwards: from the end (overlays) to the beginning (layers)
         // E.g.: ImGui will be Overlay, app and editor will be Layers. We want to capture ImGui events over other layer events.
-        for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
+        for (auto it = m_oLayerStack.rbegin(); it != m_oLayerStack.rend(); ++it)
         {
             // If overlay handled the event -> break, layers will not get it
-            if (_event.IsHandled())
+            if (_oEvent.IsHandled())
             {
                 break;
             }
-            (*it)->OnEvent(_event);
+            (*it)->OnEvent(_oEvent);
         }
     }
 
-    void Application::Run()
+    void CApplication::Run()
     {
         while (m_bRunning)
         {
             glClearColor(1, 0, 1, 1);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            for (Layer* layer : m_LayerStack)
+            for (CLayer* pLayer : m_oLayerStack)
             {
-                layer->OnUpdate();
+                pLayer->OnUpdate();
             }
 
-            m_puWindow->OnUpdate();
+            m_pWindow->OnUpdate();
         }
     }
 
-    void Application::PushLayer(Layer* _layer)
+    void CApplication::PushLayer(CLayer* _pLayer)
     {
-        m_LayerStack.PushLayer(_layer);
+        m_oLayerStack.PushLayer(_pLayer);
     }
 
-    void Application::PushOverlay(Layer* _overlay)
+    void CApplication::PushOverlay(CLayer* _pOverlay)
     {
-        m_LayerStack.PushOverlay(_overlay);
+        m_oLayerStack.PushOverlay(_pOverlay);
     }
 
-    bool Application::OnWindowClose(WindowCloseEvent& _event)
+    bool CApplication::OnWindowClose(CWindowCloseEvent& _oEvent)
     {
         m_bRunning = false;
         return true;

@@ -5,14 +5,14 @@
 
 namespace Arcadia
 {
-    class VK_Context : public RenderContext
+    class CVK_Context : public CRenderContext
     {
     public:
-        VK_Context();
+        CVK_Context();
 
         virtual void Init() override;
 
     private:
-        VkInstance m_vkInstance = VK_NULL_HANDLE;
+        VkInstance m_oVKInstance = VK_NULL_HANDLE;
     };
 }

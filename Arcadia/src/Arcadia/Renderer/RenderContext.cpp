@@ -3,9 +3,9 @@
 
 namespace Arcadia
 {
-    std::unique_ptr<RenderContext> RenderContext::Create()
+    std::unique_ptr<CRenderContext> CRenderContext::Create()
     {
         // TODO: if vulkan
-        return std::make_unique<VK_Context>();
+        return std::make_unique<CVK_Context>();
     }
 }

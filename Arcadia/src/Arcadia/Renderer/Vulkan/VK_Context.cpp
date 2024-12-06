@@ -3,15 +3,14 @@
 
 namespace Arcadia
 {
-    VK_Context::VK_Context()
+    CVK_Context::CVK_Context()
     {
     }
 
-    void VK_Context::Init()
+    void CVK_Context::Init()
     {       
         // Create instance
-        VkResult res = Arcadia::VK::CreateInstance(m_vkInstance);
-        Arcadia::VK::CheckResult(res, "Failed to create vulkan instance!", __FILE__, __LINE__);
+        ARC_VK_CHECK(Arcadia::VK::CreateInstance(m_oVKInstance), "Failed to create vulkan instance!");
         ARC_VK_INFO("Vulkan instance created!");
 
         // TODO: Select physical device

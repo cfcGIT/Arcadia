@@ -9,45 +9,45 @@
 
 namespace Arcadia
 {
-    class WindowsWindow : public Window
+    class CWindowsWindow : public CWindow
     {
 	public:
-		WindowsWindow(const WindowProps& _windowProps);
-		~WindowsWindow();
+		CWindowsWindow(const SWindowProps& _oWindowProps);
+		~CWindowsWindow();
 
 		void OnUpdate() override;
 
-		inline unsigned int GetWidth() const override { return m_WindowData.m_WindowProps.m_uWidth; };
-		inline unsigned GetHeight() const override { return m_WindowData.m_WindowProps.m_uWidth; }
+		inline unsigned int GetWidth() const override { return m_oWindowData.m_oWindowProps.m_uWidth; };
+		inline unsigned GetHeight() const override { return m_oWindowData.m_oWindowProps.m_uWidth; }
 
 		// Window attributes
-		inline void SetEventCallback(const EventCallbackFn& _callback) override { m_WindowData.m_EventCallback = _callback; };
+		inline void SetEventCallback(const EventCallbackFn& _oCallback) override { m_oWindowData.m_oEventCallback = _oCallback; };
 		void SetVSync(bool _bEnabled) override;
 		bool IsVSync() const override;
 
 	private:
-		virtual void Init(const WindowProps& _windowProps);
+		virtual void Init(const SWindowProps& _oWindowProps);
 		virtual void Shutdown();
 
 		// GLFW Callbacks
-		static void OnWindowResizeEvent(GLFWwindow* _window, int _iWidth, int _iHeight);
-		static void OnWindowCloseEvent(GLFWwindow* _window);
-		static void OnDropFilesEvent(GLFWwindow* _window, int _iPathCount, const char* _sPaths[]);
-		static void OnMouseMovedEvent(GLFWwindow* _window, double _dXPos, double _dYPos);
-		static void OnMouseButtonEvent(GLFWwindow* _window, int _iButton, int _iAction, int _iMods);
-		static void OnMouseScrolledEvent(GLFWwindow* _window, double _dXOffset, double _dYOffset);
-		static void OnKeyEvent(GLFWwindow* _window, int _iKey, int _iScancode, int _iAction, int _iMods);
+		static void OnWindowResizeEvent(GLFWwindow* _pWindow, int _iWidth, int _iHeight);
+		static void OnWindowCloseEvent(GLFWwindow* _pWindow);
+		static void OnDropFilesEvent(GLFWwindow* _pWindow, int _iPathCount, const char* _sPaths[]);
+		static void OnMouseMovedEvent(GLFWwindow* _pWindow, double _dXPos, double _dYPos);
+		static void OnMouseButtonEvent(GLFWwindow* _pWindow, int _iButton, int _iAction, int _iMods);
+		static void OnMouseScrolledEvent(GLFWwindow* _pWindow, double _dXOffset, double _dYOffset);
+		static void OnKeyEvent(GLFWwindow* _pWindow, int _iKey, int _iScancode, int _iAction, int _iMods);
 
 	private:
-		GLFWwindow* m_GLFWWindow;
-		std::unique_ptr<RenderContext> m_puRenderContext;
+		GLFWwindow* m_pGLFWWindow;
+		std::unique_ptr<CRenderContext> m_pRenderContext;
 
-		struct WindowData
+		struct SWindowData
 		{
-			WindowProps m_WindowProps;
-			EventCallbackFn m_EventCallback;
+			SWindowProps m_oWindowProps;
+			EventCallbackFn m_oEventCallback;
 			bool m_bVsync;
 		};
-		WindowData m_WindowData;
+		SWindowData m_oWindowData;
     };
 }

@@ -4,13 +4,13 @@
 
 namespace Arcadia
 {
-    class RenderContext
+    class CRenderContext
     {
     public:
-        virtual ~RenderContext() = default;
+        virtual ~CRenderContext() = default;
 
         virtual void Init() = 0;
 
-        static std::unique_ptr<RenderContext> Create();
+        static std::unique_ptr<CRenderContext> Create();
     };
 }

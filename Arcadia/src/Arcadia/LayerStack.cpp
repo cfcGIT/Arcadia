@@ -2,29 +2,29 @@
 
 namespace Arcadia
 {
-    LayerStack::~LayerStack()
+    CLayerStack::~CLayerStack()
     {
-        for (Layer* layer : m_Layers)
+        for (CLayer* pLayer : m_tLayers)
         {
-            delete layer; // TODO: The erased layers wont be deleted?
+            delete pLayer; // TODO: The erased layers wont be deleted?
         }
     }
 
     /**
     * Layer1,Layer2,Layer3,*_layer*,Overlay1,Overlay2
     */
-    void LayerStack::PushLayer(Layer* _layer)
+    void CLayerStack::PushLayer(CLayer* _pLayer)
     {
-        m_Layers.emplace(m_Layers.begin() + m_uLayerInsertIndex, _layer);
+        m_tLayers.emplace(m_tLayers.begin() + m_uLayerInsertIndex, _pLayer);
         m_uLayerInsertIndex++;
     }
 
-    void LayerStack::PopLayer(Layer* _layer)
+    void CLayerStack::PopLayer(CLayer* _pLayer)
     {
-        auto it = std::find(m_Layers.begin(), m_Layers.begin() + m_uLayerInsertIndex, _layer);
-        if (it != m_Layers.begin() + m_uLayerInsertIndex)
+        auto it = std::find(m_tLayers.begin(), m_tLayers.begin() + m_uLayerInsertIndex, _pLayer);
+        if (it != m_tLayers.begin() + m_uLayerInsertIndex)
         {
-            m_Layers.erase(it); // Erase from m_Layers but not deleted. It will be live until LayerStack dtor... TODO: but dtor doesnt delete erased layers?
+            m_tLayers.erase(it); // Erase from m_Layers but not deleted. It will be live until LayerStack dtor... TODO: but dtor doesnt delete erased layers?
             m_uLayerInsertIndex--;
         }
     }
@@ -32,17 +32,17 @@ namespace Arcadia
     /**
     * Layer1,Layer2,Layer3,Overlay1,Overlay2,*_overlay*
     */
-    void LayerStack::PushOverlay(Layer* _overlay)
+    void CLayerStack::PushOverlay(CLayer* _pOverlay)
     {
-        m_Layers.emplace_back(_overlay);
+        m_tLayers.emplace_back(_pOverlay);
     }
 
-    void LayerStack::PopOverlay(Layer* _overlay)
+    void CLayerStack::PopOverlay(CLayer* _pOverlay)
     {
-        auto it = std::find(m_Layers.begin() + m_uLayerInsertIndex, m_Layers.end(), _overlay);
-        if (it != m_Layers.end())
+        auto it = std::find(m_tLayers.begin() + m_uLayerInsertIndex, m_tLayers.end(), _pOverlay);
+        if (it != m_tLayers.end())
         {
-            m_Layers.erase(it);
+            m_tLayers.erase(it);
         }
     }
 

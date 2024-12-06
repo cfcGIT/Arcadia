@@ -3,21 +3,21 @@
 
 namespace Arcadia
 {
-    std::shared_ptr<spdlog::logger> Log::m_psCoreLogger;
-    std::shared_ptr<spdlog::logger> Log::m_psClientLogger;
-    std::shared_ptr<spdlog::logger> Log::m_psVulkanLogger;
+    std::shared_ptr<spdlog::logger> CLog::m_pCoreLogger;
+    std::shared_ptr<spdlog::logger> CLog::m_pClientLogger;
+    std::shared_ptr<spdlog::logger> CLog::m_pVulkanLogger;
 
-    void Log::Init()
+    void CLog::Init()
     {
         spdlog::set_pattern("%^[%T] %n: %v%$");
-        m_psCoreLogger = spdlog::stdout_color_mt("ARCADIA");
-        m_psCoreLogger->set_level(spdlog::level::trace);
+        m_pCoreLogger = spdlog::stdout_color_mt("ARCADIA");
+        m_pCoreLogger->set_level(spdlog::level::trace);
 
-        m_psClientLogger = spdlog::stdout_color_mt("APP");
-        m_psClientLogger->set_level(spdlog::level::trace);
+        m_pClientLogger = spdlog::stdout_color_mt("APP");
+        m_pClientLogger->set_level(spdlog::level::trace);
 
-        m_psVulkanLogger = spdlog::stdout_color_mt("VULKAN");
-        m_psVulkanLogger->set_level(spdlog::level::trace);
+        m_pVulkanLogger = spdlog::stdout_color_mt("VULKAN");
+        m_pVulkanLogger->set_level(spdlog::level::trace);
 
     }
 }

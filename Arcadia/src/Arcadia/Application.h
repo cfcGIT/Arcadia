@@ -9,30 +9,30 @@
 
 namespace Arcadia
 {
-    class ARCADIA_API Application
+    class ARCADIA_API CApplication
     {
     public:
-        Application();
-        virtual ~Application();
+        CApplication();
+        virtual ~CApplication();
 
-        void OnEvent(Event& _event);
+        void OnEvent(CEvent& _oEvent);
 
         void Run();
 
-        void PushLayer(Layer* _layer);
-        void PushOverlay(Layer* _overlay);
+        void PushLayer(CLayer* _pLayer);
+        void PushOverlay(CLayer* _pOverlay);
 
     private:
-        bool OnWindowClose(WindowCloseEvent& _event);
+        bool OnWindowClose(CWindowCloseEvent& _oEvent);
 
     private:
-        std::unique_ptr<Window> m_puWindow;
+        std::unique_ptr<CWindow> m_pWindow;
         bool m_bRunning = true;
 
-        LayerStack m_LayerStack;
+        CLayerStack m_oLayerStack;
     };
 
     // To be defined in the client
-    Application* CreateApplication();
+    CApplication* CreateApplication();
 }
 

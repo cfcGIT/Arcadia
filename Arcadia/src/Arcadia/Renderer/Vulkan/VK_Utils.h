@@ -2,9 +2,12 @@
 
 #include "vulkan/vulkan.h"
 
-namespace Arcadia::VK
+namespace Arcadia
 {
-    std::vector<const char*> GetRequiredExtensions(bool _bValidationLayersEnabled);
+    namespace VK
+    {
+        std::vector<const char*> GetRequiredExtensions(bool _bValidationLayersEnabled);
 
-    void PopulateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo_);
+        void PopulateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& oCreateInfo_);
+    }
 }

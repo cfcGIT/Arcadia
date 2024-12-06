@@ -4,7 +4,7 @@
 
 namespace Arcadia
 {
-    enum class EventType
+    enum class EEventType
     {
         None = 0,
         WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
@@ -14,7 +14,7 @@ namespace Arcadia
         MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
     };
 
-    enum EventCategory
+    enum EEventCategory:uint32_t
     {
         None = 0,
         EventCategoryApplication = BIT(0), //     1 : 0x01 :  1
@@ -25,27 +25,27 @@ namespace Arcadia
     };
 
     // #_type  -> string
-#define EVENT_CLASS_TYPE(_type) static EventType GetStaticType() { return EventType::_type; }\
-                                virtual EventType GetEventType() const override { return GetStaticType(); }\
+#define EVENT_CLASS_TYPE(_type) static EEventType GetStaticType() { return EEventType::_type; }\
+                                virtual EEventType GetEventType() const override { return GetStaticType(); }\
                                 virtual const char* GetName() const override { return #_type; }
 
-#define EVENT_CLASS_CATEGORY(_category) virtual int GetCategoryFlags() const override { return _category; }
+#define EVENT_CLASS_CATEGORY(_category) virtual uint32_t GetCategoryFlags() const override { return _category; }
 
-    class Event
+    class CEvent
     {
     private:
-        friend class EventDispatcher; // We can access to private and protected members of class Event (e.g. m_bHandled) from class EventDispatcher
+        friend class CEventDispatcher; // We can access to private and protected members of class Event (e.g. m_bHandled) from class EventDispatcher
     public:
-        virtual ~Event() = default;
+        virtual ~CEvent() = default;
 
-        virtual EventType GetEventType() const = 0;
+        virtual EEventType GetEventType() const = 0;
         virtual const char* GetName() const = 0;
-        virtual int GetCategoryFlags() const = 0;
+        virtual uint32_t GetCategoryFlags() const = 0;
         virtual std::string ToString() const { return GetName(); } // GetName() by default
 
-        inline bool IsInCategory(EventCategory _category)
+        inline bool IsInCategory(EEventCategory _eCategory)
         {
-            return GetCategoryFlags() & _category;
+            return GetCategoryFlags() & _eCategory;
         }
 
         inline bool IsHandled() { return m_bHandled; }
@@ -54,31 +54,31 @@ namespace Arcadia
         bool m_bHandled = false;
     };
 
-    class EventDispatcher
+    class CEventDispatcher
     {
     public:
-        EventDispatcher(Event& _event)
-            : m_Event(_event) { }
+        CEventDispatcher(CEvent& _oEvent)
+            : m_oEvent(_oEvent) { }
 
         // F will be deduced by the compiler
         template<typename T, typename F>
-        bool Dispatch(const F& _func)
+        bool Dispatch(const F& _oFunc)
         {
-            if (m_Event.GetEventType() == T::GetStaticType())
+            if (m_oEvent.GetEventType() == T::GetStaticType())
             {
-                m_Event.m_bHandled |= _func(static_cast<T&>(m_Event));
+                m_oEvent.m_bHandled |= _oFunc(static_cast<T&>(m_oEvent));
                 return true;
             }
             return false;
         }
 
     private:
-        Event& m_Event;
+        CEvent& m_oEvent;
     };
 
-    inline std::string format_as(const Event& e)
+    inline std::string format_as(const CEvent& _oEvent)
     {
-        return e.ToString();
+        return _oEvent.ToString();
     }
 
 }

@@ -1,44 +1,46 @@
 #include "Arcadia/Renderer/Vulkan/VK_Engine.h"
 #include "Arcadia/Renderer/Vulkan/VK_Utils.h"
 
-namespace Arcadia::VK
+namespace Arcadia
 {
-
-    // Create vulkan instance
-    VkResult CreateInstance(VkInstance& instance_)
+    namespace VK
     {
-        VkApplicationInfo appInfo{};
-        appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-        appInfo.pApplicationName = "Sandbox";
-        appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
-        appInfo.pEngineName = "Arcadia";
-        appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
-        appInfo.apiVersion = VK_API_VERSION_1_0;
-
-        VkInstanceCreateInfo createInfo{};
-        createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-        createInfo.pApplicationInfo = &appInfo;
-
-        std::vector<const char*> extensions = Arcadia::VK::GetRequiredExtensions(bVKDebug);
-        createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
-        createInfo.ppEnabledExtensionNames = extensions.data();
-
-        // Include the validation layer names if they are enabled
-        VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
-        if (bVKDebug)
+        // Create vulkan instance
+        VkResult CreateInstance(VkInstance& oVkInstance_)
         {
-            createInfo.enabledLayerCount = static_cast<uint32_t>(vValidationLayers.size());
-            createInfo.ppEnabledLayerNames = vValidationLayers.data();
+            VkApplicationInfo oAppInfo{};
+            oAppInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+            oAppInfo.pApplicationName = "Sandbox";
+            oAppInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
+            oAppInfo.pEngineName = "Arcadia";
+            oAppInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
+            oAppInfo.apiVersion = VK_API_VERSION_1_0;
 
-            Arcadia::VK::PopulateDebugMessengerCreateInfo(debugCreateInfo);
-            createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*)&debugCreateInfo;
-        }
-        else
-        {
-            createInfo.enabledLayerCount = 0;
-            createInfo.pNext = nullptr;
-        }
+            VkInstanceCreateInfo oCreateInfo{};
+            oCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+            oCreateInfo.pApplicationInfo = &oAppInfo;
 
-        return vkCreateInstance(&createInfo, nullptr, &instance_);
+            std::vector<const char*> tExtensions = Arcadia::VK::GetRequiredExtensions(bVKDebug);
+            oCreateInfo.enabledExtensionCount = static_cast<uint32_t>(tExtensions.size());
+            oCreateInfo.ppEnabledExtensionNames = tExtensions.data();
+
+            // Include the validation layer names if they are enabled
+            VkDebugUtilsMessengerCreateInfoEXT oDebugCreateInfo{};
+            if (bVKDebug)
+            {
+                oCreateInfo.enabledLayerCount = static_cast<uint32_t>(tValidationLayers.size());
+                oCreateInfo.ppEnabledLayerNames = tValidationLayers.data();
+
+                Arcadia::VK::PopulateDebugMessengerCreateInfo(oDebugCreateInfo);
+                oCreateInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*)&oDebugCreateInfo;
+            }
+            else
+            {
+                oCreateInfo.enabledLayerCount = 0;
+                oCreateInfo.pNext = nullptr;
+            }
+
+            return vkCreateInstance(&oCreateInfo, nullptr, &oVkInstance_);
+        }
     }
 }

@@ -4,10 +4,10 @@
 
 namespace Arcadia
 {
-    class MouseMovedEvent : public Event
+    class CMouseMovedEvent : public CEvent
     {
     public:
-        MouseMovedEvent(float _fX, float _fY)
+        CMouseMovedEvent(float _fX, float _fY)
             : m_fMouseX(_fX), m_fMouseY(_fY) {}
 
         inline float GetX() const { return m_fMouseX; }
@@ -20,18 +20,18 @@ namespace Arcadia
             return ss.str();
         }
 
-        EVENT_CLASS_TYPE(MouseMoved)
-        EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
+        EVENT_CLASS_TYPE(MouseMoved);
+        EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput);
 
     private:
         float m_fMouseX;
         float m_fMouseY;
     };
 
-    class MouseScrolledEvent : public Event
+    class CMouseScrolledEvent : public CEvent
     {
     public:
-        MouseScrolledEvent(float _fOffsetX, float _fOffsetY)
+        CMouseScrolledEvent(float _fOffsetX, float _fOffsetY)
             : m_fOffsetX(_fOffsetX), m_fOffsetY(_fOffsetY) {}
 
         inline float GetOffsetX() const { return m_fOffsetX; }
@@ -44,32 +44,32 @@ namespace Arcadia
             return ss.str();
         }
 
-        EVENT_CLASS_TYPE(MouseScrolled)
-        EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
+        EVENT_CLASS_TYPE(MouseScrolled);
+        EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput);
 
     private:
         float m_fOffsetX;
         float m_fOffsetY;
     };
 
-    class MouseButtonEvent : public Event
+    class CMouseButtonEvent : public CEvent
     {
     public:
         inline int GetMouseButton() { return m_iButton; }
-        EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
+        EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput);
 
     protected:
-        MouseButtonEvent(int _iButton)
+        CMouseButtonEvent(int _iButton)
             : m_iButton(_iButton) {}
 
         int m_iButton;
     };
 
-    class MouseButtonPressedEvent : public MouseButtonEvent
+    class CMouseButtonPressedEvent : public CMouseButtonEvent
     {
     public:
-        MouseButtonPressedEvent(int _iButton)
-            : MouseButtonEvent(_iButton) {}
+        CMouseButtonPressedEvent(int _iButton)
+            : CMouseButtonEvent(_iButton) {}
 
         std::string ToString() const override
         {
@@ -78,14 +78,14 @@ namespace Arcadia
             return ss.str();
         }
 
-        EVENT_CLASS_TYPE(MouseButtonPressed)
+        EVENT_CLASS_TYPE(MouseButtonPressed);
     };
 
-    class MouseButtonReleasedEvent : public MouseButtonEvent
+    class CMouseButtonReleasedEvent : public CMouseButtonEvent
     {
     public:
-        MouseButtonReleasedEvent(int _iButton)
-            : MouseButtonEvent(_iButton) {}
+        CMouseButtonReleasedEvent(int _iButton)
+            : CMouseButtonEvent(_iButton) {}
 
         std::string ToString() const override
         {
@@ -94,6 +94,6 @@ namespace Arcadia
             return ss.str();
         }
 
-        EVENT_CLASS_TYPE(MouseButtonReleased)
+        EVENT_CLASS_TYPE(MouseButtonReleased);
     };
 }
