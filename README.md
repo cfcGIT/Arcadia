@@ -45,6 +45,8 @@ You can generate doxygen documentation running [GenerateDoc.bat](https://github.
 
 - [ ] CVar system. See [CVarSystem of DOOM-3](https://github.com/id-Software/DOOM-3/blob/master/neo/framework/CVarSystem.h)
 - [ ] Command system.
+- [ ] Shader hot reloading.
+- [ ] ...
 
 ## Render
 
@@ -55,6 +57,7 @@ You can generate doxygen documentation running [GenerateDoc.bat](https://github.
 - [ ] Planar reflections
 - [ ] SSR
 - [ ] Ray tracing
+- [ ] ...
 
 ### OpenGL
 
