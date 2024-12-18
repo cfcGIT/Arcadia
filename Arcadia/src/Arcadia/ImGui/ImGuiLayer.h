@@ -10,8 +10,8 @@ namespace Arcadia
         CImGuiLayer();
         ~CImGuiLayer();
 
-        void OnAttach();
-        void OnDetach();
+        virtual void OnAttach();
+        virtual void OnDetach();
         void OnUpdate();
         void OnEvent(CEvent& _event);
     };

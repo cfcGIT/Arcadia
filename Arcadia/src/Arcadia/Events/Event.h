@@ -17,11 +17,11 @@ namespace Arcadia
     enum EEventCategory:uint32_t
     {
         None = 0,
-        EventCategoryApplication = BIT(0), //     1 : 0x01 :  1
-        EventCategoryInput       = BIT(1), //    10 : 0x02 :  2
-        EventCategoryKeyboard    = BIT(2), //   100 : 0x04 :  4
-        EventCategoryMouse       = BIT(3), //  1000 : 0x08 :  8
-        EventCategoryMouseButton = BIT(4)  // 10000 : 0x10 : 16
+        EventCategoryApplication = BIT(0),
+        EventCategoryInput       = BIT(1),
+        EventCategoryKeyboard    = BIT(2),
+        EventCategoryMouse       = BIT(3),
+        EventCategoryMouseButton = BIT(4)
     };
 
     // #_type  -> string

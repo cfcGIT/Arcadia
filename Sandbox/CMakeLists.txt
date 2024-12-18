@@ -24,7 +24,7 @@ if(MSVC)
     target_compile_options(${NAME} PRIVATE /std:c++20)
     # /MD here and in another projects to avoid having different heaps and pottential crashes (e.g. spdlog was trying to free memory allocated by different heap)
     # To link the right runtime version of the right runtime library version
-    target_compile_options(${NAME} PRIVATE $<IF:$<CONFIG:Debug>,/MDd,/MD>)
+    target_compile_options(${NAME} PRIVATE $<IF:$<CONFIG:Debug>,/MDd /Zi,/MD>)
     target_compile_options(${NAME} PRIVATE /Wall) # All warnings
     target_link_options(${NAME} PUBLIC /ignore:4099)
 endif(MSVC)

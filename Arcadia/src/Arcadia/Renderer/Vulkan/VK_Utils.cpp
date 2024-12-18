@@ -20,7 +20,7 @@ namespace Arcadia
         {
             uint32_t uGlfwExtensionCount = 0;
             const char** pGlfwExtensions;
-            pGlfwExtensions = glfwGetRequiredInstanceExtensions(&uGlfwExtensionCount);
+            pGlfwExtensions = glfwGetRequiredInstanceExtensions(&uGlfwExtensionCount); // e.g.: "VK_KHR_surface" & "VK_KHR_win32_surface"
 
             std::vector<const char*> tExtensions(pGlfwExtensions, pGlfwExtensions + uGlfwExtensionCount);
 

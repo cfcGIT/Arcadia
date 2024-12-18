@@ -1,16 +1,16 @@
-#include "Arcadia/Renderer/Renderer.h"
-#include "Arcadia/Renderer/RenderContext.h"
-#include "Arcadia/Renderer/Vulkan/VK_Context.h"
+#include "Arcadia/Renderer/RendererAPI.h"
+#include "Arcadia/Renderer/Vulkan/VK_RendererAPI.h"
 
 namespace Arcadia
 {
-    std::unique_ptr<CRenderContext> CRenderContext::Create()
+    CRendererAPI::EAPI CRendererAPI::m_oAPI = CRendererAPI::EAPI::Vulkan; // TODO: CVar
+
+    std::unique_ptr<CRendererAPI> CRendererAPI::Create()
     {
-        CRendererAPI::EAPI oAPI = CRenderer::GetAPI();
-        switch (oAPI)
+        switch (m_oAPI)
         {
             case CRendererAPI::EAPI::Vulkan:
-                return std::make_unique<CVK_Context>();
+                return std::make_unique<CVK_RendererAPI>();
             case CRendererAPI::EAPI::OpenGL:
                 ARC_CORE_ASSERT(false, "RendererAPI::OpenGL is currently not supported!");
                 return nullptr;

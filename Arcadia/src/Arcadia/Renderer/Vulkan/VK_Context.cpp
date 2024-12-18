@@ -19,4 +19,9 @@ namespace Arcadia
         // TODO: Create logical device
         // ...
     }
+
+    void CVK_Context::InitGUI()
+    {
+
+    }
 }

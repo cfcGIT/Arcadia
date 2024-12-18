@@ -1,5 +1,6 @@
 #include "Arcadia/Application.h"
 #include "Arcadia/Events/MouseEvent.h"
+#include "Arcadia/Renderer/Renderer.h"
 
 #include "GLFW/glfw3.h"
 
@@ -9,10 +10,13 @@ namespace Arcadia
     {
         m_pWindow = std::unique_ptr<CWindow>(CWindow::Create());
         m_pWindow->SetEventCallback([this](CEvent& _oEvent) { OnEvent(_oEvent); });
+
+        CRenderer::Init();
     }
 
     CApplication::~CApplication()
     {
+        CRenderer::Shutdown();
     }
 
     void CApplication::OnEvent(CEvent& _oEvent)

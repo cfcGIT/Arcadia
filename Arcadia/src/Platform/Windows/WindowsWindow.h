@@ -46,7 +46,7 @@ namespace Arcadia
 		{
 			SWindowProps m_oWindowProps;
 			EventCallbackFn m_oEventCallback;
-			bool m_bVsync;
+			bool m_bVsync = false;
 		};
 		SWindowData m_oWindowData;
     };

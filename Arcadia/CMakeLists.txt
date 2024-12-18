@@ -3,6 +3,8 @@
 
 cmake_minimum_required(VERSION 3.29) # 3.29 because it's the version that I have installed and with which I have tested
 
+project(Arcadia)
+
 ## global vars
 set(NAME Arcadia)
 set(SAND Sandbox)
@@ -24,8 +26,8 @@ file(GLOB ARC_RENDERER_VULKAN_SOURCE src/${NAME}/Renderer/Vulkan/*.cpp)
 
 ## library
 # Headers added to show in filters
-# SHARED because it's a dynamic library (.dll)
-add_library(${NAME} SHARED
+# STATIC because it's a static library (.lib)
+add_library(${NAME} STATIC
         ${ROOT_HEADER} ${ROOT_SOURCE}
         ${PLATFORM_WINDOWS_HEADER} ${PLATFORM_WINDOWS_SOURCE}
         ${ARC_ROOT_HEADER} ${ARC_ROOT_SOURCE}
@@ -45,7 +47,6 @@ source_group("${NAME}" FILES ${ARC_ROOT_HEADER} ${ARC_ROOT_SOURCE})
 source_group("Platform/Windows" FILES ${PLATFORM_WINDOWS_HEADER} ${PLATFORM_WINDOWS_SOURCE})
 
 ## compile definitios
-add_compile_definitions(ARC_BUILD_DLL)
 add_compile_definitions("$<$<CONFIG:Debug>:ARC_ENABLE_ASSERT>")
 add_compile_definitions("$<$<CONFIG:Debug>:ARC_VK_DEBUG>")
 if (WIN32)
@@ -57,7 +58,7 @@ if(MSVC)
     target_compile_options(${NAME} PRIVATE /std:c++20)
     # /MD here and in another projects to avoid having different heaps and pottential crashes (e.g. spdlog was trying to free memory allocated by different heap)
     # To link the right runtime version of the right runtime library version
-    target_compile_options(${NAME} PRIVATE $<IF:$<CONFIG:Debug>,/MDd,/MD>)
+    target_compile_options(${NAME} PRIVATE $<IF:$<CONFIG:Debug>,/MDd /Zi,/MD>)
     target_compile_options(${NAME} PRIVATE /Wall) # All warnings
     target_link_options(${NAME} PUBLIC /ignore:4099)
 endif(MSVC)
@@ -70,10 +71,10 @@ target_link_libraries(${NAME} glfw)
 # imgui
 add_subdirectory(third_party/imgui) # With source code
 target_link_libraries(${NAME} imgui)
-# OpenGL #TODO: Delete
-find_package(OpenGL REQUIRED) # Without source code (found in Windows Kits)
+# OpenGL (not principal render API)
+find_package(OpenGL) # Without source code (found in Windows Kits)
 target_link_libraries(${NAME} OpenGL::GL)
-# Vulkan
+# Vulkan (principal render API)
 find_package(Vulkan REQUIRED) # Without source code
 target_link_libraries(${NAME} Vulkan::Vulkan)
 
@@ -83,8 +84,6 @@ if(MSVC)
     set_target_properties(${NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUTPUT_DIRECTORY}")
     set_target_properties(${NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUTPUT_DIRECTORY}")
     set_target_properties(${NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${OUTPUT_DIRECTORY}")
-
-    add_custom_command(TARGET ${NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different "${OUTPUT_DIRECTORY}/${NAME}.dll" "${OUTPUT_DIRECTORY}/../${SAND}/${NAME}.dll" COMMENT "ARC_DBG: Copy ${NAME}.dll to ${SAND} project")
 endif()
 
 ## includes
@@ -92,6 +91,7 @@ include_directories(src)
 include_directories(third_party/spdlog/include)
 include_directories(third_party/glfw/include)
 include_directories(third_party/imgui/include)
+include_directories(third_party/imgui/include/imgui) # Because backends/imgui_impl_vulkan.h has '#include "imgui.h"' and I don't want to modify the include path
 
 ## precompiled headers
 target_precompile_headers(${NAME} PUBLIC src/arcpch.h)

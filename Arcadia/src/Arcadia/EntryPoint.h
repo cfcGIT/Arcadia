@@ -2,16 +2,17 @@
 
 #ifdef ARC_PLATFORM_WINDOWS
 
+#include "arcpch.h" // No need because it's pch, but so that intellisense doesn't complain
+
+#include <iostream>
+
+#include "Arcadia/Layer.h"
+
 extern Arcadia::CApplication* Arcadia::CreateApplication();
 
 int main(int argc, char** argv)
 {
     Arcadia::CLog::Init();
-
-    //ARC_CORE_FATAL("Esto es fatallll");
-    ARC_CORE_WARN("Initialized Log!");
-    int a = 5;
-    ARC_INFO("Hello! Var={0}", a);
 
     Arcadia::CApplication* pApp = Arcadia::CreateApplication();
     pApp->Run();

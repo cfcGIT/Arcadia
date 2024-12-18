@@ -20,6 +20,7 @@ namespace Arcadia
             oCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
             oCreateInfo.pApplicationInfo = &oAppInfo;
 
+            // TODO: add something to add extension. For example to enable ray tracing we need to add some others extensions
             std::vector<const char*> tExtensions = Arcadia::VK::GetRequiredExtensions(bVKDebug);
             oCreateInfo.enabledExtensionCount = static_cast<uint32_t>(tExtensions.size());
             oCreateInfo.ppEnabledExtensionNames = tExtensions.data();

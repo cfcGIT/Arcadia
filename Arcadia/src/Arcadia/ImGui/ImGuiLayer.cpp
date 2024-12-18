@@ -14,7 +14,8 @@ namespace Arcadia
 
     void CImGuiLayer::OnAttach()
     {
-        ImGui::CreateContext();
+        
+        
     }
 
     void CImGuiLayer::OnDetach()

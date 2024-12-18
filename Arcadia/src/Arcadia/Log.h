@@ -9,7 +9,7 @@
 
 namespace Arcadia
 {
-    class ARCADIA_API CLog
+    class CLog
     {
     public:
         static void Init();

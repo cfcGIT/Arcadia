@@ -5,7 +5,7 @@
 
 namespace Arcadia
 {
-    class ARCADIA_API CLayer
+    class CLayer
     {
     public:
         CLayer(const std::string& _sLayerName = "Layer");

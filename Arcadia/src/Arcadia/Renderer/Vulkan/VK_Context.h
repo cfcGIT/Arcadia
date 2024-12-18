@@ -12,7 +12,14 @@ namespace Arcadia
 
         virtual void Init() override;
 
+        virtual void InitGUI() override;
+
+        inline VkInstance GetInstance() const { return m_oVKInstance; }
+
+
+
+
     private:
-        VkInstance m_oVKInstance = VK_NULL_HANDLE;
+        VkInstance m_oVKInstance = VK_NULL_HANDLE; 
     };
 }

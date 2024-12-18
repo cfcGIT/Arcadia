@@ -80,8 +80,8 @@ namespace Arcadia
     void CWindowsWindow::OnWindowResizeEvent(GLFWwindow* _pGLFWWindow, int _iWidth, int _iHeight)
     {
         SWindowData& oWindowData = *(SWindowData*)glfwGetWindowUserPointer(_pGLFWWindow);
-        oWindowData.m_oWindowProps.m_uWidth = _iWidth;
-        oWindowData.m_oWindowProps.m_uHeight = _iHeight;
+        oWindowData.m_oWindowProps.m_uWidth = (uint32_t)_iWidth;
+        oWindowData.m_oWindowProps.m_uHeight = (uint32_t)_iHeight;
 
         CWindowResizeEvent oEvent(_iWidth, _iHeight);
         oWindowData.m_oEventCallback(oEvent); // Calls event callback function setted in SetEventCallback. E.g.: OnEvent setted in Application ctor

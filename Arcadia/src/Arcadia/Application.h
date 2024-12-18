@@ -9,7 +9,7 @@
 
 namespace Arcadia
 {
-    class ARCADIA_API CApplication
+    class CApplication
     {
     public:
         CApplication();
@@ -22,13 +22,14 @@ namespace Arcadia
         void PushLayer(CLayer* _pLayer);
         void PushOverlay(CLayer* _pOverlay);
 
+        inline CWindow& GetWindow() { return *m_pWindow; }
+
     private:
         bool OnWindowClose(CWindowCloseEvent& _oEvent);
 
     private:
         std::unique_ptr<CWindow> m_pWindow;
         bool m_bRunning = true;
-
         CLayerStack m_oLayerStack;
     };
 
