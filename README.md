@@ -31,7 +31,8 @@ git submodule update
 
 (In root folder):
 ```
-mkdir build & cd build
+mkdir build
+cd build
 cmake ..
 ```
 
@@ -40,13 +41,14 @@ cmake ..
 
 # Third-Party libraries
 
-- [spdlog](https://github.com/gabime/spdlog)
+- [spdlog](https://github.com/gabime/spdlog). TODO: Make my own.
 - [glfw](https://github.com/glfw/glfw)
 - [imgui](https://github.com/ocornut/imgui)
+- [glm](https://github.com/g-truc/glm)
 
 ## Others
 
-- [C++ Standard Library (STL)](https://learn.microsoft.com/en-us/cpp/standard-library/cpp-standard-library-overview?view=msvc-170)
+- [C++ Standard Library (STL)](https://learn.microsoft.com/en-us/cpp/standard-library/cpp-standard-library-overview?view=msvc-170). TODO: Make my own. References: [EASTL](https://github.com/electronicarts/EASTL)
 
 # Generate Doxygen documentation
 
@@ -54,7 +56,8 @@ To generate doxygen documentation you need to install doxygen (version 1.12.0 re
 
 (In root folder):
 ```
-cd doxygen & Doxygen Doxyfile.dox
+cd doxygen
+Doxygen Doxyfile.dox
 ```
 and you can see the index.html generated in ..\docs\index.html.
 
@@ -65,10 +68,13 @@ and you can see the index.html generated in ..\docs\index.html.
 
 ## General
 
-- [ ] CVar system. See [CVarSystem of DOOM-3](https://github.com/id-Software/DOOM-3/blob/master/neo/framework/CVarSystem.h).
+- [ ] CVar system. References: [CVarSystem of DOOM-3](https://github.com/id-Software/DOOM-3/blob/master/neo/framework/CVarSystem.h), [vkguide](https://vkguide.dev/docs/extra-chapter/cvar_system/).
 - [ ] Command system.
-- [ ] Perfetto traces. Make my own or using [the sdk](https://perfetto.dev/docs/instrumentation/tracing-sdk).
+- [ ] Perfetto traces. Make my own. At first I can use [the sdk](https://perfetto.dev/docs/instrumentation/tracing-sdk).
 - [ ] Shaders hot reload.
+- [ ] Debug.cpp with stack trace and other stuff like this.
+- [ ] CPU Multithreading. GameThread-RenderThread at least and async parallel tasks (e.g.: load textures/models/etc. in parallel). Make my own. At first I can use the stl. References: [vkguide](https://vkguide.dev/docs/extra-chapter/multithreading/).
+- [ ] Auto-install vulkan sdk when executing cmake if not already installed.
 
 ## Render
 
@@ -99,3 +105,8 @@ and you can see the index.html generated in ..\docs\index.html.
 ### DirectX12
 
 - [ ] Basics (initialization and draw triangle)
+
+# Github branches
+
+- `main` is the "stable" branch
+- `dev` is the development branch with the latest features

@@ -45,8 +45,6 @@ endif()
 ## includes
 include_directories(${ARC_PATH}/src)
 include_directories(${ARC_PATH}/third_party/spdlog/include)
-#include_directories(${ARC_PATH}/third_party/glfw/include)
-#include_directories(${ARC_PATH}/third_party/imgui/include)
 
 ## TODO: precompiled headers here too?
 #target_precompile_headers(${NAME} PUBLIC src/arcpch.h)

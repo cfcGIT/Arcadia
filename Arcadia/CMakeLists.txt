@@ -65,17 +65,23 @@ endif(MSVC)
 target_compile_options(${NAME} PRIVATE /utf-8) # To avoid "...\third_party\spdlog\include\spdlog\fmt\bundled\base.h(458,28): error C2338: static_assert failed: 'Unicode support requires compiling with /utf-8'"
 
 ## link libraries
+# git submodules (with source code) #
 # GLFW
-add_subdirectory(third_party/glfw) # With source code
+add_subdirectory(third_party/glfw)
 target_link_libraries(${NAME} glfw)
 # imgui
-add_subdirectory(third_party/imgui) # With source code
+add_subdirectory(third_party/imgui)
 target_link_libraries(${NAME} imgui)
+# glm
+add_subdirectory(third_party/glm)
+target_link_libraries(${NAME} glm)
+
+# installed packages (without source code) # TODO: install if not found
 # OpenGL (not principal render API)
-find_package(OpenGL) # Without source code (found in Windows Kits)
+find_package(OpenGL)
 target_link_libraries(${NAME} OpenGL::GL)
 # Vulkan (principal render API)
-find_package(Vulkan REQUIRED) # Without source code
+find_package(Vulkan REQUIRED)
 target_link_libraries(${NAME} Vulkan::Vulkan)
 
 ## output-dir and post build event

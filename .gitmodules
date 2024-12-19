@@ -7,3 +7,6 @@
 [submodule "Arcadia/third_party/imgui/include/imgui"]
 	path = Arcadia/third_party/imgui/include/imgui
 	url = https://github.com/cfcGIT/imgui
+[submodule "Arcadia/third_party/glm"]
+	path = Arcadia/third_party/glm
+	url = https://github.com/g-truc/glm.git
