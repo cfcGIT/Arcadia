@@ -1,11 +1,12 @@
 #include "Arcadia/Renderer/Vulkan/VK_Utils.h"
-#include "Arcadia/Renderer/Vulkan/VK_Error.h"
+
+#include "Arcadia/Renderer/Vulkan/VK_Context.h"
 
 #include "GLFW/glfw3.h"
 
 namespace Arcadia
 {
-    namespace VK
+    namespace VKUtils
     {
         // For doxygen doc
         /** @defgroup VKUtilsGroup VK_Utils
@@ -43,6 +44,39 @@ namespace Arcadia
             oCreateInfo_.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
             oCreateInfo_.pfnUserCallback = Arcadia::VK::DebugCallback;
             oCreateInfo_.pUserData = nullptr; // Optional
+        }
+
+        /**
+        * @brief Check that all of the validation layers exist in the available layers list
+        */
+        bool CheckValidationLayerSupport()
+        {
+            uint32_t uLayerCount;
+            vkEnumerateInstanceLayerProperties(&uLayerCount, nullptr);
+
+            std::vector<VkLayerProperties> tAvailableLayers(uLayerCount);
+            vkEnumerateInstanceLayerProperties(&uLayerCount, tAvailableLayers.data());
+
+            for (const char* sLayerName : Arcadia::VK::s_tValidationLayers)
+            {
+                bool bLayerFound = false;
+
+                for (const VkLayerProperties& oLayerProperties : tAvailableLayers)
+                {
+                    if (strcmp(sLayerName, oLayerProperties.layerName) == 0)
+                    {
+                        bLayerFound = true;
+                        break;
+                    }
+                }
+
+                if (!bLayerFound)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         /** @} */ // end of VK_Utils group

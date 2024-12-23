@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Arcadia/Core.h"
-#include "Arcadia/LayerStack.h"
-#include "Arcadia/Events/Event.h"
 #include "Arcadia/Events/ApplicationEvent.h"
+#include "Arcadia/Events/Event.h"
+#include "Arcadia/LayerStack.h"
 
 #include "Arcadia/Window.h"
 
@@ -24,6 +24,8 @@ namespace Arcadia
 
         inline CWindow& GetWindow() { return *m_pWindow; }
 
+        inline static CApplication& Get() { return *m_oApplication; }
+
     private:
         bool OnWindowClose(CWindowCloseEvent& _oEvent);
 
@@ -31,6 +33,8 @@ namespace Arcadia
         std::unique_ptr<CWindow> m_pWindow;
         bool m_bRunning = true;
         CLayerStack m_oLayerStack;
+
+        static CApplication* m_oApplication;
     };
 
     // To be defined in the client

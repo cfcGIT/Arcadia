@@ -4,9 +4,9 @@
 
 #include "arcpch.h" // No need because it's pch, but so that intellisense doesn't complain
 
-#include <iostream>
-
 #include "Arcadia/Layer.h"
+
+#include <iostream>
 
 extern Arcadia::CApplication* Arcadia::CreateApplication();
 

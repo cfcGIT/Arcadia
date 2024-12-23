@@ -10,7 +10,7 @@ public:
 
     void OnUpdate() override
     {
-        ARC_INFO("ExampleLayer update");
+        //ARC_INFO("ExampleLayer update");
     }
 
     void OnEvent(Arcadia::CEvent& _oEvent) override

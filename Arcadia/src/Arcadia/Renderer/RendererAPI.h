@@ -10,9 +10,9 @@ namespace Arcadia
         enum class EAPI
         {
             None = -1,
-            Vulkan = 0,
-            OpenGL = 1,
-            DX12 = 2
+            Vulkan,
+            OpenGL,
+            DX12
         };
 
     public:

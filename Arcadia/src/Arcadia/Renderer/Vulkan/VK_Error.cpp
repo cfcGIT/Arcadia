@@ -1,4 +1,5 @@
 #include "Arcadia/Renderer/Vulkan/VK_Error.h"
+
 #include "Arcadia/Log.h"
 
 #define ARC_VK_ERROR_STRING(x) case x: return #x

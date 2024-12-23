@@ -4,10 +4,12 @@
 
 namespace Arcadia
 {
-    namespace VK
+    namespace VKUtils
     {
         std::vector<const char*> GetRequiredExtensions(bool _bValidationLayersEnabled);
 
         void PopulateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& oCreateInfo_);
+
+        bool CheckValidationLayerSupport();
     }
 }

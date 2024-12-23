@@ -2,6 +2,9 @@
 
 #include "Arcadia/Core.h"
 #include "Arcadia/Events/Event.h"
+#include "Arcadia/Renderer/RenderContext.h"
+
+#include "GLFW/glfw3.h"
 
 namespace Arcadia
 {
@@ -15,24 +18,54 @@ namespace Arcadia
             : m_sTitle(_sTitle), m_uWidth(_uWidth), m_uHeight(_uHeight) {}
     };
     
-	// Interface (pure virtual)
     class CWindow
 	{
 	public:
 		typedef std::function<void(CEvent&)> EventCallbackFn;
 
-		virtual ~CWindow() = default;
+		CWindow();
+		CWindow(const SWindowProps& _oWindowProps);
 
-		virtual void OnUpdate() = 0;
+		~CWindow();
 
-		virtual uint32_t GetWidth() const = 0;
-		virtual uint32_t GetHeight() const = 0;
+		//void Init(const SWindowProps& _oWindowProps);
+
+		void OnUpdate();
+
+		inline uint32_t GetWidth() const { return m_oWindowData.m_oWindowProps.m_uWidth; };
+		inline uint32_t GetHeight() const { return m_oWindowData.m_oWindowProps.m_uWidth; }
 
 		// Window attributes
-		virtual void SetEventCallback(const EventCallbackFn& _callback) = 0;
-		virtual void SetVSync(bool _bEnabled) = 0;
-		virtual bool IsVSync() const = 0;
+		inline void SetEventCallback(const EventCallbackFn& _oCallback) { m_oWindowData.m_oEventCallback = _oCallback; };
+		void SetVSync(bool _bEnabled);
+		bool IsVSync() const;
 
-		static CWindow* Create(const SWindowProps& props = SWindowProps());
+		CRenderContext* GetRenderContext() const;
+
+	private:
+		void Init(const SWindowProps& _oWindowProps);
+		void Shutdown();
+
+		// GLFW Callbacks
+		static void OnWindowResizeEvent(GLFWwindow* _pGLFWWindow, int _iWidth, int _iHeight);
+		static void OnWindowCloseEvent(GLFWwindow* _pGLFWWindow);
+		static void OnDropFilesEvent(GLFWwindow* _pGLFWWindow, int _iPathCount, const char* _sPaths[]);
+		static void OnMouseMovedEvent(GLFWwindow* _pGLFWWindow, double _dXPos, double _dYPos);
+		static void OnMouseButtonEvent(GLFWwindow* _pGLFWWindow, int _iButton, int _iAction, int _iMods);
+		static void OnMouseScrolledEvent(GLFWwindow* _pGLFWWindow, double _dXOffset, double _dYOffset);
+		static void OnKeyEvent(GLFWwindow* _pGLFWWindow, int _iKey, int _iScancode, int _iAction, int _iMods);
+
+	private:
+		CRenderContext* m_pRenderContext = nullptr;
+
+		GLFWwindow* m_pGLFWWindow = nullptr;
+
+		struct SWindowData
+		{
+			SWindowProps m_oWindowProps;
+			EventCallbackFn m_oEventCallback;
+			bool m_bVsync = false;
+		};
+		SWindowData m_oWindowData;
 	};
 }

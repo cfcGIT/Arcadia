@@ -1,4 +1,5 @@
 #include "Arcadia/Application.h"
+
 #include "Arcadia/Events/MouseEvent.h"
 #include "Arcadia/Renderer/Renderer.h"
 
@@ -6,9 +7,13 @@
 
 namespace Arcadia
 {
+    CApplication* CApplication::m_oApplication = nullptr;
+
     CApplication::CApplication()
     {
-        m_pWindow = std::unique_ptr<CWindow>(CWindow::Create());
+        m_oApplication = this;
+
+        m_pWindow = std::make_unique<CWindow>();
         m_pWindow->SetEventCallback([this](CEvent& _oEvent) { OnEvent(_oEvent); });
 
         CRenderer::Init();

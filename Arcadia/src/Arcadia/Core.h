@@ -1,5 +1,8 @@
 #pragma once
 
+// TODO: include if vulkan
+#include "Arcadia/Renderer/Vulkan/VK_Error.h"
+
 // TODO: Support other OS
 #ifndef ARC_PLATFORM_WINDOWS
     #error Arcadia only supports windows!
@@ -17,4 +20,5 @@
 
 #define BIT(x) (1 << x)
 
+// TODO: define if vulkan
 #define ARC_VK_CHECK(res, msg) Arcadia::VK::_CheckVKResult(__FILE__, __LINE__, res, msg)
