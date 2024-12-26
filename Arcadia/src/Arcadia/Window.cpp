@@ -3,6 +3,7 @@
 #include "Arcadia/Events/ApplicationEvent.h"
 #include "Arcadia/Events/KeyEvent.h"
 #include "Arcadia/Events/MouseEvent.h"
+#include "Arcadia/Renderer/RenderContext.h"
 
 #include "GLFW/glfw3.h"
 
@@ -36,11 +37,16 @@ namespace Arcadia
         glfwSwapBuffers(m_pGLFWWindow);
     }
 
+    void CWindow::InitRenderContext()
+    {
+        // * Render context
+        m_pRenderContext = CRenderContext::Create();
+        m_pRenderContext->Init();
+    }
+
     void CWindow::Init(const SWindowProps& _oWindowProps)
     {
         m_oWindowData.m_oWindowProps = _oWindowProps;
-
-        ARC_CORE_INFO("CWindow create: {0} ({1}, {2})", _oWindowProps.m_sTitle, _oWindowProps.m_uWidth, _oWindowProps.m_uHeight);
 
         if (!s_bGLFWInitialized)
         {
@@ -56,6 +62,8 @@ namespace Arcadia
         // TODO: glfwSetFramebufferSizeCallback(m_Window, framebufferResizeCallback);
         SetVSync(true);
 
+        ARC_CORE_INFO("GFLW window created: {0} ({1}, {2})", _oWindowProps.m_sTitle, _oWindowProps.m_uWidth, _oWindowProps.m_uHeight);
+
         // * Set GLFW callbacks
         // App events
         glfwSetWindowSizeCallback(m_pGLFWWindow, OnWindowResizeEvent);
@@ -70,15 +78,12 @@ namespace Arcadia
 
         // Key events
         glfwSetKeyCallback(m_pGLFWWindow, OnKeyEvent);
-
-        // * Render context // TODO: Check
-        m_pRenderContext = CRenderContext::Create();
-        m_pRenderContext->Init();
     }
 
     void CWindow::Shutdown()
     {
         glfwDestroyWindow(m_pGLFWWindow);
+        glfwTerminate();
         delete m_pRenderContext;
     }
 
@@ -176,15 +181,5 @@ namespace Arcadia
     {
         glfwSwapInterval((_bEnabled) ? 1 : 0);
         m_oWindowData.m_bVsync = _bEnabled;
-    }
-
-    bool CWindow::IsVSync() const
-    {
-        return m_oWindowData.m_bVsync;
-    }
-
-    CRenderContext* CWindow::GetRenderContext() const
-    {
-        return m_pRenderContext;
     }
 }

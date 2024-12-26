@@ -4,6 +4,5 @@ namespace Arcadia
 {
     void CVK_RendererAPI::Init()
     {
-        
     }
 }

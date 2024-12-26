@@ -1,13 +1,15 @@
 #include "Arcadia/Renderer/RenderContext.h"
 
+#include "Arcadia/Application.h"
 #include "Arcadia/Renderer/Renderer.h"
+// TODO: include if vulkan
 #include "Arcadia/Renderer/Vulkan/VK_Context.h"
 
 namespace Arcadia
 {
     CRenderContext* CRenderContext::Create()
     {
-        CRendererAPI::EAPI oAPI = CRenderer::GetAPI();
+        CRendererAPI::EAPI oAPI = CApplication::Get().GetRenderer().GetAPI();
         switch (oAPI)
         {
             case CRendererAPI::EAPI::Vulkan:

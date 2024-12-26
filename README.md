@@ -68,11 +68,14 @@ and you can see the index.html generated in ..\docs\index.html.
 
 ## General
 
-- [ ] CVar system. References: [CVarSystem of DOOM-3](https://github.com/id-Software/DOOM-3/blob/master/neo/framework/CVarSystem.h), [vkguide](https://vkguide.dev/docs/extra-chapter/cvar_system/).
+- [ ] CVar system. References: [DOOM-3](https://github.com/id-Software/DOOM-3/blob/master/neo/framework/CVarSystem.h), [vkguide](https://vkguide.dev/docs/extra-chapter/cvar_system/).
 - [ ] Command system.
-- [ ] Perfetto traces. Make my own. At first I can use [the sdk](https://perfetto.dev/docs/instrumentation/tracing-sdk).
 - [ ] Shaders hot reload.
 - [ ] Debug.cpp with stack trace and other stuff like this.
+- [ ] Memory management. Make my own. References: [DOOM-3](https://github.com/id-Software/DOOM-3/blob/master/neo/idlib/Heap.h). In progress.
+    - [ ] System to detect memory leaks. In progress.
+    - [ ] Vulkan Memory Allocator. Make my own. References: [VMA](https://gpuopen.com/vulkan-memory-allocator/)
+- [ ] Perfetto traces. Make my own. At first I can use [the sdk](https://perfetto.dev/docs/instrumentation/tracing-sdk).
 - [ ] CPU Multithreading. GameThread-RenderThread at least and async parallel tasks (e.g.: load textures/models/etc. in parallel). Make my own. At first I can use the stl. References: [vkguide](https://vkguide.dev/docs/extra-chapter/multithreading/).
 - [ ] Auto-install vulkan sdk when executing cmake if not already installed.
 
@@ -108,5 +111,5 @@ and you can see the index.html generated in ..\docs\index.html.
 
 # Github branches
 
-- `main` is the "stable" branch
-- `dev` is the development branch with the latest features
+- `main` is the "stable" branch.
+- `dev` is the development branch with the latest features.

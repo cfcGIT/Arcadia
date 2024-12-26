@@ -29,10 +29,8 @@ public:
     {
         PushLayer(new CExampleLayer());
     }
-
     ~CSandbox()
     {
-
     }
 };
 

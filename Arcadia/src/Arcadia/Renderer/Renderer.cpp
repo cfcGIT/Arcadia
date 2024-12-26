@@ -1,12 +1,11 @@
 #include "Arcadia/Renderer/Renderer.h"
 
-#include "Arcadia/Renderer/RenderCommand.h"
-
 namespace Arcadia
 {
     void CRenderer::Init()
     {
-        CRenderCommand::Init();
+        m_pRendererAPI = CRendererAPI::Create();
+        m_pRendererAPI->Init();
     }
 
     void CRenderer::Shutdown()

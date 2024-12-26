@@ -1,27 +1,33 @@
 #include "Arcadia/Application.h"
 
+#include "Arcadia/LayerStack.h"
 #include "Arcadia/Events/MouseEvent.h"
 #include "Arcadia/Renderer/Renderer.h"
+#include "Arcadia/Window.h"
+#include "Arcadia/Events/ApplicationEvent.h"
+#include "Arcadia/Layer.h"
 
 #include "GLFW/glfw3.h"
 
 namespace Arcadia
 {
-    CApplication* CApplication::m_oApplication = nullptr;
-
     CApplication::CApplication()
     {
-        m_oApplication = this;
+        m_pInstance = this;
+
+        m_pRenderer = std::make_unique<CRenderer>();
+        m_pRenderer->Init();
 
         m_pWindow = std::make_unique<CWindow>();
+        m_pWindow->InitRenderContext();
         m_pWindow->SetEventCallback([this](CEvent& _oEvent) { OnEvent(_oEvent); });
-
-        CRenderer::Init();
     }
 
     CApplication::~CApplication()
     {
-        CRenderer::Shutdown();
+        m_pRenderer->Shutdown();
+
+        m_pInstance = nullptr;
     }
 
     void CApplication::OnEvent(CEvent& _oEvent)

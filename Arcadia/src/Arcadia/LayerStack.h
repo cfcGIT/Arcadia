@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Arcadia/Core.h"
-#include "Arcadia/Layer.h"
-
 namespace Arcadia
 {
+    class CLayer;
+
     /**
     * LayerStack will have layers first and overlays after: Layer1,Layer2,...,LayerN,Overlay1,Overlay2,...,OverlayN
     * 

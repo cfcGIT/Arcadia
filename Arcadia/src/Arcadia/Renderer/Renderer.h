@@ -10,9 +10,12 @@ namespace Arcadia
     public:
         inline static CRenderContext* GetContext() { return CApplication::Get().GetWindow().GetRenderContext(); }
 
-        static void Init();
-        static void Shutdown();
+        void Init();
+        void Shutdown();
 
-        static CRendererAPI::EAPI GetAPI() { return CRendererAPI::GetAPI(); }
+        CRendererAPI::EAPI GetAPI() { return m_pRendererAPI->GetAPI(); }
+
+    private:
+        std::unique_ptr<CRendererAPI> m_pRendererAPI;
     };
 }

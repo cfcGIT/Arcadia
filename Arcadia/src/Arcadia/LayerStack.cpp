@@ -1,5 +1,7 @@
 #include "Arcadia/LayerStack.h"
 
+#include "Arcadia/Layer.h"
+
 namespace Arcadia
 {
     CLayerStack::~CLayerStack()

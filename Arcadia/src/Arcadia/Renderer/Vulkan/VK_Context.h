@@ -3,27 +3,15 @@
 #include "Arcadia/Renderer/Renderer.h"
 #include "Arcadia/Renderer/RenderContext.h"
 
-#include "vulkan/vulkan.h"
-
 namespace Arcadia
 {
     namespace VK
     {
-        static const std::vector<const char*> s_tValidationLayers = {
-                "VK_LAYER_KHRONOS_validation"
-        };
+        class CVK_LogicalDevice;
+        class CVK_PhysicalDevice;
 
         class CVK_Context : public CRenderContext
         {
-        public:
-            // TODO: CVar
-            static const bool s_bVKDebug =
-    #ifdef ARC_VK_DEBUG
-                true;
-    #else
-                false;
-    #endif
-
         public:
             CVK_Context();
             ~CVK_Context();
@@ -32,16 +20,25 @@ namespace Arcadia
 
             virtual void InitGUI() override;
 
-            inline VkInstance GetInstance() const { return m_oVKInstance; }
+            inline CVK_LogicalDevice* GetDevice() const { return m_pLogicalDevice; }
+
+            inline static VkInstance GetInstance() { return m_oVKInstance; }
 
             inline static CVK_Context* Get() { return (CVK_Context*)CRenderer::GetContext(); }
 
         private:
-            // Create vulkan instance
             VkResult CreateInstance();
 
+            VkResult SetupDebugMessenger();
+            void CleanupDebugMessenger();
+
         private:
-            VkInstance m_oVKInstance = VK_NULL_HANDLE;
+            inline static VkInstance m_oVKInstance = VK_NULL_HANDLE;
+            VkDebugUtilsMessengerEXT m_oDebugMessenger = VK_NULL_HANDLE;
+
+            // Devices refs
+            CVK_PhysicalDevice* m_pPhysicalDevice = nullptr;
+            CVK_LogicalDevice* m_pLogicalDevice = nullptr;
         };
     }
 }

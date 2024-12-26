@@ -44,6 +44,7 @@ if %BUILD_ALL%==1 (
     )
 )
 
+pause
 exit /b %ERRORLEVEL%
 
 :help

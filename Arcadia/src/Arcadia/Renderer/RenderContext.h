@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Arcadia/Core.h"
-
 namespace Arcadia
 {
     class CRenderContext

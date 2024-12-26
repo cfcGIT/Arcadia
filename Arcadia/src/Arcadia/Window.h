@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Arcadia/Core.h"
-#include "Arcadia/Events/Event.h"
-#include "Arcadia/Renderer/RenderContext.h"
 
-#include "GLFW/glfw3.h"
+class GLFWwindow;
 
 namespace Arcadia
 {
+	class CEvent;
+	class CRenderContext;
+
     struct SWindowProps
     {
         std::string m_sTitle;
@@ -28,23 +29,26 @@ namespace Arcadia
 
 		~CWindow();
 
-		//void Init(const SWindowProps& _oWindowProps);
-
 		void OnUpdate();
 
 		inline uint32_t GetWidth() const { return m_oWindowData.m_oWindowProps.m_uWidth; };
 		inline uint32_t GetHeight() const { return m_oWindowData.m_oWindowProps.m_uWidth; }
 
+		inline GLFWwindow* GetGLFWwindow() const { return m_pGLFWWindow; }
+
 		// Window attributes
 		inline void SetEventCallback(const EventCallbackFn& _oCallback) { m_oWindowData.m_oEventCallback = _oCallback; };
 		void SetVSync(bool _bEnabled);
-		bool IsVSync() const;
+		inline bool IsVSync() const { return m_oWindowData.m_bVsync; }
 
-		CRenderContext* GetRenderContext() const;
+		void InitRenderContext();
+
+		inline CRenderContext* GetRenderContext() const { return m_pRenderContext; }
 
 	private:
 		void Init(const SWindowProps& _oWindowProps);
 		void Shutdown();
+
 
 		// GLFW Callbacks
 		static void OnWindowResizeEvent(GLFWwindow* _pGLFWWindow, int _iWidth, int _iHeight);

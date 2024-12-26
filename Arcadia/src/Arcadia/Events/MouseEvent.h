@@ -15,9 +15,10 @@ namespace Arcadia
 
         std::string ToString() const override
         {
+            // TODO: Don't use stringstream, it does 3 allocs in two lines -.-
             std::stringstream ss;
-            ss << "MouseMovedEvent: " << m_fMouseX << ", " << m_fMouseY;
-            return ss.str();
+            ss << "MouseMovedEvent: " << m_fMouseX << ", " << m_fMouseY; // 1 alloc
+            return ss.str(); // 2 allocs
         }
 
         EVENT_CLASS_TYPE(MouseMoved);

@@ -3,8 +3,6 @@
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_vulkan.h"
 
-#include "arcpch.h"
-
 namespace Arcadia
 {
     void CVK_ImGuiLayer::OnAttach()

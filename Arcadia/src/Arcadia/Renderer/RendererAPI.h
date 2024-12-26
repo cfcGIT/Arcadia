@@ -1,7 +1,5 @@
 #pragma once
 
-#include "arcpch.h"
-
 namespace Arcadia
 {
     class CRendererAPI
@@ -22,7 +20,7 @@ namespace Arcadia
         static std::unique_ptr<CRendererAPI> Create();
 
     private:
-        static EAPI m_oAPI;
+        inline static EAPI m_oAPI = EAPI::Vulkan; // TODO: CVar
 
     };
 }

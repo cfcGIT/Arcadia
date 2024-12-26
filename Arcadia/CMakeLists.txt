@@ -49,6 +49,7 @@ source_group("Platform/Windows" FILES ${PLATFORM_WINDOWS_HEADER} ${PLATFORM_WIND
 ## compile definitios
 add_compile_definitions("$<$<CONFIG:Debug>:ARC_ENABLE_ASSERT>")
 add_compile_definitions("$<$<CONFIG:Debug>:ARC_VK_DEBUG>")
+add_compile_definitions(ARC_TRACK_MEMORY)
 if (WIN32)
     add_compile_definitions(ARC_PLATFORM_WINDOWS)
 endif(WIN32)
@@ -60,6 +61,7 @@ if(MSVC)
     # To link the right runtime version of the right runtime library version
     target_compile_options(${NAME} PRIVATE $<IF:$<CONFIG:Debug>,/MDd /Zi,/MD>)
     target_compile_options(${NAME} PRIVATE /Wall) # All warnings
+    target_compile_options(${NAME} PRIVATE /MP) # Multiprocessor compilation
     target_link_options(${NAME} PUBLIC /ignore:4099)
 endif(MSVC)
 target_compile_options(${NAME} PRIVATE /utf-8) # To avoid "...\third_party\spdlog\include\spdlog\fmt\bundled\base.h(458,28): error C2338: static_assert failed: 'Unicode support requires compiling with /utf-8'"

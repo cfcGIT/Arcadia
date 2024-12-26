@@ -1,6 +1,6 @@
 #include "Arcadia/Renderer/Vulkan/VK_Utils.h"
 
-#include "Arcadia/Renderer/Vulkan/VK_Context.h"
+#include "Arcadia/Renderer/Vulkan/VK_Global.h"
 
 #include "GLFW/glfw3.h"
 
@@ -57,7 +57,7 @@ namespace Arcadia
             std::vector<VkLayerProperties> tAvailableLayers(uLayerCount);
             vkEnumerateInstanceLayerProperties(&uLayerCount, tAvailableLayers.data());
 
-            for (const char* sLayerName : Arcadia::VK::s_tValidationLayers)
+            for (const char* sLayerName : Arcadia::VKGlobal::g_tValidationLayers)
             {
                 bool bLayerFound = false;
 
@@ -77,6 +77,13 @@ namespace Arcadia
             }
 
             return true;
+        }
+
+        std::string GetVersionString(uint32_t _uVersion)
+        {
+            char str[64];
+            sprintf_s(str, "%d.%d.%d", VK_VERSION_MAJOR(_uVersion), VK_VERSION_MINOR(_uVersion), VK_VERSION_PATCH(_uVersion));
+            return std::string(str);
         }
 
         /** @} */ // end of VK_Utils group

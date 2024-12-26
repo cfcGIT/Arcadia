@@ -1,7 +1,5 @@
 #pragma once
 
-#include "vulkan/vulkan.h"
-
 namespace Arcadia
 {
     namespace VKUtils
@@ -11,5 +9,7 @@ namespace Arcadia
         void PopulateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& oCreateInfo_);
 
         bool CheckValidationLayerSupport();
+
+        std::string GetVersionString(uint32_t _uVersion);
     }
 }

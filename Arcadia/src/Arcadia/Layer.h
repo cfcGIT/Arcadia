@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Arcadia/Core.h"
-#include "Arcadia/Events/Event.h"
-
 namespace Arcadia
 {
+    class CEvent;
+
     class CLayer
     {
     public:

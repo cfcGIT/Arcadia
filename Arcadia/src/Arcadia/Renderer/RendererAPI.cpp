@@ -5,8 +5,6 @@
 
 namespace Arcadia
 {
-    CRendererAPI::EAPI CRendererAPI::m_oAPI = CRendererAPI::EAPI::Vulkan; // TODO: CVar
-
     std::unique_ptr<CRendererAPI> CRendererAPI::Create()
     {
         switch (m_oAPI)

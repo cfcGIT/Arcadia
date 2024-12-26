@@ -1,14 +1,16 @@
 #pragma once
 
-#include "Arcadia/Core.h"
-#include "Arcadia/Events/ApplicationEvent.h"
-#include "Arcadia/Events/Event.h"
 #include "Arcadia/LayerStack.h"
-
+#include "Arcadia/Renderer/RendererAPI.h"
 #include "Arcadia/Window.h"
 
 namespace Arcadia
 {
+    class CEvent;
+    class CLayer;
+    class CRenderer;
+    class CWindowCloseEvent;
+
     class CApplication
     {
     public:
@@ -24,17 +26,21 @@ namespace Arcadia
 
         inline CWindow& GetWindow() { return *m_pWindow; }
 
-        inline static CApplication& Get() { return *m_oApplication; }
+        inline static CApplication& Get() { return *m_pInstance; }
+
+        inline CRenderer& GetRenderer() { return *m_pRenderer; }
 
     private:
         bool OnWindowClose(CWindowCloseEvent& _oEvent);
 
     private:
-        std::unique_ptr<CWindow> m_pWindow;
+        std::unique_ptr<CWindow> m_pWindow = nullptr;
         bool m_bRunning = true;
         CLayerStack m_oLayerStack;
 
-        static CApplication* m_oApplication;
+        inline static CApplication* m_pInstance = nullptr;
+
+        std::unique_ptr<CRenderer> m_pRenderer = nullptr;
     };
 
     // To be defined in the client
