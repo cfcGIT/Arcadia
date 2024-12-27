@@ -1,5 +1,4 @@
 #pragma once
-
 #ifdef ARC_TRACK_MEMORY
 
 #include <memory>
@@ -110,5 +109,9 @@ inline void* operator new(size_t _uSize, const char* _sFile, int _iLine)
 }
 
 #define arcnew new(__FILE__, __LINE__)
+
+#else
+
+#define arcnew new
 
 #endif

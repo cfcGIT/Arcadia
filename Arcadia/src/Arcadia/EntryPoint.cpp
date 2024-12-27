@@ -14,15 +14,19 @@ int main(int argc, char** argv)
 {
     Arcadia::CLog::Init();
 
+#ifdef ARC_TRACK_MEMORY
     g_iInitialAllocs = g_iTotalAllocs;
     g_uInitialBytes = g_uTotalBytes;
+#endif
 
     Arcadia::CApplication* pApp = Arcadia::CreateApplication();
     pApp->Run();
     delete pApp;
 
+#ifdef ARC_TRACK_MEMORY
     g_iFinalAllocs = g_iTotalAllocs;
     g_uFinalBytes = g_uTotalBytes;
+#endif
 
     // Check memory leaks
 #ifdef ARC_TRACK_MEMORY
