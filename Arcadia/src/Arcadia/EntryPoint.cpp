@@ -15,8 +15,7 @@ int main(int argc, char** argv)
     Arcadia::CLog::Init();
 
 #ifdef ARC_TRACK_MEMORY
-    g_iInitialAllocs = g_iTotalAllocs;
-    g_uInitialBytes = g_uTotalBytes;
+    g_bCountAllocs = true;
 #endif
 
     Arcadia::CApplication* pApp = Arcadia::CreateApplication();
@@ -24,19 +23,17 @@ int main(int argc, char** argv)
     delete pApp;
 
 #ifdef ARC_TRACK_MEMORY
-    g_iFinalAllocs = g_iTotalAllocs;
-    g_uFinalBytes = g_uTotalBytes;
+    g_bCountAllocs = false;
 #endif
 
     // Check memory leaks
 #ifdef ARC_TRACK_MEMORY
-    for(const auto& kb: g_mMemoryData)
+    for (int i = 0; i < g_iTotalAllocs; ++i)
     {
-        SMemoryData oMemoryData = (SMemoryData)(kb.second);
-        ARC_CORE_WARN("ARC memory leak of {0} bytes from {1}({2})", oMemoryData.m_uSize, oMemoryData.m_pFile, oMemoryData.m_iLine);
+        const SMemoryData& oMemoryData = g_tMemoryData[i];
+        ARC_CORE_WARN("Memory leak of {0} bytes from {1}({2})", oMemoryData.m_uSize, oMemoryData.m_pFile, oMemoryData.m_iLine);
     }
-    ARC_CORE_ASSERT(g_uFinalBytes == g_uInitialBytes, "ARC memory leaks summary: {0} bytes!!", g_uFinalBytes - g_uInitialBytes); // Memory leaks of arcnew
-    ARC_CORE_ASSERT(g_iFinalAllocs == g_iInitialAllocs, "Total memory leaks: {0}!!", g_iFinalAllocs - g_iInitialAllocs); // Memory leaks of arcnew + new
+    ARC_CORE_ASSERT(g_iTotalAllocs == 0 && g_uTotalBytes == 0, "Memory leaks summary: {0} bytes in {1} leaks!", g_uTotalBytes, g_iTotalAllocs);
 #endif
 }
 

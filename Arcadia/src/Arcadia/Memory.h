@@ -3,109 +3,66 @@
 
 #include <memory>
 
+constexpr uint32_t MAX_TRACK_ALLOCS = 256;
+
+/**
+* @brief Struct with the data we want to save to track memory errors
+*/
 struct SMemoryData
 {
-	void* pMemory = nullptr;
-	size_t m_uSize = 0;
-	const char* m_pFile = nullptr;
-	int m_iLine = -1;
+    void* pMemory = nullptr;
+    size_t m_uSize = 0;
+    const char* m_pFile = "";
+    int m_iLine = -1;
 };
 
-extern int g_iTotalAllocs;
-extern int g_iInitialAllocs; // Allocs before creating the app
-extern int g_iFinalAllocs; // Allocs after deleting the app
-extern size_t g_uTotalBytes;
-extern size_t g_uInitialBytes;
-extern size_t g_uFinalBytes;
+/**
+* Global vars to track memory allocs
+*/
+extern bool g_bCountAllocs; // True if we want to track new allocs
+extern int g_iTotalAllocs; // Total allocs count
+extern size_t g_uTotalBytes; // Total bytes count
+extern SMemoryData g_tMemoryData[MAX_TRACK_ALLOCS]; // Array with memory data tracked
 
-extern std::map<void*, SMemoryData> g_mMemoryData;
+namespace Arcadia
+{
+    namespace Memory
+    {
+        void* Alloc(size_t _uSize, const char* _pFile, int _iLine);
+        void* Alloc(size_t _uSize);
+        void Free(void* _p);
+    }
+}
 
+/**
+* Override of new and delete operators 
+*/
 inline void* operator new(size_t _uSize)
 {
-	g_iTotalAllocs++;
-	return malloc(_uSize);
-
-	// TODO: I can't do this because of the creation of g_mMemoryData itself. Call other new function or something.
-	//void* pMemory = malloc(_uSize);
-	//g_iTotalAllocs++;
-	//g_uTotalBytes += _uSize;
-	//SMemoryData& oMemoryData = g_mMemoryData[pMemory];
-	//oMemoryData.pMemory = pMemory;
-	//oMemoryData.m_uSize = _uSize;
-	//return pMemory;
+    return Arcadia::Memory::Alloc(_uSize);
 }
 
 inline void operator delete(void* _p)
 {
-	if (_p)
-	{
-		g_iTotalAllocs--;
-
-		// TODO: Hack to avoid going through here in the deletion of the g_mMemoryData itself. I don't feel great with this. Call other delete function or something.
-		if (g_mMemoryData.size() > 0 && g_mMemoryData.size() != (g_iFinalAllocs - g_iInitialAllocs))
-		{
-			auto it = g_mMemoryData.find(_p);
-			if (it != g_mMemoryData.end())
-			{
-				g_uTotalBytes -= ((SMemoryData)((*it).second)).m_uSize;
-				g_mMemoryData.erase(it);
-			}
-		}
-		
-		free(_p);
-	}
+    Arcadia::Memory::Free(_p);
 }
 
 inline void* operator new[](size_t _uSize)
 {
-	g_iTotalAllocs++;
-	return malloc(_uSize);
-
-	// TODO: I can't do this because of the creation of g_mMemoryData itself. Call other new function or something.
-	//void* pMemory = malloc(_uSize);
-	//g_iTotalAllocs++;
-	//g_uTotalBytes += _uSize;
-	//SMemoryData& oMemoryData = g_mMemoryData[pMemory];
-	//oMemoryData.pMemory = pMemory;
-	//oMemoryData.m_uSize = _uSize;
-	//return pMemory;
+    return Arcadia::Memory::Alloc(_uSize);
 }
 
 inline void operator delete[](void* _p)
 {
-	if (_p)
-	{
-		g_iTotalAllocs--;
-
-		// TODO: Hack to avoid going through here in the deletion of the g_mMemoryData itself. I don't feel great with this. Call other delete function or something.
-		if (g_mMemoryData.size() > 0 && g_mMemoryData.size() != (g_iFinalAllocs - g_iInitialAllocs))
-		{
-			auto it = g_mMemoryData.find(_p);
-			if (it != g_mMemoryData.end())
-			{
-				g_uTotalBytes -= ((SMemoryData)((*it).second)).m_uSize;
-				g_mMemoryData.erase(it);
-			}
-		}
-
-		free(_p);
-	}
+    Arcadia::Memory::Free(_p);
 }
 
-inline void* operator new(size_t _uSize, const char* _sFile, int _iLine)
+/**
+* Alloc with more info (file and line). Called by the macro arcnew
+*/
+inline void* operator new(size_t _uSize, const char* _pFile, int _iLine)
 {
-	void* pMemory = malloc(_uSize);
-
-	g_iTotalAllocs++;
-	g_uTotalBytes += _uSize;
-
-	SMemoryData& oMemoryData = g_mMemoryData[pMemory];
-	oMemoryData.pMemory = pMemory;
-	oMemoryData.m_uSize = _uSize;
-	oMemoryData.m_pFile = _sFile;
-	oMemoryData.m_iLine = _iLine;
-
-	return pMemory;
+    return Arcadia::Memory::Alloc(_uSize, _pFile, _iLine);
 }
 
 #define arcnew new(__FILE__, __LINE__)
