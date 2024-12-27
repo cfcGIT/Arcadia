@@ -27,7 +27,7 @@ class CSandbox : public Arcadia::CApplication
 public:
     CSandbox()
     {
-        PushLayer(new CExampleLayer());
+        PushLayer(arcnew CExampleLayer());
     }
     ~CSandbox()
     {
@@ -36,5 +36,5 @@ public:
 
 Arcadia::CApplication* Arcadia::CreateApplication()
 {
-    return new CSandbox();
+    return arcnew CSandbox();
 }

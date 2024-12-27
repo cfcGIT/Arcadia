@@ -41,7 +41,7 @@ namespace Arcadia
         */
         CVK_PhysicalDevice* CVK_PhysicalDevice::Select()
         {
-            return new CVK_PhysicalDevice();
+            return arcnew CVK_PhysicalDevice();
         }
 
         /**

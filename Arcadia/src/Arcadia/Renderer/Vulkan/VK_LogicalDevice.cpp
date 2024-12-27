@@ -70,7 +70,7 @@ namespace Arcadia
         */
         CVK_LogicalDevice* CVK_LogicalDevice::Create(const CVK_PhysicalDevice& _oVKPhysicalDevice)
         {
-            return new CVK_LogicalDevice(_oVKPhysicalDevice);
+            return arcnew CVK_LogicalDevice(_oVKPhysicalDevice);
         }
     }
 }

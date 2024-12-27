@@ -13,7 +13,7 @@ namespace Arcadia
         switch (oAPI)
         {
             case CRendererAPI::EAPI::Vulkan:
-                return new Arcadia::VK::CVK_Context();
+                return arcnew Arcadia::VK::CVK_Context();
             case CRendererAPI::EAPI::OpenGL:
                 ARC_CORE_ASSERT(false, "RendererAPI::OpenGL is currently not supported!");
                 return nullptr;
