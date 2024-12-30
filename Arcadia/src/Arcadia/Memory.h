@@ -4,6 +4,9 @@
 #include <memory>
 
 constexpr uint32_t MAX_TRACK_ALLOCS = 256;
+constexpr bool PRINT_DEBUG = false; // TODO: CVar
+
+// TODO: Command to print memory stats
 
 /**
 * @brief Struct with the data we want to save to track memory errors

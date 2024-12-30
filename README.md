@@ -77,7 +77,7 @@ and you can see the index.html generated in ..\docs\index.html.
     - [ ] Vulkan Memory Allocator. Make my own. References: [VMA](https://gpuopen.com/vulkan-memory-allocator/)
 - [ ] Perfetto traces. Make my own. At first I can use [the sdk](https://perfetto.dev/docs/instrumentation/tracing-sdk).
 - [ ] CPU Multithreading. GameThread-RenderThread at least and async parallel tasks (e.g.: load textures/models/etc. in parallel). Make my own. At first I can use the stl. References: [vkguide](https://vkguide.dev/docs/extra-chapter/multithreading/).
-- [ ] Auto-install vulkan sdk when executing cmake if not already installed.
+- [ ] Auto-install vulkan sdk when executing cmake if not already installed?
 
 ## Render
 

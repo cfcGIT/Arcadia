@@ -9,11 +9,11 @@ namespace Arcadia
         class CVK_LogicalDevice
         {
         public:
-            CVK_LogicalDevice(const CVK_PhysicalDevice& _oVKPhysicalDevice);
+            CVK_LogicalDevice(const CVK_PhysicalDevice& _oPhysicalDevice);
             ~CVK_LogicalDevice();
 
-            static CVK_LogicalDevice* Create(const CVK_PhysicalDevice& _oVKPhysicalDevice);
-            inline VkDevice GetDevice() { return m_oDevice; }
+            static CVK_LogicalDevice* Create(const CVK_PhysicalDevice& _oPhysicalDevice);
+            inline VkDevice GetVulkanDevice() { return m_oDevice; }
 
         private:
             VkDevice m_oDevice = VK_NULL_HANDLE;

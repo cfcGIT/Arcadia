@@ -28,6 +28,11 @@ namespace Arcadia
                 oMemoryData.m_iLine = _iLine;
 
                 g_iTotalAllocs++;
+
+                if (PRINT_DEBUG)
+                {
+                    ARC_CORE_DEBUG("Alloc {0} from {1}(2). Total: {3} bytes in {4} allocs.", _uSize, _pFile, _iLine, g_uTotalBytes, g_iTotalAllocs);
+                }
             }
             return pMemory;
         }
@@ -56,6 +61,11 @@ namespace Arcadia
                             g_iTotalAllocs--;
                             g_uTotalBytes -= g_tMemoryData[i].m_uSize;
 
+                            if (PRINT_DEBUG)
+                            {
+                                ARC_CORE_DEBUG("Dealloc {0} from {1}(2). Total: {3} bytes in {4} allocs.", g_tMemoryData[i].m_uSize, g_tMemoryData[i].m_pFile, g_tMemoryData[i].m_iLine, g_uTotalBytes, g_iTotalAllocs);
+                            }
+
                             // Move all subsequent elements one position to the left
                             for (int j = i; j < g_iTotalAllocs; ++j)
                             {
@@ -65,6 +75,7 @@ namespace Arcadia
                             g_tMemoryData[g_iTotalAllocs].m_uSize = 0;
                             g_tMemoryData[g_iTotalAllocs].m_pFile = "";
                             g_tMemoryData[g_iTotalAllocs].m_iLine = -1;
+
 
                             break;
                         }

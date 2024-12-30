@@ -7,9 +7,9 @@ namespace Arcadia
 {
     namespace VK
     {
-        CVK_LogicalDevice::CVK_LogicalDevice(const CVK_PhysicalDevice& _oVKPhysicalDevice)
+        CVK_LogicalDevice::CVK_LogicalDevice(const CVK_PhysicalDevice& _oPhysicalDevice)
         {
-            CVK_PhysicalDevice::SQueueFamilyIndices oIndices = _oVKPhysicalDevice.GetQueueFamilies();
+            CVK_PhysicalDevice::SQueueFamilyIndices oIndices = _oPhysicalDevice.GetQueueFamilies();
 
             std::vector<VkDeviceQueueCreateInfo> tQueueCreateInfos;
             std::set<uint32_t> tUniqueQueueFamilies = { oIndices.uGraphicsFamily.value(), /*oIndices.uPresentFamily.value() ,*/ oIndices.uTransferFamily.value()};
@@ -51,7 +51,7 @@ namespace Arcadia
             }
 
             // Instantiate the logical device
-            ARC_VK_CHECK(vkCreateDevice(_oVKPhysicalDevice.GetPhysicalDevice(), &oCreateInfo, nullptr, &m_oDevice), "Failed to create logical device!");
+            ARC_VK_CHECK(vkCreateDevice(_oPhysicalDevice.GetVulkanPhysicalDevice(), &oCreateInfo, nullptr, &m_oDevice), "Failed to create logical device!");
 
             // We can use the vkGetDeviceQueue function to retrieve queue handles for each queue family
             vkGetDeviceQueue(m_oDevice, oIndices.uGraphicsFamily.value(), 0, &m_oGraphicsQueue);
@@ -68,9 +68,9 @@ namespace Arcadia
         /**
         * @brief Create the logical device
         */
-        CVK_LogicalDevice* CVK_LogicalDevice::Create(const CVK_PhysicalDevice& _oVKPhysicalDevice)
+        CVK_LogicalDevice* CVK_LogicalDevice::Create(const CVK_PhysicalDevice& _oPhysicalDevice)
         {
-            return arcnew CVK_LogicalDevice(_oVKPhysicalDevice);
+            return arcnew CVK_LogicalDevice(_oPhysicalDevice);
         }
     }
 }

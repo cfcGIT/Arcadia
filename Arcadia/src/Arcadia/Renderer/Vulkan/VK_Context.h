@@ -21,6 +21,7 @@ namespace Arcadia
             virtual void InitGUI() override;
 
             inline CVK_LogicalDevice* GetDevice() const { return m_pLogicalDevice; }
+            inline CVK_PhysicalDevice* GetPhysicalDevice() const { return m_pPhysicalDevice; }
 
             inline static VkInstance GetInstance() { return m_oVKInstance; }
 

@@ -53,8 +53,7 @@ namespace Arcadia
         {
             uint32_t uLayerCount;
             vkEnumerateInstanceLayerProperties(&uLayerCount, nullptr);
-
-            std::vector<VkLayerProperties> tAvailableLayers(uLayerCount);
+            std::vector<VkLayerProperties> tAvailableLayers(uLayerCount); // TODO: Here we are allocating and deallocating +10400B (520 (VkLayerProperties size) * 20 (uLayerCount)) in the heap. It's not much and it's only one time, but it's a good practice to try to manage this memory on the stack to avoid memory fragmentation. See https://austinmorlan.com/posts/temporary_memory_allocator/
             vkEnumerateInstanceLayerProperties(&uLayerCount, tAvailableLayers.data());
 
             for (const char* sLayerName : Arcadia::VKGlobal::g_tValidationLayers)
