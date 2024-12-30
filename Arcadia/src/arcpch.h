@@ -4,6 +4,7 @@
 #include <memory>
 #include <set>
 #include <sstream>
+#include <stdint.h>
 #include <string>
 #include <vector>
 
@@ -11,5 +12,6 @@
 #include <Windows.h>
 #endif
 
+#include "Arcadia/Core/Core.h"
+#include "Arcadia/Core/Memory.h"
 #include "Arcadia/Log.h"
-#include "Arcadia/Memory.h"

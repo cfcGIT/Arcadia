@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Arcadia/Core.h"
+#include "Arcadia/Core/Core.h"
 
 #include "spdlog/spdlog.h"
 // Git reference: https://github.com/gabime/spdlog

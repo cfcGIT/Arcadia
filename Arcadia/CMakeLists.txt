@@ -23,6 +23,8 @@ file(GLOB ARC_RENDERER_HEADER src/${NAME}/Renderer/*.h)
 file(GLOB ARC_RENDERER_SOURCE src/${NAME}/Renderer/*.cpp)
 file(GLOB ARC_RENDERER_VULKAN_HEADER src/${NAME}/Renderer/Vulkan/*.h)
 file(GLOB ARC_RENDERER_VULKAN_SOURCE src/${NAME}/Renderer/Vulkan/*.cpp)
+file(GLOB ARC_CORE_HEADER src/${NAME}/Core/*.h)
+file(GLOB ARC_CORE_SOURCE src/${NAME}/Core/*.cpp)
 
 ## library
 # Headers added to show in filters
@@ -34,7 +36,8 @@ add_library(${NAME} STATIC
         ${ARC_EVENTS_HEADER} ${ARC_EVENTS_SOURCE}
         ${ARC_IMGUI_HEADER} ${ARC_IMGUI_SOURCE}
         ${ARC_RENDERER_HEADER} ${ARC_RENDERER_SOURCE}
-        ${ARC_RENDERER_VULKAN_HEADER} ${ARC_RENDERER_VULKAN_SOURCE})
+        ${ARC_RENDERER_VULKAN_HEADER} ${ARC_RENDERER_VULKAN_SOURCE}
+        ${ARC_CORE_HEADER} ${ARC_CORE_SOURCE})
 
 ## filters
 source_group("" FILES ${ROOT_HEADER} ${ROOT_SOURCE})
@@ -43,8 +46,8 @@ source_group("${NAME}/Events" FILES ${ARC_EVENTS_HEADER} ${ARC_EVENTS_SOURCE})
 source_group("${NAME}/ImGui" FILES ${ARC_IMGUI_HEADER} ${ARC_IMGUI_SOURCE})
 source_group("${NAME}/Renderer" FILES ${ARC_RENDERER_HEADER} ${ARC_RENDERER_SOURCE})
 source_group("${NAME}/Renderer/Vulkan" FILES ${ARC_RENDERER_VULKAN_HEADER} ${ARC_RENDERER_VULKAN_SOURCE})
-source_group("${NAME}" FILES ${ARC_ROOT_HEADER} ${ARC_ROOT_SOURCE})
 source_group("Platform/Windows" FILES ${PLATFORM_WINDOWS_HEADER} ${PLATFORM_WINDOWS_SOURCE})
+source_group("${NAME}/Core" FILES ${ARC_CORE_HEADER} ${ARC_CORE_SOURCE})
 
 ## compile definitios
 add_compile_definitions("$<$<CONFIG:Debug>:ARC_ENABLE_ASSERT>")
@@ -61,6 +64,7 @@ if(MSVC)
     # To link the right runtime version of the right runtime library version
     target_compile_options(${NAME} PRIVATE $<IF:$<CONFIG:Debug>,/MDd /Zi,/MD>)
     target_compile_options(${NAME} PRIVATE /Wall) # All warnings
+    target_compile_options(${NAME} PRIVATE /external:I third_party /external:W0) # No warnings in third party libs
     target_compile_options(${NAME} PRIVATE /MP) # Multiprocessor compilation
     target_link_options(${NAME} PUBLIC /ignore:4099)
 endif(MSVC)
@@ -77,6 +81,9 @@ target_link_libraries(${NAME} imgui)
 # glm
 add_subdirectory(third_party/glm)
 target_link_libraries(${NAME} glm)
+# spdlog
+add_subdirectory(third_party/spdlog)
+target_link_libraries(${NAME} spdlog)
 
 # installed packages (without source code) # TODO: install if not found
 # OpenGL (not principal render API)

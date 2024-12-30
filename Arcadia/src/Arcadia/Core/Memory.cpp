@@ -1,7 +1,5 @@
 #ifdef ARC_TRACK_MEMORY
 
-#include "Arcadia/Memory.h"
-
 bool g_bCountAllocs = false;
 int g_iTotalAllocs = 0;
 size_t g_uTotalBytes = 0;

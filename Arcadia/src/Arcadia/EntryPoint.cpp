@@ -6,8 +6,6 @@
 
 #include "Arcadia/Application.h"
 
-#include "Arcadia/Memory.h"
-
 extern Arcadia::CApplication* Arcadia::CreateApplication();
 
 int main(int argc, char** argv)

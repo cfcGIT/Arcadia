@@ -27,6 +27,7 @@ if(MSVC)
     # To link the right runtime version of the right runtime library version
     target_compile_options(${NAME} PRIVATE $<IF:$<CONFIG:Debug>,/MDd /Zi,/MD>)
     target_compile_options(${NAME} PRIVATE /Wall) # All warnings
+    target_compile_options(${NAME} PRIVATE /external:I ${ARC_PATH}/third_party /external:W0) # No warnings in third party libs (TODO: Doesn't work here in sandbox)
     target_compile_options(${NAME} PRIVATE /MP) # Multiprocessor compilation
     target_link_options(${NAME} PUBLIC /ignore:4099)
 endif(MSVC)
@@ -46,7 +47,6 @@ endif()
 
 ## includes
 include_directories(${ARC_PATH}/src)
-include_directories(${ARC_PATH}/third_party/spdlog/include)
 
 ## TODO: precompiled headers here too?
 #target_precompile_headers(${NAME} PUBLIC src/arcpch.h)
