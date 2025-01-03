@@ -13,14 +13,14 @@ namespace Arcadia
             ~CVK_LogicalDevice();
 
             static CVK_LogicalDevice* Create(const CVK_PhysicalDevice& _oPhysicalDevice);
-            inline VkDevice GetVulkanDevice() { return m_oDevice; }
+            inline VkDevice GetVulkanDevice() { return m_oVKDevice; }
 
         private:
-            VkDevice m_oDevice = VK_NULL_HANDLE;
+            VkDevice m_oVKDevice = VK_NULL_HANDLE;
 
-            VkQueue m_oGraphicsQueue = VK_NULL_HANDLE;
-            //VkQueue m_oPresentQueue = VK_NULL_HANDLE;
-            VkQueue m_oTransferQueue = VK_NULL_HANDLE;
+            VkQueue m_oVKGraphicsQueue = VK_NULL_HANDLE;
+            //VkQueue m_oVKPresentQueue = VK_NULL_HANDLE;
+            VkQueue m_oVKTransferQueue = VK_NULL_HANDLE;
         };
     }
 }

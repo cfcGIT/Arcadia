@@ -51,18 +51,18 @@ namespace Arcadia
             }
 
             // Instantiate the logical device
-            ARC_VK_CHECK(vkCreateDevice(_oPhysicalDevice.GetVulkanPhysicalDevice(), &oCreateInfo, nullptr, &m_oDevice), "Failed to create logical device!");
+            ARC_VK_CHECK(vkCreateDevice(_oPhysicalDevice.GetVulkanPhysicalDevice(), &oCreateInfo, nullptr, &m_oVKDevice), "Failed to create logical device!");
 
             // We can use the vkGetDeviceQueue function to retrieve queue handles for each queue family
-            vkGetDeviceQueue(m_oDevice, oIndices.uGraphicsFamily.value(), 0, &m_oGraphicsQueue);
-            //vkGetDeviceQueue(m_oDevice, oIndices.uPresentFamily.value(), 0, &m_oPresentQueue);
-            vkGetDeviceQueue(m_oDevice, oIndices.uTransferFamily.value(), 0, &m_oTransferQueue);
+            vkGetDeviceQueue(m_oVKDevice, oIndices.uGraphicsFamily.value(), 0, &m_oVKGraphicsQueue);
+            //vkGetDeviceQueue(m_oVKDevice, oIndices.uPresentFamily.value(), 0, &m_oVKPresentQueue);
+            vkGetDeviceQueue(m_oVKDevice, oIndices.uTransferFamily.value(), 0, &m_oVKTransferQueue);
         }
 
         CVK_LogicalDevice::~CVK_LogicalDevice()
         {
-            vkDestroyDevice(m_oDevice, nullptr);
-            m_oDevice = VK_NULL_HANDLE;
+            vkDestroyDevice(m_oVKDevice, nullptr);
+            m_oVKDevice = VK_NULL_HANDLE;
         }
 
         /**

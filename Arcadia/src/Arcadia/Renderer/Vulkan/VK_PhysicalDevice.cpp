@@ -9,22 +9,22 @@ namespace Arcadia
     {
         CVK_PhysicalDevice::CVK_PhysicalDevice()
         {
-            VkInstance oVkInstance = CVK_Context::GetInstance();
+            VkInstance oVKInstance = CVK_Context::GetInstance();
 
             uint32_t uDeviceCount = 0;
-            vkEnumeratePhysicalDevices(oVkInstance, &uDeviceCount, nullptr);
+            vkEnumeratePhysicalDevices(oVKInstance, &uDeviceCount, nullptr);
             ARC_VK_ASSERT(uDeviceCount > 0, "Failed to find GPUs with Vulkan support!");
 
             std::vector<VkPhysicalDevice> tDevices(uDeviceCount);
-            vkEnumeratePhysicalDevices(oVkInstance, &uDeviceCount, tDevices.data());
+            vkEnumeratePhysicalDevices(oVKInstance, &uDeviceCount, tDevices.data());
 
             // Pick the first device that suits. TODO: Improve selection
-            for (const VkPhysicalDevice& oPhysicalDevice : tDevices)
+            for (const VkPhysicalDevice& oVKPhysicalDevice : tDevices)
             {
-                int iScore = RateDeviceSuitability(oPhysicalDevice);
+                int iScore = RateDeviceSuitability(oVKPhysicalDevice);
                 if (iScore > 0)
                 {
-                    m_oPhysicalDevice = oPhysicalDevice;
+                    m_oVKPhysicalDevice = oVKPhysicalDevice;
                     break;
                 }
             }
@@ -47,27 +47,27 @@ namespace Arcadia
         /**
         * @brief Rate the suitability of the physical device assigning a score
         * 
-        * @param _oPhysicalDevice Physical device to rate
-        * @return Score assigned to _oPhysicalDevice
+        * @param _oVKPhysicalDevice Physical device to rate
+        * @return Score assigned to _oVKPhysicalDevice
         */
-        int CVK_PhysicalDevice::RateDeviceSuitability(const VkPhysicalDevice& _oPhysicalDevice)
+        int CVK_PhysicalDevice::RateDeviceSuitability(const VkPhysicalDevice& _oVKPhysicalDevice)
         {
             int iScore = 0;
 
-            vkGetPhysicalDeviceProperties(_oPhysicalDevice, &m_oProperties);
-            vkGetPhysicalDeviceFeatures(_oPhysicalDevice, &m_oFeatures);
+            vkGetPhysicalDeviceProperties(_oVKPhysicalDevice, &m_oVKProperties);
+            vkGetPhysicalDeviceFeatures(_oVKPhysicalDevice, &m_oVKFeatures);
 
             // Discrete GPUs have a significant performance advantage
-            if (m_oProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
+            if (m_oVKProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
             {
                 iScore += 1000;
             }
 
             // Maximum possible size of textures affects graphics quality
-            iScore += m_oProperties.limits.maxImageDimension2D;
+            iScore += m_oVKProperties.limits.maxImageDimension2D;
 
             // Application can't function without geometry shaders
-            if (!m_oFeatures.geometryShader)
+            if (!m_oVKFeatures.geometryShader)
             {
                 return 0;
             }
@@ -86,9 +86,9 @@ namespace Arcadia
 
             // Logic to find queue family indices to populate struct with
             uint32_t uQueueFamilyCount = 0;
-            vkGetPhysicalDeviceQueueFamilyProperties(m_oPhysicalDevice, &uQueueFamilyCount, nullptr);
+            vkGetPhysicalDeviceQueueFamilyProperties(m_oVKPhysicalDevice, &uQueueFamilyCount, nullptr);
             std::vector<VkQueueFamilyProperties> tQueueFamilies(uQueueFamilyCount);
-            vkGetPhysicalDeviceQueueFamilyProperties(m_oPhysicalDevice, &uQueueFamilyCount, tQueueFamilies.data());
+            vkGetPhysicalDeviceQueueFamilyProperties(m_oVKPhysicalDevice, &uQueueFamilyCount, tQueueFamilies.data());
 
             // TODO: Add check VK_QUEUE_COMPUTE_BIT for compute operations (e.g. https://vulkan-tutorial.com/Compute_Shader)
             for (uint32_t i = 0; i < uQueueFamilyCount; ++i)
@@ -100,7 +100,7 @@ namespace Arcadia
 # if 0
                     // Look for a queue family that has the capability of presenting to our window surface
                     VkBool32 bPresentSupport = false;
-                    vkGetPhysicalDeviceSurfaceSupportKHR(m_oPhysicalDevice, i, CVK_Surface::Get().GetVkSurface(), &bPresentSupport);
+                    vkGetPhysicalDeviceSurfaceSupportKHR(m_oVKPhysicalDevice, i, CVK_Surface::Get().GetVulkanSurface(), &bPresentSupport);
                     if (bPresentSupport)
                     {
                         oIndices.uPresentFamily = i;
@@ -127,7 +127,7 @@ namespace Arcadia
         */
         std::string CVK_PhysicalDevice::GetVendorName()
         {
-            switch (m_oProperties.vendorID)
+            switch (m_oVKProperties.vendorID)
             {
                 case 0x1002: return ("AMD");
                 case 0x1010: return ("ImgTec");
@@ -144,7 +144,7 @@ namespace Arcadia
         */
         std::string CVK_PhysicalDevice::GetDeviceType()
         {
-            switch (m_oProperties.deviceType)
+            switch (m_oVKProperties.deviceType)
             {
                 case VK_PHYSICAL_DEVICE_TYPE_OTHER: return ("Other");
                 case VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU: return ("Integrated GPU");
@@ -160,10 +160,10 @@ namespace Arcadia
         */
         void CVK_PhysicalDevice::PrintsPhysicalDeviceProperties()
         {
-            ARC_VK_INFO(" - Device Name    : {0}", m_oProperties.deviceName);
+            ARC_VK_INFO(" - Device Name    : {0}", m_oVKProperties.deviceName);
             ARC_VK_INFO(" - Vendor         : {0}", GetVendorName().c_str());
-            ARC_VK_INFO(" - Driver Version : {0}", Arcadia::VKUtils::GetVersionString(m_oProperties.driverVersion).c_str());
-            ARC_VK_INFO(" - API Version    : {0}", Arcadia::VKUtils::GetVersionString(m_oProperties.apiVersion).c_str());
+            ARC_VK_INFO(" - Driver Version : {0}", Arcadia::VKUtils::GetVersionString(m_oVKProperties.driverVersion).c_str());
+            ARC_VK_INFO(" - API Version    : {0}", Arcadia::VKUtils::GetVersionString(m_oVKProperties.apiVersion).c_str());
             ARC_VK_INFO(" - Device Type    : {0}", GetDeviceType().c_str());
         }
     }

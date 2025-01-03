@@ -47,6 +47,3 @@ endif()
 
 ## includes
 include_directories(${ARC_PATH}/src)
-
-## TODO: precompiled headers here too?
-#target_precompile_headers(${NAME} PUBLIC src/arcpch.h)

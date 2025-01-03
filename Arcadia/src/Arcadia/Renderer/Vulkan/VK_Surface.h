@@ -12,18 +12,18 @@ namespace Arcadia
         class CVK_Surface
         {
         public:
-            CVK_Surface(const VkInstance& _oVkInstance);
+            CVK_Surface(const VkInstance& _oVKInstance);
             ~CVK_Surface();
 
-            static CVK_Surface* Create(const VkInstance& _oVkInstance);
+            static CVK_Surface* Create(const VkInstance& _oVKInstance);
             void Destroy();
 
             inline static CVK_Surface& Get() { return *m_pInstance; }
 
-            inline VkSurfaceKHR GetVkSurface() const { return m_oSurface; }
+            inline VkSurfaceKHR GetVulkanSurface() const { return m_oVKSurface; }
 
         private:
-            VkSurfaceKHR m_oSurface = VK_NULL_HANDLE;
+            VkSurfaceKHR m_oVKSurface = VK_NULL_HANDLE;
 
             inline static CVK_Surface* m_pInstance = nullptr; // XXX: I don't like this very much
         };

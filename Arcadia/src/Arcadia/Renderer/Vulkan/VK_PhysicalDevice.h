@@ -23,10 +23,10 @@ namespace Arcadia
             ~CVK_PhysicalDevice();
 
             static CVK_PhysicalDevice* Select();
-            inline VkPhysicalDevice GetVulkanPhysicalDevice() const { return m_oPhysicalDevice; }
+            inline VkPhysicalDevice GetVulkanPhysicalDevice() const { return m_oVKPhysicalDevice; }
 
-            inline VkPhysicalDeviceProperties GetProperties() const { return m_oProperties; }
-            inline VkPhysicalDeviceFeatures GetFeatures() const { return m_oFeatures; }
+            inline VkPhysicalDeviceProperties GetVKProperties() const { return m_oVKProperties; }
+            inline VkPhysicalDeviceFeatures GetVKFeatures() const { return m_oVKFeatures; }
 
             inline SQueueFamilyIndices GetQueueFamilies() const { return m_oQueueFamilyIndices; }
 
@@ -41,9 +41,9 @@ namespace Arcadia
 
 
         private:
-            VkPhysicalDevice m_oPhysicalDevice = VK_NULL_HANDLE; // TODO: We can pick and use multiple physical devices
-            VkPhysicalDeviceProperties m_oProperties;
-            VkPhysicalDeviceFeatures m_oFeatures;
+            VkPhysicalDevice m_oVKPhysicalDevice = VK_NULL_HANDLE; // TODO: We can pick and use multiple physical devices
+            VkPhysicalDeviceProperties m_oVKProperties;
+            VkPhysicalDeviceFeatures m_oVKFeatures;
 
             SQueueFamilyIndices m_oQueueFamilyIndices;
         };

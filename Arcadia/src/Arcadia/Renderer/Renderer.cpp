@@ -10,5 +10,6 @@ namespace Arcadia
 
     void CRenderer::Shutdown()
     {
+        m_pRendererAPI->Shutdown();
     }
 }

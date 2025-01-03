@@ -16,16 +16,7 @@ namespace Arcadia
 
         CVK_Context::~CVK_Context()
         {
-            // Destroy devices
-            delete m_pLogicalDevice;
-            delete m_pPhysicalDevice;
-
-            // Destroy debug messenger
-            CleanupDebugMessenger();
-
-            // Destroy instance
-            vkDestroyInstance(m_oVKInstance, nullptr);
-            m_oVKInstance = nullptr;
+            
         }
 
         /**
@@ -56,6 +47,20 @@ namespace Arcadia
 
         void CVK_Context::InitGUI()
         {
+        }
+
+        void CVK_Context::Destroy()
+        {
+            // Destroy devices
+            delete m_pLogicalDevice;
+            delete m_pPhysicalDevice;
+
+            // Destroy debug messenger
+            CleanupDebugMessenger();
+
+            // Destroy instance
+            vkDestroyInstance(m_oVKInstance, nullptr);
+            m_oVKInstance = nullptr;
         }
 
         /**

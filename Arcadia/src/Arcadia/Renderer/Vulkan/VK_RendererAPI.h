@@ -1,12 +1,21 @@
 #pragma once
 
 #include "Arcadia/Renderer/RendererAPI.h"
+#include "Arcadia/Renderer/Vulkan/VK_Context.h"
 
 namespace Arcadia
 {
-    class CVK_RendererAPI : public CRendererAPI
+    namespace VK
     {
-    public:
-        virtual void Init() override;
-    };
+        class CVK_RendererAPI : public CRendererAPI
+        {
+        public:
+            virtual void Init() override;
+            virtual void InitRenderContext() override;
+            virtual void Shutdown() override;
+
+        private:
+            std::unique_ptr<CVK_Context> m_pContext = nullptr;
+        };
+    }
 }

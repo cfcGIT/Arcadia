@@ -107,6 +107,7 @@ include_directories(third_party/spdlog/include)
 include_directories(third_party/glfw/include)
 include_directories(third_party/imgui/include)
 include_directories(third_party/imgui/include/imgui) # Because backends/imgui_impl_vulkan.h has '#include "imgui.h"' and I don't want to modify the include path
+include_directories(third_party/glm)
 
 ## precompiled headers
 target_precompile_headers(${NAME} PUBLIC src/arcpch.h)

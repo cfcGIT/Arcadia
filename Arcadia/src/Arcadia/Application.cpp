@@ -15,12 +15,11 @@ namespace Arcadia
     {
         m_pInstance = this;
 
+        m_pWindow = std::make_unique<CWindow>();
+        m_pWindow->SetEventCallback([this](CEvent& _oEvent) { OnEvent(_oEvent); });
+
         m_pRenderer = std::make_unique<CRenderer>();
         m_pRenderer->Init();
-
-        m_pWindow = std::make_unique<CWindow>();
-        m_pWindow->InitRenderContext();
-        m_pWindow->SetEventCallback([this](CEvent& _oEvent) { OnEvent(_oEvent); });
     }
 
     CApplication::~CApplication()

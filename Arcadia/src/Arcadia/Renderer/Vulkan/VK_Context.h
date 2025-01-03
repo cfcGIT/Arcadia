@@ -17,15 +17,13 @@ namespace Arcadia
             ~CVK_Context();
 
             virtual void Init() override;
-
             virtual void InitGUI() override;
+            virtual void Destroy() override;
 
             inline CVK_LogicalDevice* GetDevice() const { return m_pLogicalDevice; }
             inline CVK_PhysicalDevice* GetPhysicalDevice() const { return m_pPhysicalDevice; }
 
             inline static VkInstance GetInstance() { return m_oVKInstance; }
-
-            inline static CVK_Context* Get() { return (CVK_Context*)CRenderer::GetContext(); }
 
         private:
             VkResult CreateInstance();

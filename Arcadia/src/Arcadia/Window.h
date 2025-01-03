@@ -39,10 +39,6 @@ namespace Arcadia
 		void SetVSync(bool _bEnabled);
 		inline bool IsVSync() const { return m_oWindowData.m_bVsync; }
 
-		void InitRenderContext();
-
-		inline CRenderContext* GetRenderContext() const { return m_pRenderContext; }
-
 	private:
 		void Init(const SWindowProps& _oWindowProps);
 		void Shutdown();
@@ -58,8 +54,6 @@ namespace Arcadia
 		static void OnKeyEvent(GLFWwindow* _pGLFWWindow, int _iKey, int _iScancode, int _iAction, int _iMods);
 
 	private:
-		CRenderContext* m_pRenderContext = nullptr;
-
 		GLFWwindow* m_pGLFWWindow = nullptr;
 
 		struct SWindowData

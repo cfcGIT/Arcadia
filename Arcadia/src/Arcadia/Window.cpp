@@ -37,13 +37,6 @@ namespace Arcadia
         glfwSwapBuffers(m_pGLFWWindow);
     }
 
-    void CWindow::InitRenderContext()
-    {
-        // * Render context
-        m_pRenderContext = CRenderContext::Create();
-        m_pRenderContext->Init();
-    }
-
     void CWindow::Init(const SWindowProps& _oWindowProps)
     {
         m_oWindowData.m_oWindowProps = _oWindowProps;
@@ -84,7 +77,6 @@ namespace Arcadia
     {
         glfwDestroyWindow(m_pGLFWWindow);
         glfwTerminate();
-        delete m_pRenderContext;
     }
 
     void CWindow::OnWindowResizeEvent(GLFWwindow* _pGLFWWindow, int _iWidth, int _iHeight)

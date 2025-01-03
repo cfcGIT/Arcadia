@@ -10,12 +10,12 @@ namespace Arcadia
 {
     namespace VK
     {
-        CVK_Surface::CVK_Surface(const VkInstance& _oVkInstance)
+        CVK_Surface::CVK_Surface(const VkInstance& _oVKInstance)
         {
             m_pInstance = this;
 
             GLFWwindow* pGLFWwindow = CApplication::Get().GetWindow().GetGLFWwindow();
-            ARC_VK_CHECK(glfwCreateWindowSurface(_oVkInstance, pGLFWwindow, nullptr, &m_oSurface), "Failed to create window surface!");
+            ARC_VK_CHECK(glfwCreateWindowSurface(_oVKInstance, pGLFWwindow, nullptr, &m_oVKSurface), "Failed to create window surface!");
         }
 
         CVK_Surface::~CVK_Surface()
@@ -23,9 +23,9 @@ namespace Arcadia
             m_pInstance = nullptr;
         }
 
-        CVK_Surface* CVK_Surface::Create(const VkInstance& _oVkInstance)
+        CVK_Surface* CVK_Surface::Create(const VkInstance& _oVKInstance)
         {
-            return new CVK_Surface(_oVkInstance);
+            return arcnew CVK_Surface(_oVKInstance);
         }
 
         void CVK_Surface::Destroy()

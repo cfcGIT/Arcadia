@@ -8,7 +8,7 @@ namespace Arcadia
     class CRenderer
     {
     public:
-        inline static CRenderContext* GetContext() { return CApplication::Get().GetWindow().GetRenderContext(); }
+        inline CRendererAPI& GetRendererAPI() const { return *m_pRendererAPI; }
 
         void Init();
         void Shutdown();

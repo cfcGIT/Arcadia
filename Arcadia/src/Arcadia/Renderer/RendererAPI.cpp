@@ -1,4 +1,5 @@
 #include "Arcadia/Renderer/RendererAPI.h"
+#include "Arcadia/Renderer/RenderContext.h"
 
 // TODO: include if vulkan
 #include "Arcadia/Renderer/Vulkan/VK_RendererAPI.h"
@@ -10,7 +11,7 @@ namespace Arcadia
         switch (m_oAPI)
         {
             case CRendererAPI::EAPI::Vulkan:
-                return std::make_unique<CVK_RendererAPI>();
+                return std::make_unique<Arcadia::VK::CVK_RendererAPI>();
             case CRendererAPI::EAPI::OpenGL:
                 ARC_CORE_ASSERT(false, "RendererAPI::OpenGL is currently not supported!");
                 return nullptr;
