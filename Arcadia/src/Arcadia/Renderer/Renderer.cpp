@@ -11,5 +11,7 @@ namespace Arcadia
     void CRenderer::Shutdown()
     {
         m_pRendererAPI->Shutdown();
+        delete m_pRendererAPI;
+        m_pRendererAPI = nullptr;
     }
 }

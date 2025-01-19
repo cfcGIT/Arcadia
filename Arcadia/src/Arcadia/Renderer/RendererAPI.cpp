@@ -6,12 +6,12 @@
 
 namespace Arcadia
 {
-    std::unique_ptr<CRendererAPI> CRendererAPI::Create()
+    CRendererAPI* CRendererAPI::Create()
     {
         switch (m_oAPI)
         {
             case CRendererAPI::EAPI::Vulkan:
-                return std::make_unique<Arcadia::VK::CVK_RendererAPI>();
+                return arcnew Arcadia::VK::CVK_RendererAPI();
             case CRendererAPI::EAPI::OpenGL:
                 ARC_CORE_ASSERT(false, "RendererAPI::OpenGL is currently not supported!");
                 return nullptr;

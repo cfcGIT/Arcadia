@@ -23,7 +23,7 @@ namespace Arcadia
             inline CVK_LogicalDevice* GetDevice() const { return m_pLogicalDevice; }
             inline CVK_PhysicalDevice* GetPhysicalDevice() const { return m_pPhysicalDevice; }
 
-            inline static VkInstance GetInstance() { return m_oVKInstance; }
+            inline const VkInstance* GetInstance() { return &m_oVKInstance; } // TODO: Set as global variable? There're innecesary includes in files that get the vkinstance.
 
         private:
             VkResult CreateInstance();
@@ -32,7 +32,7 @@ namespace Arcadia
             void CleanupDebugMessenger();
 
         private:
-            inline static VkInstance m_oVKInstance = VK_NULL_HANDLE;
+            VkInstance m_oVKInstance = VK_NULL_HANDLE;
             VkDebugUtilsMessengerEXT m_oDebugMessenger = VK_NULL_HANDLE;
 
             // Devices refs

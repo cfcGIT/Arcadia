@@ -1,8 +1,9 @@
-// TODO: Check back when I want to retrieve the presentation support for the device. https://vulkan-tutorial.com/Drawing_a_triangle/Presentation/Window_surface
-#if 0
 #include "Arcadia/Renderer/Vulkan/VK_Surface.h"
 
+#include "Arcadia/Application.h"
+#include "Arcadia/Renderer/Renderer.h"
 #include "Arcadia/Renderer/Vulkan/VK_Context.h"
+#include "Arcadia/Renderer/Vulkan/VK_RendererAPI.h"
 
 #include "GLFW/glfw3.h"
 
@@ -10,35 +11,17 @@ namespace Arcadia
 {
     namespace VK
     {
-        CVK_Surface::CVK_Surface(const VkInstance& _oVKInstance)
+        CVK_Surface::CVK_Surface()
         {
-            m_pInstance = this;
-
-            GLFWwindow* pGLFWwindow = CApplication::Get().GetWindow().GetGLFWwindow();
-            ARC_VK_CHECK(glfwCreateWindowSurface(_oVKInstance, pGLFWwindow, nullptr, &m_oVKSurface), "Failed to create window surface!");
+            GLFWwindow* pGLFWwindow = CApplication::Get()->GetWindow()->GetGLFWwindow();
+            const VkInstance* pVKInstance = ((CVK_RendererAPI*)CApplication::Get()->GetRenderer()->GetRendererAPI())->GetContext()->GetInstance();
+            ARC_VK_CHECK(glfwCreateWindowSurface(*pVKInstance, pGLFWwindow, nullptr, &m_oVKSurface), "Failed to create window surface!");
         }
 
         CVK_Surface::~CVK_Surface()
         {
-            m_pInstance = nullptr;
-        }
-
-        CVK_Surface* CVK_Surface::Create(const VkInstance& _oVKInstance)
-        {
-            return arcnew CVK_Surface(_oVKInstance);
-        }
-
-        void CVK_Surface::Destroy()
-        {
-            VkInstance oVkInstance = CVK_Context::Get()->GetInstance();
-            if (!oVkInstance || oVkInstance == VK_NULL_HANDLE)
-            {
-                ARC_VK_ERROR("The instance must be destroyed after the surface!");
-                return;
-            }
-            vkDestroySurfaceKHR(oVkInstance, m_oSurface, nullptr);
-            delete m_pInstance;
+            const VkInstance* pVKInstance = ((CVK_RendererAPI*)CApplication::Get()->GetRenderer()->GetRendererAPI())->GetContext()->GetInstance();
+            vkDestroySurfaceKHR(*pVKInstance, m_oVKSurface, nullptr);
         }
     }
 }
-#endif

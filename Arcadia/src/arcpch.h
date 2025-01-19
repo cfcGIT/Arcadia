@@ -15,3 +15,7 @@
 #include "Arcadia/Core/Core.h"
 #include "Arcadia/Core/Memory.h"
 #include "Arcadia/Log.h"
+
+// TODO: Include if vulkan?
+#include "vulkan/vulkan.h"
+#include "Arcadia/Renderer/Vulkan/VK_Error.h"

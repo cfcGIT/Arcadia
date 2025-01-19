@@ -1,8 +1,10 @@
 #include "Arcadia/Renderer/Vulkan/VK_Utils.h"
 
+#include "Arcadia/Application.h"
 #include "Arcadia/Renderer/Vulkan/VK_Global.h"
 
 #include "GLFW/glfw3.h"
+#include "glm/glm.hpp"
 
 namespace Arcadia
 {
@@ -36,14 +38,14 @@ namespace Arcadia
         /**
         * @brief Create debug messenger to handle validation layers messages
         */
-        void PopulateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& oCreateInfo_)
+        void PopulateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& oVKCreateInfo_)
         {
-            oCreateInfo_ = {};
-            oCreateInfo_.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
-            oCreateInfo_.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
-            oCreateInfo_.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
-            oCreateInfo_.pfnUserCallback = Arcadia::VK::DebugCallback;
-            oCreateInfo_.pUserData = nullptr; // Optional
+            oVKCreateInfo_ = {};
+            oVKCreateInfo_.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+            oVKCreateInfo_.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+            oVKCreateInfo_.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+            oVKCreateInfo_.pfnUserCallback = Arcadia::VK::DebugCallback;
+            oVKCreateInfo_.pUserData = nullptr; // Optional
         }
 
         /**
@@ -53,16 +55,16 @@ namespace Arcadia
         {
             uint32_t uLayerCount;
             vkEnumerateInstanceLayerProperties(&uLayerCount, nullptr);
-            std::vector<VkLayerProperties> tAvailableLayers(uLayerCount); // TODO: Here we are allocating and deallocating +10400B (520 (VkLayerProperties size) * 20 (uLayerCount)) in the heap. It's not much and it's only one time, but it's a good practice to try to manage this memory on the stack to avoid memory fragmentation. See https://austinmorlan.com/posts/temporary_memory_allocator/
-            vkEnumerateInstanceLayerProperties(&uLayerCount, tAvailableLayers.data());
+            std::vector<VkLayerProperties> tVKAvailableLayers(uLayerCount); // TODO: Here we are allocating and deallocating +10400B (520 (VkLayerProperties size) * 20 (uLayerCount)) in the heap. It's not much and it's only one time, but it's a good practice to try to manage this memory on the stack to avoid memory fragmentation. See https://austinmorlan.com/posts/temporary_memory_allocator/
+            vkEnumerateInstanceLayerProperties(&uLayerCount, tVKAvailableLayers.data());
 
             for (const char* sLayerName : Arcadia::VKGlobal::g_tValidationLayers)
             {
                 bool bLayerFound = false;
 
-                for (const VkLayerProperties& oLayerProperties : tAvailableLayers)
+                for (const VkLayerProperties& oVKLayerProperties : tVKAvailableLayers)
                 {
-                    if (strcmp(sLayerName, oLayerProperties.layerName) == 0)
+                    if (strcmp(sLayerName, oVKLayerProperties.layerName) == 0)
                     {
                         bLayerFound = true;
                         break;
@@ -76,6 +78,71 @@ namespace Arcadia
             }
 
             return true;
+        }
+
+        /**
+        * @brief Choose the surface format (color depth)
+        */
+        VkSurfaceFormatKHR ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& _tVKAvailableFormats)
+        {
+            // The format member specifies the color channels and types.
+            // The colorSpace member indicates if the SRGB color space is supported or not using the VK_COLOR_SPACE_SRGB_NONLINEAR_KHR flag
+            for (const VkSurfaceFormatKHR& oVKAvailableFormat : _tVKAvailableFormats)
+            {
+                if (oVKAvailableFormat.format == VK_FORMAT_B8G8R8A8_SRGB && oVKAvailableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR)
+                {
+                    return oVKAvailableFormat;
+                }
+            }
+
+            return _tVKAvailableFormats[0];
+        }
+
+        /**
+        * @brief Choose the presentation mode (conditions for "swapping" images to the screen)
+        */
+        VkPresentModeKHR ChooseSwapPresentMode(const std::vector<VkPresentModeKHR>& _tVKAvailablePresentModes)
+        {
+            // TODO: VK_PRESENT_MODE_FIFO_KHR if vsync?
+            // TODO: VK_PRESENT_MODE_IMMEDIATE_KHR if VK_PRESENT_MODE_MAILBOX_KHR is not available?
+            for (const VkPresentModeKHR& oVKAvailablePresentMode : _tVKAvailablePresentModes)
+            {
+                if (oVKAvailablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) // VK_PRESENT_MODE_MAILBOX_KHR allows us to avoid tearing while still maintaining a fairly low latency by rendering new images that are as up-to-date as possible right until the vertical blank
+                {
+                    return oVKAvailablePresentMode;
+                }
+            }
+
+            return VK_PRESENT_MODE_FIFO_KHR; // Only the VK_PRESENT_MODE_FIFO_KHR mode is guaranteed to be available
+        }
+
+        /**
+        * @brief Choose the swap extent (resolution of images in swap chain, that it's almost always exactly equal to the resolution of the window that we're drawing to in pixels)
+        */
+        VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& _oVKCapabilities)
+        {
+            // The resolution {WIDTH, HEIGHT} that we specified earlier when creating the window is measured in screen coordinates. But Vulkan works with pixels, so the swap chain extent must be specified in pixels as well
+            if (_oVKCapabilities.currentExtent.width != std::numeric_limits<uint32_t>::max())
+            {
+                return _oVKCapabilities.currentExtent;
+            }
+            else
+            {
+                int iWidth = 0;
+                int iHeight = 0;
+                // We must use glfwGetFramebufferSize to query the resolution of the window in pixel before matching it against the minimum and maximum image extent
+                glfwGetFramebufferSize(CApplication::Get()->GetWindow()->GetGLFWwindow(), &iWidth, &iHeight);
+
+                VkExtent2D oVKActualExtent = {
+                    static_cast<uint32_t>(iWidth),
+                    static_cast<uint32_t>(iHeight)
+                };
+
+                oVKActualExtent.width = glm::clamp(oVKActualExtent.width, _oVKCapabilities.minImageExtent.width, _oVKCapabilities.maxImageExtent.width);
+                oVKActualExtent.height = glm::clamp(oVKActualExtent.height, _oVKCapabilities.minImageExtent.height, _oVKCapabilities.maxImageExtent.height);
+
+                return oVKActualExtent;
+            }
         }
 
         std::string GetVersionString(uint32_t _uVersion)

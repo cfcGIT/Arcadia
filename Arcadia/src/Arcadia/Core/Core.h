@@ -1,8 +1,5 @@
 #pragma once
 
-// TODO: include if vulkan
-#include "Arcadia/Renderer/Vulkan/VK_Error.h"
-
 // TODO: Support other OS
 #ifndef ARC_PLATFORM_WINDOWS
     #error Arcadia only supports windows!

@@ -8,14 +8,14 @@ namespace Arcadia
     class CRenderer
     {
     public:
-        inline CRendererAPI& GetRendererAPI() const { return *m_pRendererAPI; }
+        inline CRendererAPI* GetRendererAPI() const { return m_pRendererAPI; }
 
         void Init();
         void Shutdown();
 
-        CRendererAPI::EAPI GetAPI() { return m_pRendererAPI->GetAPI(); }
+        CRendererAPI::EAPI GetAPI() const { return m_pRendererAPI->GetAPI(); }
 
     private:
-        std::unique_ptr<CRendererAPI> m_pRendererAPI;
+        CRendererAPI* m_pRendererAPI = nullptr;
     };
 }

@@ -34,7 +34,7 @@ namespace Arcadia
     void CWindow::OnUpdate()
     {
         glfwPollEvents();
-        glfwSwapBuffers(m_pGLFWWindow);
+        // TODO: if opengl -> glfwSwapBuffers(m_pGLFWWindow);
     }
 
     void CWindow::Init(const SWindowProps& _oWindowProps)
@@ -49,8 +49,9 @@ namespace Arcadia
             s_bGLFWInitialized = true;
         }
 
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
         m_pGLFWWindow = glfwCreateWindow((int)_oWindowProps.m_uWidth, (int)_oWindowProps.m_uHeight, _oWindowProps.m_sTitle.c_str(), nullptr, nullptr);
-        glfwMakeContextCurrent(m_pGLFWWindow);
+        // TODO: if opengl -> glfwMakeContextCurrent(m_pGLFWWindow);
         glfwSetWindowUserPointer(m_pGLFWWindow, &m_oWindowData);
         // TODO: glfwSetFramebufferSizeCallback(m_Window, framebufferResizeCallback);
         SetVSync(true);
@@ -171,7 +172,8 @@ namespace Arcadia
 
     void CWindow::SetVSync(bool _bEnabled)
     {
-        glfwSwapInterval((_bEnabled) ? 1 : 0);
         m_oWindowData.m_bVsync = _bEnabled;
+        // TODO: swap chain -> SetVSync?
+        // TODO: swap chain -> onresize?
     }
 }

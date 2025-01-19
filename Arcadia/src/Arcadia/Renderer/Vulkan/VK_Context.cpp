@@ -33,6 +33,7 @@ namespace Arcadia
             ARC_VK_INFO((Arcadia::VKGlobal::g_bVKDebug) ? "Debug messenger created!" : "Debug messenger not created because vkDebug is disabled!");
 
             // TODO: Create surface? Check back when I want to retrieve the presentation support for the device. https://vulkan-tutorial.com/Drawing_a_triangle/Presentation/Window_surface
+            //   Now we're creating the surface later in VK_SwampChain. Move here?
             
             // Select physical device
             m_pPhysicalDevice = CVK_PhysicalDevice::Select();
@@ -53,14 +54,16 @@ namespace Arcadia
         {
             // Destroy devices
             delete m_pLogicalDevice;
+            m_pLogicalDevice = nullptr;
             delete m_pPhysicalDevice;
+            m_pPhysicalDevice = nullptr;
 
             // Destroy debug messenger
             CleanupDebugMessenger();
 
             // Destroy instance
             vkDestroyInstance(m_oVKInstance, nullptr);
-            m_oVKInstance = nullptr;
+            m_oVKInstance = VK_NULL_HANDLE;
         }
 
         /**

@@ -1,6 +1,7 @@
 #include "Arcadia/Renderer/Vulkan/VK_PhysicalDevice.h"
 
 #include "Arcadia/Renderer/Vulkan/VK_Context.h"
+#include "Arcadia/Renderer/Vulkan/VK_RendererAPI.h"
 #include "Arcadia/Renderer/Vulkan/VK_Utils.h"
 
 namespace Arcadia
@@ -9,14 +10,14 @@ namespace Arcadia
     {
         CVK_PhysicalDevice::CVK_PhysicalDevice()
         {
-            VkInstance oVKInstance = CVK_Context::GetInstance();
+            const VkInstance* pVKInstance = ((CVK_RendererAPI*)CApplication::Get()->GetRenderer()->GetRendererAPI())->GetContext()->GetInstance();
 
             uint32_t uDeviceCount = 0;
-            vkEnumeratePhysicalDevices(oVKInstance, &uDeviceCount, nullptr);
+            vkEnumeratePhysicalDevices(*pVKInstance, &uDeviceCount, nullptr);
             ARC_VK_ASSERT(uDeviceCount > 0, "Failed to find GPUs with Vulkan support!");
 
             std::vector<VkPhysicalDevice> tDevices(uDeviceCount);
-            vkEnumeratePhysicalDevices(oVKInstance, &uDeviceCount, tDevices.data());
+            vkEnumeratePhysicalDevices(*pVKInstance, &uDeviceCount, tDevices.data());
 
             // Pick the first device that suits. TODO: Improve selection
             for (const VkPhysicalDevice& oVKPhysicalDevice : tDevices)
@@ -97,6 +98,7 @@ namespace Arcadia
                 {
                     oIndices.uGraphicsFamily = i;
                     // TODO: Check back when I want to retrieve the presentation support for the device. https://vulkan-tutorial.com/Drawing_a_triangle/Presentation/Window_surface
+                    //   Now we're creating the surface later in VK_SwampChain
 # if 0
                     // Look for a queue family that has the capability of presenting to our window surface
                     VkBool32 bPresentSupport = false;

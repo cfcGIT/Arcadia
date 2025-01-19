@@ -74,9 +74,11 @@ and you can see the index.html generated in ..\docs\index.html.
 - [ ] Debug.cpp with stack trace and other stuff like this.
 - [ ] Memory management. Make my own. References: [DOOM-3](https://github.com/id-Software/DOOM-3/blob/master/neo/idlib/Heap.h). In progress.
     - [x] System to detect memory leaks.
+    - [ ] System to detect memory stomps. One approach is to save/allocate the info of the memory block after and check it in memory deallocation.
     - [ ] Vulkan Memory Allocator. Make my own. References: [VMA](https://gpuopen.com/vulkan-memory-allocator/)
 - [ ] Perfetto traces. Make my own. At first I can use [the sdk](https://perfetto.dev/docs/instrumentation/tracing-sdk).
-- [ ] CPU Multithreading. GameThread-RenderThread at least and async parallel tasks (e.g.: load textures/models/etc. in parallel). Make my own. At first I can use the stl. References: [vkguide](https://vkguide.dev/docs/extra-chapter/multithreading/).
+- [ ] CPU Multithreading. GameThread-RenderThread at least and async parallel tasks (e.g.: load textures/models/etc. in parallel). Make my own. References: [vkguide](https://vkguide.dev/docs/extra-chapter/multithreading/).
+    - [ ] Use fibers? References: [Parallelizing the Naughty Dog Engine Using Fibers](https://www.gdcvault.com/play/1022186/Parallelizing-the-Naughty-Dog-Engine), [Game Engine Architecture by Jason Gregory](https://www.gameenginebook.com/index.html).
 - [ ] Auto-install vulkan sdk when executing cmake if not already installed?
 
 ## Render

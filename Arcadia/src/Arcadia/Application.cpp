@@ -15,16 +15,21 @@ namespace Arcadia
     {
         m_pInstance = this;
 
-        m_pWindow = std::make_unique<CWindow>();
+        m_pWindow = arcnew CWindow();
         m_pWindow->SetEventCallback([this](CEvent& _oEvent) { OnEvent(_oEvent); });
 
-        m_pRenderer = std::make_unique<CRenderer>();
+        m_pRenderer = arcnew CRenderer();
         m_pRenderer->Init();
     }
 
     CApplication::~CApplication()
     {
         m_pRenderer->Shutdown();
+        delete m_pRenderer;
+        m_pRenderer = nullptr;
+
+        delete m_pWindow;
+        m_pWindow = nullptr;
 
         m_pInstance = nullptr;
     }
@@ -52,9 +57,6 @@ namespace Arcadia
     {
         while (m_bRunning)
         {
-            glClearColor(1, 0, 1, 1);
-            glClear(GL_COLOR_BUFFER_BIT);
-
             for (CLayer* pLayer : m_oLayerStack)
             {
                 pLayer->OnUpdate();

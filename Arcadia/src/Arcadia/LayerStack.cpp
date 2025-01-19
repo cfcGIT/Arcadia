@@ -6,9 +6,11 @@ namespace Arcadia
 {
     CLayerStack::~CLayerStack()
     {
-        for (CLayer* pLayer : m_tLayers)
+        // TODO: I don't like to delete the layers here because we're not creating them.
+        for (CLayer* pLayer : m_tAllLayers)
         {
-            delete pLayer; // TODO: The erased layers wont be deleted?
+            delete pLayer;
+            pLayer = nullptr;
         }
     }
 
@@ -18,6 +20,7 @@ namespace Arcadia
     void CLayerStack::PushLayer(CLayer* _pLayer)
     {
         m_tLayers.emplace(m_tLayers.begin() + m_uLayerInsertIndex, _pLayer);
+        m_tAllLayers.emplace_back(_pLayer);
         m_uLayerInsertIndex++;
     }
 
@@ -26,7 +29,7 @@ namespace Arcadia
         auto it = std::find(m_tLayers.begin(), m_tLayers.begin() + m_uLayerInsertIndex, _pLayer);
         if (it != m_tLayers.begin() + m_uLayerInsertIndex)
         {
-            m_tLayers.erase(it); // Erase from m_Layers but not deleted. It will be live until LayerStack dtor... TODO: but dtor doesnt delete erased layers?
+            m_tLayers.erase(it);
             m_uLayerInsertIndex--;
         }
     }
@@ -37,6 +40,7 @@ namespace Arcadia
     void CLayerStack::PushOverlay(CLayer* _pOverlay)
     {
         m_tLayers.emplace_back(_pOverlay);
+        m_tAllLayers.emplace_back(_pOverlay);
     }
 
     void CLayerStack::PopOverlay(CLayer* _pOverlay)

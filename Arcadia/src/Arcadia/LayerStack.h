@@ -31,6 +31,7 @@ namespace Arcadia
         std::vector<CLayer*>::const_reverse_iterator rend() const { return m_tLayers.rend(); }
 
     private:
+        std::vector<CLayer*> m_tAllLayers; // All layers. Popped layers too. To delete in dtor.
         std::vector<CLayer*> m_tLayers;
         unsigned int m_uLayerInsertIndex = 0;
     };

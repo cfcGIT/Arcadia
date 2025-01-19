@@ -4,7 +4,7 @@
 #include <memory>
 
 constexpr uint32_t MAX_TRACK_ALLOCS = 256;
-constexpr bool PRINT_DEBUG = true; // TODO: CVar
+constexpr bool PRINT_DEBUG = false; // TODO: CVar
 
 // TODO: Command to print memory stats
 // TODO: Make a memory class

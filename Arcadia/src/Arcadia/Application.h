@@ -24,23 +24,23 @@ namespace Arcadia
         void PushLayer(CLayer* _pLayer);
         void PushOverlay(CLayer* _pOverlay);
 
-        inline CWindow& GetWindow() { return *m_pWindow; }
+        inline CWindow* GetWindow() const { return m_pWindow; }
 
-        inline static CApplication& Get() { return *m_pInstance; }
+        inline static CApplication* Get() { return m_pInstance; }
 
-        inline CRenderer& GetRenderer() { return *m_pRenderer; }
+        inline CRenderer* GetRenderer() const { return m_pRenderer; }
 
     private:
         bool OnWindowClose(CWindowCloseEvent& _oEvent);
 
     private:
-        std::unique_ptr<CWindow> m_pWindow = nullptr;
+        CWindow* m_pWindow = nullptr;
         bool m_bRunning = true;
         CLayerStack m_oLayerStack;
 
         inline static CApplication* m_pInstance = nullptr;
 
-        std::unique_ptr<CRenderer> m_pRenderer = nullptr;
+        CRenderer* m_pRenderer = nullptr;
     };
 
     // To be defined in the client
