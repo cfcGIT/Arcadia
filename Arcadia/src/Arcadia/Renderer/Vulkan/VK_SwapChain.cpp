@@ -2,6 +2,7 @@
 
 #include "Arcadia/Application.h"
 #include "Arcadia/Renderer/Vulkan/VK_Context.h"
+#include "Arcadia/Renderer/Vulkan/VK_Global.h"
 #include "Arcadia/Renderer/Vulkan/VK_LogicalDevice.h"
 #include "Arcadia/Renderer/Vulkan/VK_PhysicalDevice.h"
 #include "Arcadia/Renderer/Vulkan/VK_RendererAPI.h"
@@ -16,11 +17,8 @@ namespace Arcadia
     {
         CVK_SwapChain::CVK_SwapChain()
         {
-            CVK_RendererAPI* pRendererAPI = (CVK_RendererAPI*)CApplication::Get()->GetRenderer()->GetRendererAPI();
-            CVK_PhysicalDevice* pPhysicalDevice = pRendererAPI->GetContext()->GetPhysicalDevice();
-
             // Choose the right settings for the swap chain
-            SSwapChainSupportDetails oSwapChainSupport = QuerySwapChainSupport(pPhysicalDevice->GetVulkanPhysicalDevice());
+            SSwapChainSupportDetails oSwapChainSupport = QuerySwapChainSupport(*Arcadia::VKGlobal::g_pVKPhysicalDevice);
             VkSurfaceFormatKHR oVKSurfaceFormat = Arcadia::VKUtils::ChooseSwapSurfaceFormat(oSwapChainSupport.m_tVKFormats);
             VkPresentModeKHR oVKPresentMode = Arcadia::VKUtils::ChooseSwapPresentMode(oSwapChainSupport.m_tVKPresentModes);
             VkExtent2D oVKExtent = Arcadia::VKUtils::ChooseSwapExtent(oSwapChainSupport.m_oVKCapabilities);
@@ -39,7 +37,7 @@ namespace Arcadia
             // Creation of the swap chain
             VkSwapchainCreateInfoKHR createInfo{};
             createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-            createInfo.surface = pRendererAPI->GetSurface()->GetVulkanSurface();
+            createInfo.surface = *Arcadia::VKGlobal::g_pVKSurface;
             createInfo.minImageCount = uImageCount;
             createInfo.imageFormat = oVKSurfaceFormat.format;
             createInfo.imageColorSpace = oVKSurfaceFormat.colorSpace;
@@ -62,20 +60,17 @@ namespace Arcadia
 
             createInfo.oldSwapchain = VK_NULL_HANDLE;
 
-            CVK_LogicalDevice* pDevice = pRendererAPI->GetContext()->GetDevice();
-
-            ARC_VK_CHECK(vkCreateSwapchainKHR(pDevice->GetVulkanDevice(), &createInfo, nullptr, &m_oVKSwapChain), "Failed to create swap chain!");
+            ARC_VK_CHECK(vkCreateSwapchainKHR(*Arcadia::VKGlobal::g_pVKDevice, &createInfo, nullptr, &m_oVKSwapChain), "Failed to create swap chain!");
 
             // Retrieving the swap chain images
-            vkGetSwapchainImagesKHR(pDevice->GetVulkanDevice(), m_oVKSwapChain, &uImageCount, nullptr);
+            vkGetSwapchainImagesKHR(*Arcadia::VKGlobal::g_pVKDevice, m_oVKSwapChain, &uImageCount, nullptr);
             m_tVKSwapChainImages.resize(uImageCount);
-            vkGetSwapchainImagesKHR(pDevice->GetVulkanDevice(), m_oVKSwapChain, &uImageCount, m_tVKSwapChainImages.data());
+            vkGetSwapchainImagesKHR(*Arcadia::VKGlobal::g_pVKDevice, m_oVKSwapChain, &uImageCount, m_tVKSwapChainImages.data());
         }
 
         CVK_SwapChain::~CVK_SwapChain()
         {
-            VkDevice oVKDevice = ((CVK_RendererAPI*)CApplication::Get()->GetRenderer()->GetRendererAPI())->GetContext()->GetDevice()->GetVulkanDevice();
-            vkDestroySwapchainKHR(oVKDevice, m_oVKSwapChain, nullptr);
+            vkDestroySwapchainKHR(*Arcadia::VKGlobal::g_pVKDevice, m_oVKSwapChain, nullptr);
         }
 
         /**
@@ -84,27 +79,26 @@ namespace Arcadia
         CVK_SwapChain::SSwapChainSupportDetails CVK_SwapChain::QuerySwapChainSupport(VkPhysicalDevice _oVKPhysicalDevice)
         {
             SSwapChainSupportDetails oDetails;
-            VkSurfaceKHR oVKSurface = ((CVK_RendererAPI*)CApplication::Get()->GetRenderer()->GetRendererAPI())->GetSurface()->GetVulkanSurface();
 
             // Basic surface capabilities (min/max number of images in swap chain, min/max width and height of images)
-            vkGetPhysicalDeviceSurfaceCapabilitiesKHR(_oVKPhysicalDevice, oVKSurface, &oDetails.m_oVKCapabilities);
+            vkGetPhysicalDeviceSurfaceCapabilitiesKHR(_oVKPhysicalDevice, *Arcadia::VKGlobal::g_pVKSurface, &oDetails.m_oVKCapabilities);
 
             // Surface formats (pixel format, color space)
             uint32_t uFormatCount;
-            vkGetPhysicalDeviceSurfaceFormatsKHR(_oVKPhysicalDevice, oVKSurface, &uFormatCount, nullptr);
+            vkGetPhysicalDeviceSurfaceFormatsKHR(_oVKPhysicalDevice, *Arcadia::VKGlobal::g_pVKSurface, &uFormatCount, nullptr);
             if (uFormatCount != 0)
             {
                 oDetails.m_tVKFormats.resize(uFormatCount);
-                vkGetPhysicalDeviceSurfaceFormatsKHR(_oVKPhysicalDevice, oVKSurface, &uFormatCount, oDetails.m_tVKFormats.data());
+                vkGetPhysicalDeviceSurfaceFormatsKHR(_oVKPhysicalDevice, *Arcadia::VKGlobal::g_pVKSurface, &uFormatCount, oDetails.m_tVKFormats.data());
             }
 
             // Available presentation modes
             uint32_t uPresentModeCount;
-            vkGetPhysicalDeviceSurfacePresentModesKHR(_oVKPhysicalDevice, oVKSurface, &uPresentModeCount, nullptr);
+            vkGetPhysicalDeviceSurfacePresentModesKHR(_oVKPhysicalDevice, *Arcadia::VKGlobal::g_pVKSurface, &uPresentModeCount, nullptr);
             if (uPresentModeCount != 0)
             {
                 oDetails.m_tVKPresentModes.resize(uPresentModeCount);
-                vkGetPhysicalDeviceSurfacePresentModesKHR(_oVKPhysicalDevice, oVKSurface, &uPresentModeCount, oDetails.m_tVKPresentModes.data());
+                vkGetPhysicalDeviceSurfacePresentModesKHR(_oVKPhysicalDevice, *Arcadia::VKGlobal::g_pVKSurface, &uPresentModeCount, oDetails.m_tVKPresentModes.data());
             }
 
             return oDetails;

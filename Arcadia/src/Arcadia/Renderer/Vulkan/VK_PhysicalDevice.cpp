@@ -1,6 +1,7 @@
 #include "Arcadia/Renderer/Vulkan/VK_PhysicalDevice.h"
 
 #include "Arcadia/Renderer/Vulkan/VK_Context.h"
+#include "Arcadia/Renderer/Vulkan/VK_Global.h"
 #include "Arcadia/Renderer/Vulkan/VK_RendererAPI.h"
 #include "Arcadia/Renderer/Vulkan/VK_Utils.h"
 
@@ -10,14 +11,12 @@ namespace Arcadia
     {
         CVK_PhysicalDevice::CVK_PhysicalDevice()
         {
-            const VkInstance* pVKInstance = ((CVK_RendererAPI*)CApplication::Get()->GetRenderer()->GetRendererAPI())->GetContext()->GetInstance();
-
             uint32_t uDeviceCount = 0;
-            vkEnumeratePhysicalDevices(*pVKInstance, &uDeviceCount, nullptr);
+            vkEnumeratePhysicalDevices(*Arcadia::VKGlobal::g_pVKInstance, &uDeviceCount, nullptr);
             ARC_VK_ASSERT(uDeviceCount > 0, "Failed to find GPUs with Vulkan support!");
 
             std::vector<VkPhysicalDevice> tDevices(uDeviceCount);
-            vkEnumeratePhysicalDevices(*pVKInstance, &uDeviceCount, tDevices.data());
+            vkEnumeratePhysicalDevices(*Arcadia::VKGlobal::g_pVKInstance, &uDeviceCount, tDevices.data());
 
             // Pick the first device that suits. TODO: Improve selection
             for (const VkPhysicalDevice& oVKPhysicalDevice : tDevices)
@@ -26,6 +25,7 @@ namespace Arcadia
                 if (iScore > 0)
                 {
                     m_oVKPhysicalDevice = oVKPhysicalDevice;
+                    Arcadia::VKGlobal::g_pVKPhysicalDevice = &m_oVKPhysicalDevice;
                     break;
                 }
             }

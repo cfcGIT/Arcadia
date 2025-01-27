@@ -23,5 +23,11 @@ namespace Arcadia
 #else
             false;
 #endif
+
+        // Globals ptrs to VK objects
+        inline const VkInstance* g_pVKInstance = nullptr;
+        inline const VkDevice* g_pVKDevice = nullptr;
+        inline const VkPhysicalDevice* g_pVKPhysicalDevice = nullptr;
+        inline const VkSurfaceKHR* g_pVKSurface = nullptr;
     }
 }

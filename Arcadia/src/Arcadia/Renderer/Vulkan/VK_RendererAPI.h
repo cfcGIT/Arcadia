@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Arcadia/Renderer/RendererAPI.h"
-//#include "Arcadia/Renderer/Vulkan/VK_Context.h"
 
 namespace Arcadia
 {

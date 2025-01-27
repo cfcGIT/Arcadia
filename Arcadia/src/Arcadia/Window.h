@@ -32,8 +32,6 @@ namespace Arcadia
 		inline uint32_t GetWidth() const { return m_oWindowData.m_oWindowProps.m_uWidth; };
 		inline uint32_t GetHeight() const { return m_oWindowData.m_oWindowProps.m_uWidth; }
 
-		inline GLFWwindow* GetGLFWwindow() const { return m_pGLFWWindow; }
-
 		// Window attributes
 		inline void SetEventCallback(const EventCallbackFn& _oCallback) { m_oWindowData.m_oEventCallback = _oCallback; };
 		void SetVSync(bool _bEnabled);
@@ -54,8 +52,6 @@ namespace Arcadia
 		static void OnKeyEvent(GLFWwindow* _pGLFWWindow, int _iKey, int _iScancode, int _iAction, int _iMods);
 
 	private:
-		GLFWwindow* m_pGLFWWindow = nullptr;
-
 		struct SWindowData
 		{
 			SWindowProps m_oWindowProps;

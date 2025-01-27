@@ -13,7 +13,6 @@ namespace Arcadia
             ~CVK_LogicalDevice();
 
             static CVK_LogicalDevice* Create(const CVK_PhysicalDevice& _oPhysicalDevice);
-            inline VkDevice GetVulkanDevice() { return m_oVKDevice; }
 
         private:
             VkDevice m_oVKDevice = VK_NULL_HANDLE;

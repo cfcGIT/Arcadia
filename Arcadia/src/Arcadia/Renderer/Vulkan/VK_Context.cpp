@@ -5,11 +5,11 @@
 #include "Arcadia/Renderer/Vulkan/VK_PhysicalDevice.h"
 #include "Arcadia/Renderer/Vulkan/VK_Utils.h"
 
+
 namespace Arcadia
 {
     namespace VK
     {
-
         CVK_Context::CVK_Context()
         {
         }
@@ -27,6 +27,7 @@ namespace Arcadia
             // Create instance
             ARC_VK_CHECK(CreateInstance(), "Failed to create vulkan instance!");
             ARC_VK_INFO("Vulkan instance created!");
+            Arcadia::VKGlobal::g_pVKInstance = &m_oVKInstance;
 
             // Setup debug messenger
             ARC_VK_CHECK(SetupDebugMessenger(), "Failed to setup debug messenger!");

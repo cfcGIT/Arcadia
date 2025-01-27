@@ -23,8 +23,6 @@ namespace Arcadia
             inline CVK_LogicalDevice* GetDevice() const { return m_pLogicalDevice; }
             inline CVK_PhysicalDevice* GetPhysicalDevice() const { return m_pPhysicalDevice; }
 
-            inline const VkInstance* GetInstance() { return &m_oVKInstance; } // TODO: Set as global variable? There're innecesary includes in files that get the vkinstance.
-
         private:
             VkResult CreateInstance();
 

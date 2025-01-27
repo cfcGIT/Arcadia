@@ -23,7 +23,6 @@ namespace Arcadia
             ~CVK_PhysicalDevice();
 
             static CVK_PhysicalDevice* Select();
-            inline VkPhysicalDevice GetVulkanPhysicalDevice() const { return m_oVKPhysicalDevice; }
 
             inline VkPhysicalDeviceProperties GetVKProperties() const { return m_oVKProperties; }
             inline VkPhysicalDeviceFeatures GetVKFeatures() const { return m_oVKFeatures; }

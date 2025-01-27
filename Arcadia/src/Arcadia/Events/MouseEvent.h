@@ -56,7 +56,7 @@ namespace Arcadia
     class CMouseButtonEvent : public CEvent
     {
     public:
-        inline int GetMouseButton() { return m_iButton; }
+        inline int GetMouseButton() const { return m_iButton; }
         EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput);
 
     protected:
