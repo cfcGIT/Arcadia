@@ -1,7 +1,6 @@
 #include "Arcadia/Renderer/Vulkan/VK_Utils.h"
 
 #include "Arcadia/Application.h"
-#include "Arcadia/Core/Global.h"
 #include "Arcadia/Renderer/Vulkan/VK_Global.h"
 
 #include "GLFW/glfw3.h"
@@ -132,7 +131,7 @@ namespace Arcadia
                 int iWidth = 0;
                 int iHeight = 0;
                 // We must use glfwGetFramebufferSize to query the resolution of the window in pixel before matching it against the minimum and maximum image extent
-                glfwGetFramebufferSize(Arcadia::Global::g_pGLFWwindow, &iWidth, &iHeight);
+                glfwGetFramebufferSize(Arcadia::CWindow::GetGLFWwindow(), &iWidth, &iHeight);
 
                 VkExtent2D oVKActualExtent = {
                     static_cast<uint32_t>(iWidth),

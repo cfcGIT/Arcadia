@@ -14,8 +14,10 @@ namespace Arcadia
 
             static CVK_LogicalDevice* Create(const CVK_PhysicalDevice& _oPhysicalDevice);
 
+            inline static VkDevice GetVKDevice() { return m_oVKDevice; }
+
         private:
-            VkDevice m_oVKDevice = VK_NULL_HANDLE;
+            inline static VkDevice m_oVKDevice = VK_NULL_HANDLE;
 
             VkQueue m_oVKGraphicsQueue = VK_NULL_HANDLE;
             //VkQueue m_oVKPresentQueue = VK_NULL_HANDLE;

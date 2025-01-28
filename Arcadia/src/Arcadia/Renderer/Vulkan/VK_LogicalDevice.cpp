@@ -51,8 +51,7 @@ namespace Arcadia
             }
 
             // Instantiate the logical device
-            ARC_VK_CHECK(vkCreateDevice(*Arcadia::VKGlobal::g_pVKPhysicalDevice, &oCreateInfo, nullptr, &m_oVKDevice), "Failed to create logical device!");
-            Arcadia::VKGlobal::g_pVKDevice = &m_oVKDevice;
+            ARC_VK_CHECK(vkCreateDevice(Arcadia::VK::CVK_PhysicalDevice::GetVKPhysicalDevice(), &oCreateInfo, nullptr, &m_oVKDevice), "Failed to create logical device!");
 
             // We can use the vkGetDeviceQueue function to retrieve queue handles for each queue family
             vkGetDeviceQueue(m_oVKDevice, oIndices.uGraphicsFamily.value(), 0, &m_oVKGraphicsQueue);

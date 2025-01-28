@@ -1,7 +1,6 @@
 #include "Arcadia/Renderer/Vulkan/VK_Surface.h"
 
 #include "Arcadia/Application.h"
-#include "Arcadia/Core/Global.h"
 #include "Arcadia/Renderer/Renderer.h"
 #include "Arcadia/Renderer/Vulkan/VK_Context.h"
 #include "Arcadia/Renderer/Vulkan/VK_Global.h"
@@ -15,13 +14,12 @@ namespace Arcadia
     {
         CVK_Surface::CVK_Surface()
         {
-            ARC_VK_CHECK(glfwCreateWindowSurface(*Arcadia::VKGlobal::g_pVKInstance, Arcadia::Global::g_pGLFWwindow, nullptr, &m_oVKSurface), "Failed to create window surface!");
-            Arcadia::VKGlobal::g_pVKSurface = &m_oVKSurface;
+            ARC_VK_CHECK(glfwCreateWindowSurface(Arcadia::VK::CVK_Context::GetVKInstance(), Arcadia::CWindow::GetGLFWwindow(), nullptr, &m_oVKSurface), "Failed to create window surface!");
         }
 
         CVK_Surface::~CVK_Surface()
         {
-            vkDestroySurfaceKHR(*Arcadia::VKGlobal::g_pVKInstance, m_oVKSurface, nullptr);
+            vkDestroySurfaceKHR(Arcadia::VK::CVK_Context::GetVKInstance(), m_oVKSurface, nullptr);
         }
     }
 }

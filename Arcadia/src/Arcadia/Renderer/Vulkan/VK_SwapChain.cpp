@@ -18,7 +18,7 @@ namespace Arcadia
         CVK_SwapChain::CVK_SwapChain()
         {
             // Choose the right settings for the swap chain
-            SSwapChainSupportDetails oSwapChainSupport = QuerySwapChainSupport(*Arcadia::VKGlobal::g_pVKPhysicalDevice);
+            SSwapChainSupportDetails oSwapChainSupport = QuerySwapChainSupport(Arcadia::VK::CVK_PhysicalDevice::GetVKPhysicalDevice());
             VkSurfaceFormatKHR oVKSurfaceFormat = Arcadia::VKUtils::ChooseSwapSurfaceFormat(oSwapChainSupport.m_tVKFormats);
             VkPresentModeKHR oVKPresentMode = Arcadia::VKUtils::ChooseSwapPresentMode(oSwapChainSupport.m_tVKPresentModes);
             VkExtent2D oVKExtent = Arcadia::VKUtils::ChooseSwapExtent(oSwapChainSupport.m_oVKCapabilities);
@@ -37,7 +37,7 @@ namespace Arcadia
             // Creation of the swap chain
             VkSwapchainCreateInfoKHR createInfo{};
             createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-            createInfo.surface = *Arcadia::VKGlobal::g_pVKSurface;
+            createInfo.surface = Arcadia::VK::CVK_Surface::GetVKSurface();
             createInfo.minImageCount = uImageCount;
             createInfo.imageFormat = oVKSurfaceFormat.format;
             createInfo.imageColorSpace = oVKSurfaceFormat.colorSpace;
@@ -60,17 +60,17 @@ namespace Arcadia
 
             createInfo.oldSwapchain = VK_NULL_HANDLE;
 
-            ARC_VK_CHECK(vkCreateSwapchainKHR(*Arcadia::VKGlobal::g_pVKDevice, &createInfo, nullptr, &m_oVKSwapChain), "Failed to create swap chain!");
+            ARC_VK_CHECK(vkCreateSwapchainKHR(Arcadia::VK::CVK_LogicalDevice::GetVKDevice(), &createInfo, nullptr, &m_oVKSwapChain), "Failed to create swap chain!");
 
             // Retrieving the swap chain images
-            vkGetSwapchainImagesKHR(*Arcadia::VKGlobal::g_pVKDevice, m_oVKSwapChain, &uImageCount, nullptr);
+            vkGetSwapchainImagesKHR(Arcadia::VK::CVK_LogicalDevice::GetVKDevice(), m_oVKSwapChain, &uImageCount, nullptr);
             m_tVKSwapChainImages.resize(uImageCount);
-            vkGetSwapchainImagesKHR(*Arcadia::VKGlobal::g_pVKDevice, m_oVKSwapChain, &uImageCount, m_tVKSwapChainImages.data());
+            vkGetSwapchainImagesKHR(Arcadia::VK::CVK_LogicalDevice::GetVKDevice(), m_oVKSwapChain, &uImageCount, m_tVKSwapChainImages.data());
         }
 
         CVK_SwapChain::~CVK_SwapChain()
         {
-            vkDestroySwapchainKHR(*Arcadia::VKGlobal::g_pVKDevice, m_oVKSwapChain, nullptr);
+            vkDestroySwapchainKHR(Arcadia::VK::CVK_LogicalDevice::GetVKDevice(), m_oVKSwapChain, nullptr);
         }
 
         /**
@@ -81,29 +81,27 @@ namespace Arcadia
             SSwapChainSupportDetails oDetails;
 
             // Basic surface capabilities (min/max number of images in swap chain, min/max width and height of images)
-            vkGetPhysicalDeviceSurfaceCapabilitiesKHR(_oVKPhysicalDevice, *Arcadia::VKGlobal::g_pVKSurface, &oDetails.m_oVKCapabilities);
+            vkGetPhysicalDeviceSurfaceCapabilitiesKHR(_oVKPhysicalDevice, Arcadia::VK::CVK_Surface::GetVKSurface(), &oDetails.m_oVKCapabilities);
 
             // Surface formats (pixel format, color space)
             uint32_t uFormatCount;
-            vkGetPhysicalDeviceSurfaceFormatsKHR(_oVKPhysicalDevice, *Arcadia::VKGlobal::g_pVKSurface, &uFormatCount, nullptr);
+            vkGetPhysicalDeviceSurfaceFormatsKHR(_oVKPhysicalDevice, Arcadia::VK::CVK_Surface::GetVKSurface(), &uFormatCount, nullptr);
             if (uFormatCount != 0)
             {
                 oDetails.m_tVKFormats.resize(uFormatCount);
-                vkGetPhysicalDeviceSurfaceFormatsKHR(_oVKPhysicalDevice, *Arcadia::VKGlobal::g_pVKSurface, &uFormatCount, oDetails.m_tVKFormats.data());
+                vkGetPhysicalDeviceSurfaceFormatsKHR(_oVKPhysicalDevice, Arcadia::VK::CVK_Surface::GetVKSurface(), &uFormatCount, oDetails.m_tVKFormats.data());
             }
 
             // Available presentation modes
             uint32_t uPresentModeCount;
-            vkGetPhysicalDeviceSurfacePresentModesKHR(_oVKPhysicalDevice, *Arcadia::VKGlobal::g_pVKSurface, &uPresentModeCount, nullptr);
+            vkGetPhysicalDeviceSurfacePresentModesKHR(_oVKPhysicalDevice, Arcadia::VK::CVK_Surface::GetVKSurface(), &uPresentModeCount, nullptr);
             if (uPresentModeCount != 0)
             {
                 oDetails.m_tVKPresentModes.resize(uPresentModeCount);
-                vkGetPhysicalDeviceSurfacePresentModesKHR(_oVKPhysicalDevice, *Arcadia::VKGlobal::g_pVKSurface, &uPresentModeCount, oDetails.m_tVKPresentModes.data());
+                vkGetPhysicalDeviceSurfacePresentModesKHR(_oVKPhysicalDevice, Arcadia::VK::CVK_Surface::GetVKSurface(), &uPresentModeCount, oDetails.m_tVKPresentModes.data());
             }
 
             return oDetails;
         }
-
-
     }
 }

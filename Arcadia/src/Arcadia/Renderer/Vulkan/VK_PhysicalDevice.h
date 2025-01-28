@@ -29,6 +29,8 @@ namespace Arcadia
 
             inline SQueueFamilyIndices GetQueueFamilies() const { return m_oQueueFamilyIndices; }
 
+            inline static VkPhysicalDevice GetVKPhysicalDevice() { return m_oVKPhysicalDevice; }
+
 
             int RateDeviceSuitability(const VkPhysicalDevice& _oPhysicalDevice);
             SQueueFamilyIndices FindQueueFamilies() const;
@@ -40,7 +42,7 @@ namespace Arcadia
 
 
         private:
-            VkPhysicalDevice m_oVKPhysicalDevice = VK_NULL_HANDLE; // TODO: We can pick and use multiple physical devices
+            inline static VkPhysicalDevice m_oVKPhysicalDevice = VK_NULL_HANDLE; // TODO: We can pick and use multiple physical devices
             VkPhysicalDeviceProperties m_oVKProperties;
             VkPhysicalDeviceFeatures m_oVKFeatures;
 

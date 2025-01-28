@@ -1,6 +1,5 @@
 #include "Arcadia/Window.h"
 
-#include "Arcadia/Core/Global.h"
 #include "Arcadia/Events/ApplicationEvent.h"
 #include "Arcadia/Events/KeyEvent.h"
 #include "Arcadia/Events/MouseEvent.h"
@@ -51,10 +50,10 @@ namespace Arcadia
         }
 
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-        Arcadia::Global::g_pGLFWwindow = glfwCreateWindow((int)_oWindowProps.m_uWidth, (int)_oWindowProps.m_uHeight, _oWindowProps.m_sTitle.c_str(), nullptr, nullptr);
+        m_pGLFWwindow = glfwCreateWindow((int)_oWindowProps.m_uWidth, (int)_oWindowProps.m_uHeight, _oWindowProps.m_sTitle.c_str(), nullptr, nullptr);
 
         // TODO: if opengl -> glfwMakeContextCurrent(Arcadia::Global::g_pGLFWwindow);
-        glfwSetWindowUserPointer(Arcadia::Global::g_pGLFWwindow, &m_oWindowData);
+        glfwSetWindowUserPointer(m_pGLFWwindow, &m_oWindowData);
         // TODO: glfwSetFramebufferSizeCallback(m_Window, framebufferResizeCallback);
         SetVSync(true);
 
@@ -62,23 +61,23 @@ namespace Arcadia
 
         // * Set GLFW callbacks
         // App events
-        glfwSetWindowSizeCallback(Arcadia::Global::g_pGLFWwindow, OnWindowResizeEvent);
-        glfwSetWindowCloseCallback(Arcadia::Global::g_pGLFWwindow, OnWindowCloseEvent);
-        glfwSetDropCallback(Arcadia::Global::g_pGLFWwindow, OnDropFilesEvent);
+        glfwSetWindowSizeCallback(m_pGLFWwindow, OnWindowResizeEvent);
+        glfwSetWindowCloseCallback(m_pGLFWwindow, OnWindowCloseEvent);
+        glfwSetDropCallback(m_pGLFWwindow, OnDropFilesEvent);
         //TODO: glfwSetWindowRefreshCallback(m_Window, [](GLFWwindow* _window) ...
 
         // Mouse events
-        glfwSetCursorPosCallback(Arcadia::Global::g_pGLFWwindow, OnMouseMovedEvent);
-        glfwSetMouseButtonCallback(Arcadia::Global::g_pGLFWwindow, OnMouseButtonEvent);
-        glfwSetScrollCallback(Arcadia::Global::g_pGLFWwindow, OnMouseScrolledEvent);
+        glfwSetCursorPosCallback(m_pGLFWwindow, OnMouseMovedEvent);
+        glfwSetMouseButtonCallback(m_pGLFWwindow, OnMouseButtonEvent);
+        glfwSetScrollCallback(m_pGLFWwindow, OnMouseScrolledEvent);
 
         // Key events
-        glfwSetKeyCallback(Arcadia::Global::g_pGLFWwindow, OnKeyEvent);
+        glfwSetKeyCallback(m_pGLFWwindow, OnKeyEvent);
     }
 
     void CWindow::Shutdown()
     {
-        glfwDestroyWindow(Arcadia::Global::g_pGLFWwindow);
+        glfwDestroyWindow(m_pGLFWwindow);
         glfwTerminate();
     }
 
