@@ -29,7 +29,7 @@ namespace Arcadia
 
                 if (PRINT_DEBUG)
                 {
-                    ARC_CORE_DEBUG("Alloc {0} from {1}(2). Total: {3} bytes in {4} allocs.", _uSize, _pFile, _iLine, g_uTotalBytes, g_iTotalAllocs);
+                    ARC_CORE_DEBUG("Alloc {0} from {1}({2}). Total: {3} bytes in {4} allocs.", _uSize, _pFile, _iLine, g_uTotalBytes, g_iTotalAllocs);
                 }
             }
             return pMemory;
@@ -61,7 +61,7 @@ namespace Arcadia
 
                             if (PRINT_DEBUG)
                             {
-                                ARC_CORE_DEBUG("Dealloc {0} from {1}(2). Total: {3} bytes in {4} allocs.", g_tMemoryData[i].m_uSize, g_tMemoryData[i].m_pFile, g_tMemoryData[i].m_iLine, g_uTotalBytes, g_iTotalAllocs);
+                                ARC_CORE_DEBUG("Dealloc {0} from {1}({2}). Total: {3} bytes in {4} allocs.", g_tMemoryData[i].m_uSize, g_tMemoryData[i].m_pFile, g_tMemoryData[i].m_iLine, g_uTotalBytes, g_iTotalAllocs);
                             }
 
                             // Move all subsequent elements one position to the left

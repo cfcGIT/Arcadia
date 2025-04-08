@@ -28,10 +28,9 @@ namespace Arcadia
         private:
             VkSwapchainKHR m_oVKSwapChain = VK_NULL_HANDLE;
             std::vector<VkImage> m_tVKSwapChainImages = std::vector<VkImage>();
+            std::vector<VkImageView> m_tVKSwapChainImageViews = std::vector<VkImageView>();
             VkFormat m_oVKSwapChainImageFormat = VK_FORMAT_UNDEFINED;
             VkExtent2D m_oVKSwapChainExtent = VkExtent2D(0, 0);
-
-            std::vector<VkImageView> m_tVKSwapChainImageViews;
         };
     }
 }

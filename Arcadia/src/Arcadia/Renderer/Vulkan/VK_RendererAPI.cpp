@@ -13,7 +13,6 @@ namespace Arcadia
             InitRenderContext();
             CreateSurface();
             CreateSwapChain();
-            // TODO: Create Image Views
             // TODO: Create render pass
             // ...
         }

@@ -66,10 +66,24 @@ namespace Arcadia
             vkGetSwapchainImagesKHR(Arcadia::VK::CVK_LogicalDevice::GetVKDevice(), m_oVKSwapChain, &uImageCount, nullptr);
             m_tVKSwapChainImages.resize(uImageCount);
             vkGetSwapchainImagesKHR(Arcadia::VK::CVK_LogicalDevice::GetVKDevice(), m_oVKSwapChain, &uImageCount, m_tVKSwapChainImages.data());
+
+            // Create swap chain image views
+            m_tVKSwapChainImageViews.resize(uImageCount);
+            for (uint32_t i = 0; i < uImageCount; ++i)
+            {
+                m_tVKSwapChainImageViews[i] = Arcadia::VKUtils::CreateImageView(m_tVKSwapChainImages[i], m_oVKSwapChainImageFormat, VK_IMAGE_ASPECT_COLOR_BIT, 1);
+            }
         }
 
         CVK_SwapChain::~CVK_SwapChain()
         {
+            // Destroy swap chain image views
+            uint32_t uSizeImageViews = m_tVKSwapChainImageViews.size();
+            for (uint32_t i = 0; i < uSizeImageViews; ++i)
+            {
+                vkDestroyImageView(Arcadia::VK::CVK_LogicalDevice::GetVKDevice(), m_tVKSwapChainImageViews[i], nullptr);
+            }
+            // Destroy swap chain
             vkDestroySwapchainKHR(Arcadia::VK::CVK_LogicalDevice::GetVKDevice(), m_oVKSwapChain, nullptr);
         }
 
