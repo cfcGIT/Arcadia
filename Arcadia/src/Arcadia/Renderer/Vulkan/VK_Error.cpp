@@ -28,7 +28,6 @@ namespace Arcadia
             // Message is important enough to show
             if (_messageSeverity >= VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT)
             {
-                // TODO: Crash from spdlog when PRINT_DEBUG is active. Seems like infinite loop because spdlog has new calls or something like this
                 ARC_VK_WARN("Validation layer: {0}", _pCallbackData->pMessage);
             }
 
