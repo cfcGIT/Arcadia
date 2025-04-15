@@ -3,6 +3,7 @@
 #include "Arcadia/Application.h"
 #include "Arcadia/Renderer/Vulkan/VK_Context.h"
 #include "Arcadia/Renderer/Vulkan/VK_Global.h"
+#include "Arcadia/Renderer/Vulkan/VK_Image.h"
 #include "Arcadia/Renderer/Vulkan/VK_LogicalDevice.h"
 #include "Arcadia/Renderer/Vulkan/VK_PhysicalDevice.h"
 #include "Arcadia/Renderer/Vulkan/VK_RendererAPI.h"
@@ -10,18 +11,86 @@
 #include "Arcadia/Renderer/Vulkan/VK_Utils.h"
 
 #include "GLFW/glfw3.h"
+#include "glm/glm.hpp"
 
 namespace Arcadia
 {
     namespace VK
     {
+        /**
+        * @brief Choose the surface format (color depth)
+        */
+        VkSurfaceFormatKHR ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& _tVKAvailableFormats)
+        {
+            // The format member specifies the color channels and types.
+            // The colorSpace member indicates if the SRGB color space is supported or not using the VK_COLOR_SPACE_SRGB_NONLINEAR_KHR flag
+            for (const VkSurfaceFormatKHR& oVKAvailableFormat : _tVKAvailableFormats)
+            {
+                if (oVKAvailableFormat.format == VK_FORMAT_B8G8R8A8_SRGB && oVKAvailableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR)
+                {
+                    return oVKAvailableFormat;
+                }
+            }
+
+            return _tVKAvailableFormats[0];
+        }
+
+        /**
+        * @brief Choose the presentation mode (conditions for "swapping" images to the screen)
+        */
+        VkPresentModeKHR ChooseSwapPresentMode(const std::vector<VkPresentModeKHR>& _tVKAvailablePresentModes)
+        {
+            // TODO: VK_PRESENT_MODE_FIFO_KHR if vsync?
+            // TODO: VK_PRESENT_MODE_IMMEDIATE_KHR if VK_PRESENT_MODE_MAILBOX_KHR is not available?
+            for (const VkPresentModeKHR& oVKAvailablePresentMode : _tVKAvailablePresentModes)
+            {
+                if (oVKAvailablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) // VK_PRESENT_MODE_MAILBOX_KHR allows us to avoid tearing while still maintaining a fairly low latency by rendering new images that are as up-to-date as possible right until the vertical blank
+                {
+                    return oVKAvailablePresentMode;
+                }
+            }
+
+            return VK_PRESENT_MODE_FIFO_KHR; // Only the VK_PRESENT_MODE_FIFO_KHR mode is guaranteed to be available
+        }
+
+        /**
+        * @brief Choose the swap extent (resolution of images in swap chain, that it's almost always exactly equal to the resolution of the window that we're drawing to in pixels)
+        */
+        VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& _oVKCapabilities)
+        {
+            // The resolution {WIDTH, HEIGHT} that we specified earlier when creating the window is measured in screen coordinates. But Vulkan works with pixels, so the swap chain extent must be specified in pixels as well
+            if (_oVKCapabilities.currentExtent.width != std::numeric_limits<uint32_t>::max())
+            {
+                return _oVKCapabilities.currentExtent;
+            }
+            else
+            {
+                int iWidth = 0;
+                int iHeight = 0;
+                // We must use glfwGetFramebufferSize to query the resolution of the window in pixel before matching it against the minimum and maximum image extent
+                glfwGetFramebufferSize(Arcadia::CWindow::GetGLFWwindow(), &iWidth, &iHeight);
+
+                VkExtent2D oVKActualExtent = {
+                    static_cast<uint32_t>(iWidth),
+                    static_cast<uint32_t>(iHeight)
+                };
+
+                oVKActualExtent.width = glm::clamp(oVKActualExtent.width, _oVKCapabilities.minImageExtent.width, _oVKCapabilities.maxImageExtent.width);
+                oVKActualExtent.height = glm::clamp(oVKActualExtent.height, _oVKCapabilities.minImageExtent.height, _oVKCapabilities.maxImageExtent.height);
+
+                return oVKActualExtent;
+            }
+        }
+
+        // ---------
+
         CVK_SwapChain::CVK_SwapChain()
         {
             // Choose the right settings for the swap chain
             SSwapChainSupportDetails oSwapChainSupport = QuerySwapChainSupport(Arcadia::VK::CVK_PhysicalDevice::GetVKPhysicalDevice());
-            VkSurfaceFormatKHR oVKSurfaceFormat = Arcadia::VKUtils::ChooseSwapSurfaceFormat(oSwapChainSupport.m_tVKFormats);
-            VkPresentModeKHR oVKPresentMode = Arcadia::VKUtils::ChooseSwapPresentMode(oSwapChainSupport.m_tVKPresentModes);
-            VkExtent2D oVKExtent = Arcadia::VKUtils::ChooseSwapExtent(oSwapChainSupport.m_oVKCapabilities);
+            VkSurfaceFormatKHR oVKSurfaceFormat = Arcadia::VK::ChooseSwapSurfaceFormat(oSwapChainSupport.m_tVKFormats);
+            VkPresentModeKHR oVKPresentMode = Arcadia::VK::ChooseSwapPresentMode(oSwapChainSupport.m_tVKPresentModes);
+            VkExtent2D oVKExtent = Arcadia::VK::ChooseSwapExtent(oSwapChainSupport.m_oVKCapabilities);
 
             m_oVKSwapChainImageFormat = oVKSurfaceFormat.format;
             m_oVKSwapChainExtent = oVKExtent;
@@ -71,7 +140,7 @@ namespace Arcadia
             m_tVKSwapChainImageViews.resize(uImageCount);
             for (uint32_t i = 0; i < uImageCount; ++i)
             {
-                m_tVKSwapChainImageViews[i] = Arcadia::VKUtils::CreateImageView(m_tVKSwapChainImages[i], m_oVKSwapChainImageFormat, VK_IMAGE_ASPECT_COLOR_BIT, 1);
+                m_tVKSwapChainImageViews[i] = Arcadia::VK::CreateImageView(m_tVKSwapChainImages[i], m_oVKSwapChainImageFormat, VK_IMAGE_ASPECT_COLOR_BIT, 1);
             }
         }
 

@@ -30,7 +30,7 @@ namespace Arcadia
                 if (PRINT_DEBUG)
                 {
                     // fprintf to avoid indirect recursion. TODO: Change spdlog to another library that doesn't make new allocations.
-                    fprintf(stdout, "Alloc %zu from %s(%d). Total: %zu bytes in %d allocs\n", _uSize, _pFile, _iLine, g_uTotalBytes, g_iTotalAllocs);
+                    fprintf(stdout, "[+] Alloc %zu from %s(%d). Total: %zu bytes in %d allocs\n", _uSize, _pFile, _iLine, g_uTotalBytes, g_iTotalAllocs);
                     //ARC_CORE_DEBUG("Alloc {0} from {1}({2}). Total: {3} bytes in {4} allocs.", _uSize, _pFile, _iLine, g_uTotalBytes, g_iTotalAllocs);
                 }
             }
@@ -64,7 +64,7 @@ namespace Arcadia
                             if (PRINT_DEBUG)
                             {
                                 // fprintf to avoid indirect recursion. TODO: Change spdlog to another library that doesn't make new allocations.
-                                fprintf(stdout, "Dealloc %zu from %s(%d). Total: %zu bytes in %d allocs.\n", g_tMemoryData[i].m_uSize, g_tMemoryData[i].m_pFile, g_tMemoryData[i].m_iLine, g_uTotalBytes, g_iTotalAllocs);
+                                fprintf(stdout, "[-] Dealloc %zu from %s(%d). Total: %zu bytes in %d allocs.\n", g_tMemoryData[i].m_uSize, g_tMemoryData[i].m_pFile, g_tMemoryData[i].m_iLine, g_uTotalBytes, g_iTotalAllocs);
                                 //ARC_CORE_DEBUG("Dealloc {0} from {1}({2}). Total: {3} bytes in {4} allocs.", g_tMemoryData[i].m_uSize, g_tMemoryData[i].m_pFile, g_tMemoryData[i].m_iLine, g_uTotalBytes, g_iTotalAllocs);
                             }
 

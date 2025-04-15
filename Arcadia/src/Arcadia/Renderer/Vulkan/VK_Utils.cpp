@@ -5,7 +5,6 @@
 #include "Arcadia/Renderer/Vulkan/VK_LogicalDevice.h"
 
 #include "GLFW/glfw3.h"
-#include "glm/glm.hpp"
 
 namespace Arcadia
 {
@@ -79,96 +78,6 @@ namespace Arcadia
             }
 
             return true;
-        }
-
-        /**
-        * @brief Choose the surface format (color depth)
-        */
-        VkSurfaceFormatKHR ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& _tVKAvailableFormats)
-        {
-            // The format member specifies the color channels and types.
-            // The colorSpace member indicates if the SRGB color space is supported or not using the VK_COLOR_SPACE_SRGB_NONLINEAR_KHR flag
-            for (const VkSurfaceFormatKHR& oVKAvailableFormat : _tVKAvailableFormats)
-            {
-                if (oVKAvailableFormat.format == VK_FORMAT_B8G8R8A8_SRGB && oVKAvailableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR)
-                {
-                    return oVKAvailableFormat;
-                }
-            }
-
-            return _tVKAvailableFormats[0];
-        }
-
-        /**
-        * @brief Choose the presentation mode (conditions for "swapping" images to the screen)
-        */
-        VkPresentModeKHR ChooseSwapPresentMode(const std::vector<VkPresentModeKHR>& _tVKAvailablePresentModes)
-        {
-            // TODO: VK_PRESENT_MODE_FIFO_KHR if vsync?
-            // TODO: VK_PRESENT_MODE_IMMEDIATE_KHR if VK_PRESENT_MODE_MAILBOX_KHR is not available?
-            for (const VkPresentModeKHR& oVKAvailablePresentMode : _tVKAvailablePresentModes)
-            {
-                if (oVKAvailablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) // VK_PRESENT_MODE_MAILBOX_KHR allows us to avoid tearing while still maintaining a fairly low latency by rendering new images that are as up-to-date as possible right until the vertical blank
-                {
-                    return oVKAvailablePresentMode;
-                }
-            }
-
-            return VK_PRESENT_MODE_FIFO_KHR; // Only the VK_PRESENT_MODE_FIFO_KHR mode is guaranteed to be available
-        }
-
-        /**
-        * @brief Choose the swap extent (resolution of images in swap chain, that it's almost always exactly equal to the resolution of the window that we're drawing to in pixels)
-        */
-        VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& _oVKCapabilities)
-        {
-            // The resolution {WIDTH, HEIGHT} that we specified earlier when creating the window is measured in screen coordinates. But Vulkan works with pixels, so the swap chain extent must be specified in pixels as well
-            if (_oVKCapabilities.currentExtent.width != std::numeric_limits<uint32_t>::max())
-            {
-                return _oVKCapabilities.currentExtent;
-            }
-            else
-            {
-                int iWidth = 0;
-                int iHeight = 0;
-                // We must use glfwGetFramebufferSize to query the resolution of the window in pixel before matching it against the minimum and maximum image extent
-                glfwGetFramebufferSize(Arcadia::CWindow::GetGLFWwindow(), &iWidth, &iHeight);
-
-                VkExtent2D oVKActualExtent = {
-                    static_cast<uint32_t>(iWidth),
-                    static_cast<uint32_t>(iHeight)
-                };
-
-                oVKActualExtent.width = glm::clamp(oVKActualExtent.width, _oVKCapabilities.minImageExtent.width, _oVKCapabilities.maxImageExtent.width);
-                oVKActualExtent.height = glm::clamp(oVKActualExtent.height, _oVKCapabilities.minImageExtent.height, _oVKCapabilities.maxImageExtent.height);
-
-                return oVKActualExtent;
-            }
-        }
-
-        VkImageView CreateImageView(const VkImage& _oImage, const VkFormat& _oFormat, const VkImageAspectFlags& _oAspectFlags, const uint32_t _uMipLevels)
-        {
-            VkImageViewCreateInfo oViewInfo{};
-            oViewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-            oViewInfo.image = _oImage;
-            oViewInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-            oViewInfo.format = _oFormat;
-            // Default mapping
-            oViewInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
-            oViewInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
-            oViewInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
-            oViewInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
-            // The subresourceRange field describes what the image's purpose is and which part of the image should be accessed.
-            oViewInfo.subresourceRange.aspectMask = _oAspectFlags;
-            oViewInfo.subresourceRange.baseMipLevel = 0;
-            oViewInfo.subresourceRange.levelCount = _uMipLevels;
-            oViewInfo.subresourceRange.baseArrayLayer = 0;
-            oViewInfo.subresourceRange.layerCount = 1;
-
-            VkImageView oImageView;
-            ARC_VK_CHECK(vkCreateImageView(Arcadia::VK::CVK_LogicalDevice::GetVKDevice(), &oViewInfo, nullptr, &oImageView), "Failed to create image view!");
-
-            return oImageView;
         }
 
         std::string GetVersionString(uint32_t _uVersion)
