@@ -68,7 +68,7 @@ and you can see the index.html generated in ..\docs\index.html.
 
 ## General
 
-- [ ] CVar system. References: [DOOM-3](https://github.com/id-Software/DOOM-3/blob/master/neo/framework/CVarSystem.h), [vkguide](https://vkguide.dev/docs/extra-chapter/cvar_system/).
+- [ ] CVar system. References: [DOOM-3](https://github.com/id-Software/DOOM-3/blob/master/neo/framework/CVarSystem.h), [vkguide](https://vkguide.dev/docs/extra-chapter/cvar_system/), [cryengine](https://github.com/CRYTEK/CRYENGINE_Source/blob/release/Code/CryEngine/Cry3DEngine/cvars.h).
 - [ ] Command system.
 - [ ] Shaders hot reload.
 - [ ] Debug.cpp with stack trace and other stuff like this.
