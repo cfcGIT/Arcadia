@@ -8,5 +8,6 @@ bin-int/
 *.vcxproj.user
 *.vcxproj.filters
 *.sln
+*.spv
 
 *.cmake
